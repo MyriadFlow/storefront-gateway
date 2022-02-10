@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: me--
+build:
+  artifacts:
+    - image: 560914023379.dkr.ecr.us-east-2.amazonaws.com/marketplace-engine
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    defaultNamespace: creatify
+    manifests:
+      - k8s/engine-deploy.yml
+      - k8s/engine-ingress.yml
+      - k8s/engine-service.yml
+      - k8s/postgres-deploy.yml
+      - k8s/postgres-service.yml
