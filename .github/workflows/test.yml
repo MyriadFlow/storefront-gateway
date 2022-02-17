@@ -20,6 +20,7 @@ jobs:
       MNEMONIC:  ${{ secrets.MNEMONIC }}
       CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
       CREATOR_EULA: TODO CREATOR EULA
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false

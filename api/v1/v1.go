@@ -7,6 +7,7 @@ import (
 	flowid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/flowid"
 	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/profile"
 	roleid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/roleId"
+	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/uploadtoipfs"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,5 +22,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		roleid.ApplyRoutes(v1)
 		claimrole.ApplyRoutes(v1)
 		delegateartifactcreation.ApplyRoutes(v1)
+		uploadtoipfs.ApplyRoutes(v1)
 	}
 }

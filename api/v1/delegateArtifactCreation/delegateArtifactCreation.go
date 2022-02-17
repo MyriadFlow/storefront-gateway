@@ -35,7 +35,7 @@ func deletegateArtifactCreation(c *gin.Context) {
 	tx, err := rawtrasaction.SendRawTrasac(abiS, "delegateArtifactCreation", creatorAddr, request.MetaDataHash)
 
 	if err != nil {
-		httphelper.NewInternalServerError(c, "failed to call %v of %v, error: %v", "delegateArtifactCreation", "Creatify", err.Error())
+		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateArtifactCreation", "Creatify", err.Error())
 		return
 	}
 	transactionHash := tx.Hash().String()

@@ -40,7 +40,7 @@ func postClaimRole(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		httphelper.NewInternalServerError(c, "failed to get role by flowid, error %v", err.Error())
+		httphelper.NewInternalServerError(c, "", "failed to get role by flowid, error %v", err.Error())
 		return
 	}
 	message := role.Eula + req.FlowId

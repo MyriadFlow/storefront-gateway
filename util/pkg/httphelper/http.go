@@ -35,11 +35,12 @@ func InternalServerError(c *gin.Context) {
 	c.JSON(response.Status, response)
 }
 
-func NewInternalServerError(c *gin.Context, format string, args ...interface{}) {
+func NewInternalServerError(c *gin.Context, message string, format string, args ...interface{}) {
 	logwrapper.Errorf(format, args...)
 	response := types.ApiResponse{
-		Status: http.StatusInternalServerError,
-		Error:  "unexpected error occurred",
+		Status:  http.StatusInternalServerError,
+		Error:   "unexpected error occurred",
+		Message: message,
 	}
 	c.JSON(response.Status, response)
 }

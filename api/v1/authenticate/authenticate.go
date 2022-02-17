@@ -68,7 +68,7 @@ func authenticate(c *gin.Context) {
 		jwtPrivateKey := envutil.MustGetEnv("JWT_PRIVATE_KEY")
 		jwtToken, err := auth.GenerateToken(customClaims, jwtPrivateKey)
 		if err != nil {
-			httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
+			httphelper.NewInternalServerError(c, "", "failed to generate token, error %v", err.Error())
 			return
 		}
 		db.Where("flow_id = ?", req.FlowId).Delete(&models.FlowId{})
