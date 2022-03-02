@@ -29,7 +29,7 @@ func TestDelegateArtifactCreation(t *testing.T) {
 
 	reqBody := DelegateArtifactCreationRequest{
 		CreatorAddress: createrWallet.WalletAddress,
-		MetaDataHash:   "QmSYRXWGGqVDAHKTwfnYQDR74d4bfwXxudFosbGA695AWS",
+		MetaDataHash:   "ipfs://QmTiQKxZoVMvDahqVUzvkJhAjF9C1MzytpDEocxUT3oBde",
 	}
 	jsonBytes, _ := json.Marshal(reqBody)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
