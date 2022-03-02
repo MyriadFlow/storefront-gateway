@@ -3,8 +3,8 @@
 # and commit this file to your remote git repository to share the goodness with others.
 
 tasks:
-  - init: go get && go build ./...
-    command: go run
+  - init: go get ./... && go build ./...
+    command: ./gitpod-start.sh && go run main.go
 vscode:
   extensions:
     - golang.go

@@ -16,11 +16,12 @@ jobs:
       DB_PASSWORD: postgres
       DB_NAME: postgres
       DB_PORT: 5432
-      POLYGON_RPC:  ${{ secrets.POLYGON_RPC }}
-      MNEMONIC:  ${{ secrets.MNEMONIC }}
+      POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
+      MNEMONIC: ${{ secrets.MNEMONIC }}
       CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CREATOR_EULA: TODO CREATOR EULA
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false
@@ -39,9 +40,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: Install gotestsum
         run: go get -u gotest.tools/gotestsum
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: LOAD_CONFIG_FILE=false gotestsum
+        run: LOAD_CONFIG_FILE=false go test -race -covermode=atomic -coverprofile=coverage.out ./...
+      - name: Upload coverage to Codecov
+        run: curl -s https://codecov.io/bash | bash /dev/stdin -t $CODECOV_TOKEN
