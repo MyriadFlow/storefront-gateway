@@ -9,13 +9,16 @@ import (
 	"os"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/app"
+	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 )
 
 func Test_UploadToIpfs(t *testing.T) {
-	app.Init("../../../../.env", "../../../../logs")
+	config.Init("../../../.env")
+	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
 	header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
@@ -27,7 +30,7 @@ func Test_UploadToIpfs(t *testing.T) {
 	body := new(bytes.Buffer)
 	mw := multipart.NewWriter(body)
 
-	filesToUpload := []string{"cardata.json", "bikedata.yaml"}
+	filesToUpload := []string{"test/cardata.json", "test/bikedata.yaml"}
 	for _, fileToUpload := range filesToUpload {
 		file, err := os.Open(fileToUpload)
 		if err != nil {
@@ -49,6 +52,8 @@ func Test_UploadToIpfs(t *testing.T) {
 	req.Header.Add("Authorization", header)
 
 	req.Header.Add("Content-Type", mw.FormDataContentType())
-	app.GinApp.ServeHTTP(rr, req)
+	c, _ := gin.CreateTestContext(rr)
+	c.Request = req
+	uploadtoipfs(c)
 	assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 }

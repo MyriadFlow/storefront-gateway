@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	delegateartifactcreation "github.com/TheLazarusNetwork/marketplace-engine/api/v1/delegateArtifactCreation"
-	"github.com/TheLazarusNetwork/marketplace-engine/app"
+	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,8 @@ import (
 
 func TestDelegateArtifactCreation(t *testing.T) {
 	time.Sleep(4 * time.Second)
-	app.Init("../../../../.env", "../../../../logs")
+	config.Init("../../../.env")
+	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	testWallet := testingcommon.GenerateWallet()
@@ -26,7 +27,7 @@ func TestDelegateArtifactCreation(t *testing.T) {
 	url := "/api/v1.0/delegateArtifactCreation"
 	rr := httptest.NewRecorder()
 
-	reqBody := delegateartifactcreation.DelegateArtifactCreationRequest{
+	reqBody := DelegateArtifactCreationRequest{
 		CreatorAddress: createrWallet.WalletAddress,
 		MetaDataHash:   "QmSYRXWGGqVDAHKTwfnYQDR74d4bfwXxudFosbGA695AWS",
 	}
@@ -36,7 +37,9 @@ func TestDelegateArtifactCreation(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Header.Add("Authorization", headers)
-	app.GinApp.ServeHTTP(rr, req)
+	c, _ := gin.CreateTestContext(rr)
+	c.Request = req
+	deletegateArtifactCreation(c)
 	ok := assert.Equal(t, http.StatusOK, rr.Result().StatusCode, rr.Body.String())
 	if !ok {
 		t.FailNow()
