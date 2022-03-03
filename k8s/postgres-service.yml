@@ -4,7 +4,7 @@ metadata:
   name: postgres-svc
 spec:
   selector:
-    app: creatify-marketplace
+    app: myraid-flow
     type: postgres-database
   ports:
     - port: 5432

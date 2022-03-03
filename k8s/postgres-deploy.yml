@@ -5,12 +5,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: creatify-marketplace
+      app: myraid-flow
       type: postgres-database
   template:
     metadata:
       labels:
-        app: creatify-marketplace
+        app: myraid-flow
         type: postgres-database
     spec:
       containers:
@@ -24,8 +24,8 @@ spec:
             - containerPort: 5432
           env:
             - name: "POSTGRES_PASSWORD"
-              value: revotic
+              value: lazarus
             - name: "POSTGRES_USER"
-              value: revotic
+              value: lazarus
             - name: "POSTGRES_DB"
-              value: marketplace
+              value: myraid-flow

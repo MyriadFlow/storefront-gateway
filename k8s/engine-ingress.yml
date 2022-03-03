@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: marketplace-ingress
+  name: myraid-flow-ingress
   labels:
-    app: creatify-marketplace
+    app: myraid-flow
     type: ingress
   annotations:
     kubernetes.io/ingress.class: nginx

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: myraid-flow
 spec:
   selector:
     matchLabels:
-      app: creatify-marketplace
+      app: myraid-flow
       type: engine
   template:
     metadata:
       labels:
-        app: creatify-marketplace
+        app: myraid-flow
         type: engine
     spec:
       containers:
-        - name: myapp
+        - name: myraid-flow
           image: 560914023379.dkr.ecr.us-east-2.amazonaws.com/marketplace-engine
           resources:
             limits:
@@ -25,10 +25,10 @@ spec:
           volumeMounts:
             - mountPath: "/app/.env"
               subPath: ".env"
-              name: creatify-engine-env-file
+              name: myriad-flow-engine-env-file
               readOnly: true
 
       volumes:
-        - name: creatify-engine-env-file
+        - name: myriad-flow-engine-env-file
           secret:
-            secretName: creatify-engine-env-secret
+            secretName: myriad-flow-engine-env-secret
