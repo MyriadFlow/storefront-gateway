@@ -28,7 +28,7 @@ func Test_PatchProfile(t *testing.T) {
 	url := "/api/v1.0/profile"
 
 	// TODO: Write more tests
-	t.Run("Update name", func(t *testing.T) {
+	t.Run("Should be able to update name", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		requestBody := PatchProfileRequest{
@@ -57,30 +57,33 @@ func Test_GetProfile(t *testing.T) {
 	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
-	testWallet := testingcommon.GenerateWallet()
-	header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
-	url := "/api/v1.0/profile"
-	rr := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Add("Authorization", header)
-	if err != nil {
-		t.Fatal(err)
-	}
-	c, _ := gin.CreateTestContext(rr)
-	c.Request = req
-	c.Set("walletAddress", testWallet.WalletAddress)
-	getProfile(c)
-	var response types.ApiResponse
-	body := rr.Body
-	json.NewDecoder(body).Decode(&response)
-	var user models.User
-	testingcommon.ExtractPayload(&response, &user)
-	if err != nil {
-		t.Fatal(err)
-	}
-	assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
-	assert.Equal(t, "Jack", user.Name)
-	assert.Equal(t, "https://revoticengineering.com/", user.ProfilePictureUrl)
-	assert.Equal(t, "India", user.Country)
-	logrus.Debug(user)
+	t.Run("Should be able to get profile details",func(t *testing.T) {
+		testWallet := testingcommon.GenerateWallet()
+		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
+		url := "/api/v1.0/profile"
+		rr := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", url, nil)
+		req.Header.Add("Authorization", header)
+		if err != nil {
+			t.Fatal(err)
+		}
+		c, _ := gin.CreateTestContext(rr)
+		c.Request = req
+		c.Set("walletAddress", testWallet.WalletAddress)
+		getProfile(c)
+		var response types.ApiResponse
+		body := rr.Body
+		json.NewDecoder(body).Decode(&response)
+		var user models.User
+		testingcommon.ExtractPayload(&response, &user)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
+		assert.Equal(t, "Jack", user.Name)
+		assert.Equal(t, "https://revoticengineering.com/", user.ProfilePictureUrl)
+		assert.Equal(t, "India", user.Country)
+		logrus.Debug(user)
+	})
+	
 }

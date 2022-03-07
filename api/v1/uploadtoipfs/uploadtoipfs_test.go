@@ -20,40 +20,44 @@ func Test_UploadToIpfs(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
-	testWallet := testingcommon.GenerateWallet()
-	header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 
-	url := "/api/v1.0/uploadtoipfs"
+	t.Run("Should be able to upload file to ipfs", func(t *testing.T) {
+		testWallet := testingcommon.GenerateWallet()
+		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 
-	rr := httptest.NewRecorder()
+		url := "/api/v1.0/uploadtoipfs"
 
-	body := new(bytes.Buffer)
-	mw := multipart.NewWriter(body)
+		rr := httptest.NewRecorder()
 
-	filesToUpload := []string{"test/cardata.json", "test/bikedata.yaml"}
-	for _, fileToUpload := range filesToUpload {
-		file, err := os.Open(fileToUpload)
-		if err != nil {
-			t.Fatal(err)
+		body := new(bytes.Buffer)
+		mw := multipart.NewWriter(body)
+
+		filesToUpload := []string{"test/cardata.json", "test/bikedata.yaml"}
+		for _, fileToUpload := range filesToUpload {
+			file, err := os.Open(fileToUpload)
+			if err != nil {
+				t.Fatal(err)
+			}
+			w, err := mw.CreateFormFile("file", file.Name())
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := io.Copy(w, file); err != nil {
+				t.Fatal(err)
+			}
 		}
-		w, err := mw.CreateFormFile("file", file.Name())
-		if err != nil {
-			t.Fatal(err)
-		}
-		if _, err := io.Copy(w, file); err != nil {
-			t.Fatal(err)
-		}
-	}
 
-	// close the writer before making the request
-	mw.Close()
+		// close the writer before making the request
+		mw.Close()
 
-	req := httptest.NewRequest(http.MethodPost, url, body)
-	req.Header.Add("Authorization", header)
+		req := httptest.NewRequest(http.MethodPost, url, body)
+		req.Header.Add("Authorization", header)
 
-	req.Header.Add("Content-Type", mw.FormDataContentType())
-	c, _ := gin.CreateTestContext(rr)
-	c.Request = req
-	uploadtoipfs(c)
-	assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
+		req.Header.Add("Content-Type", mw.FormDataContentType())
+		c, _ := gin.CreateTestContext(rr)
+		c.Request = req
+		uploadtoipfs(c)
+		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
+	})
+
 }

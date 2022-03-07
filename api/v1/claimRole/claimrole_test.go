@@ -36,70 +36,74 @@ func Test_PostClaimRole(t *testing.T) {
 	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
-	testWallet := testingcommon.GenerateWallet()
-	headers := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
-	url := "/api/v1.0/claimrole"
-	rr := httptest.NewRecorder()
-	requestRoleRes := requestRole(t, headers, testWallet.WalletAddress)
-	signature := getSignature(requestRoleRes.Eula, requestRoleRes.FlowId, testWallet.PrivateKey)
-	reqBody := ClaimRoleRequest{
-		Signature: signature, FlowId: requestRoleRes.FlowId,
-	}
-	jsonBytes, _ := json.Marshal(reqBody)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
-	if err != nil {
-		t.Fatal(err)
-	}
-	req.Header.Add("Authorization", headers)
-	c, _ := gin.CreateTestContext(rr)
-	c.Request = req
-	c.Set("walletAddress", testWallet.WalletAddress)
-	postClaimRole(c)
-	ok := assert.Equal(t, http.StatusOK, rr.Result().StatusCode, rr.Body.String())
-	if !ok {
-		t.FailNow()
-	}
-	client, err := smartcontract.GetClient()
-	if err != nil {
-		t.Fatal(err)
-	}
-	instance, err := creatify.GetInstance(client)
-	if err != nil {
-		t.Fatalf("failed to get instance for %v , error: %v", "CREATIFY", err.Error())
-	}
-	creatorRole, err := creatify.GetRole(creatify.CREATOR_ROLE)
-	if err != nil {
-		t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
-	}
-	addr := common.HexToAddress(testWallet.WalletAddress)
-	roleGrantedChannel := make(chan *smartcontractcreatify.CreatifyRoleGranted, 10)
 
-	authBindOpts, err := auth.GetAuth(client)
-
-	if err != nil {
-		t.Fatalf("failed to get auth, error: %v", err.Error())
-	}
-	subs, err := instance.WatchRoleGranted(nil, roleGrantedChannel, [][32]byte{creatorRole}, []common.Address{addr}, []common.Address{authBindOpts.From})
-	if err != nil {
-		t.Fatalf("failed to listen to an event %v, error: %v", "RoleGranted", err.Error())
-	}
-
-	//Check if role trasaction is successfull
-	hasRole, err := instance.HasRole(nil, creatorRole, addr)
-	if err != nil {
-		t.Fatalf("failed to call %v smart contract function HasRole , error: %v", "CREATIFY", err.Error())
-	}
-	success := false
-	if !hasRole {
-		go failAfter(t, &success, 10*time.Second, roleGrantedChannel)
-		event := <-roleGrantedChannel
-		subs.Unsubscribe()
-		if event != nil && event.Account.String() != addr.String() {
-			log.Fatal("user doesn't have role in blockchain")
-		} else {
-			success = true
+	t.Run("Should claim role if signature is correct",func(t *testing.T) {
+		testWallet := testingcommon.GenerateWallet()
+		headers := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
+		url := "/api/v1.0/claimrole"
+		rr := httptest.NewRecorder()
+		requestRoleRes := requestRole(t, headers, testWallet.WalletAddress)
+		signature := getSignature(requestRoleRes.Eula, requestRoleRes.FlowId, testWallet.PrivateKey)
+		reqBody := ClaimRoleRequest{
+			Signature: signature, FlowId: requestRoleRes.FlowId,
 		}
-	}
+		jsonBytes, _ := json.Marshal(reqBody)
+		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBytes))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Add("Authorization", headers)
+		c, _ := gin.CreateTestContext(rr)
+		c.Request = req
+		c.Set("walletAddress", testWallet.WalletAddress)
+		postClaimRole(c)
+		ok := assert.Equal(t, http.StatusOK, rr.Result().StatusCode, rr.Body.String())
+		if !ok {
+			t.FailNow()
+		}
+		client, err := smartcontract.GetClient()
+		if err != nil {
+			t.Fatal(err)
+		}
+		instance, err := creatify.GetInstance(client)
+		if err != nil {
+			t.Fatalf("failed to get instance for %v , error: %v", "CREATIFY", err.Error())
+		}
+		creatorRole, err := creatify.GetRole(creatify.CREATOR_ROLE)
+		if err != nil {
+			t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
+		}
+		addr := common.HexToAddress(testWallet.WalletAddress)
+		roleGrantedChannel := make(chan *smartcontractcreatify.CreatifyRoleGranted, 10)
+	
+		authBindOpts, err := auth.GetAuth(client)
+	
+		if err != nil {
+			t.Fatalf("failed to get auth, error: %v", err.Error())
+		}
+		subs, err := instance.WatchRoleGranted(nil, roleGrantedChannel, [][32]byte{creatorRole}, []common.Address{addr}, []common.Address{authBindOpts.From})
+		if err != nil {
+			t.Fatalf("failed to listen to an event %v, error: %v", "RoleGranted", err.Error())
+		}
+	
+		//Check if role trasaction is successfull
+		hasRole, err := instance.HasRole(nil, creatorRole, addr)
+		if err != nil {
+			t.Fatalf("failed to call %v smart contract function HasRole , error: %v", "CREATIFY", err.Error())
+		}
+		success := false
+		if !hasRole {
+			go failAfter(t, &success, 10*time.Second, roleGrantedChannel)
+			event := <-roleGrantedChannel
+			subs.Unsubscribe()
+			if event != nil && event.Account.String() != addr.String() {
+				log.Fatal("user doesn't have role in blockchain")
+			} else {
+				success = true
+			}
+		}
+	})
+
 
 }
 
