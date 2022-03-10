@@ -9,7 +9,7 @@ build:
         dockerfile: Dockerfile
 deploy:
   kubectl:
-    defaultNamespace: creatify
+    defaultNamespace: myriad-flow
     manifests:
       - k8s/engine-deploy.yml
       - k8s/engine-ingress.yml
