@@ -24,6 +24,41 @@ postgres -c log_statement=all
 - Run `go test ./...` to make sure setup is working
 - Run `go run main.go` to start server
 
+## Env Reference
+
+| Key                         | Description                                                                         |
+| :-------------------------- | :---------------------------------------------------------------------------------- |
+| `JWT_PRIVATE_KEY`           | Private key used for signing the issuing JWT tokens                                 |
+| `JWT_EXPIRATION_IN_HOURS`   | Hours after which issued JWT token should be invalid                                |
+| `AUTH_EULA`                 | EULA to be signed when requesting JWT token                                         |
+| `CREATOR_EULA`              | EULA to be signed when requesting Creator Role                                      |
+| `APP_NAME`                  | App name to be logged with logger                                                   |
+| `GIN_MODE`                  | Gin mode used to specify type of logging for API requests                           |
+| `CREATIFY_CONTRACT_ADDRESS` | Contract address of creatify deployed on blockchain                                 |
+| `POLYGON_RPC`               | RPC url of node which is connected to network where your smart contract is deployed |
+| `MNEMONIC`                  | Mnemonic of wallet which has operator role in smart contract                        |
+| `LOG_TO_FILE`               | Specify wheather to log to file unders logs folder                                  |
+| `IPFS_NODE_URL`             | Node url of ipfs network                                                            |
+| `ALLOWED_ORIGIN`            | Origin which are allowed to access this APIs                                        |
+
+Note - Database env variables are self explainatory
+
+## FAQs
+
+### How to get polygon RPC url?
+
+> You can get polygon RPC url from many providers, like alchemy.
+> Also you can host your own node and use that.
+
+### How to get ipfs node url?
+
+> You can get ipfs node url from many providers like infura and pinata cloud
+> Also you can host your own node and use that.
+
+### What is MNEMONIC
+
+> A MNEMONIC is set of words which is used to derive many private keys which can be used to access many wallets associated with private key. In this backend the first wallet is used as operator.
+
 ## API Reference
 
 ### Auth
@@ -100,3 +135,11 @@ Note - Some unset data is emitted.
 | :--------------- | :--------------------- |
 | `creatorAddress` | **Required**. `string` |
 | `metaDataHash`   | **Required**. `string` |
+
+```
+  POST /uploadtoipfs
+```
+
+| Parameter | Type                  |
+| :-------- | :-------------------- |
+| `file`    | **Required**. `Files` |
