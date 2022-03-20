@@ -17,6 +17,9 @@ docker run --name="marketplace" --rm -d -p 5432:5432 \
 postgres -c log_statement=all
 ```
 
+## Wallet as an operator
+Make sure you have an MNEMONIC which has operator role to its first address, if not then grant operator role to it and then proceed.
+
 ## Steps to get started
 
 - Run `go get ./...` to install dependencies
