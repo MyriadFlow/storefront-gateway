@@ -21,7 +21,6 @@ jobs:
       CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       CREATOR_EULA: TODO CREATOR EULA
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false
@@ -48,5 +47,3 @@ jobs:
         run: go build -v ./...
       - name: Test
         run: LOAD_CONFIG_FILE=false gotestsum -- -coverprofile=cover.out ./...
-      - name: Upload coverage to Codecov
-        run: curl -s https://codecov.io/bash | bash /dev/stdin -t $CODECOV_TOKEN
