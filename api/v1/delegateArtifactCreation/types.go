@@ -1,7 +1,7 @@
 package delegateartifactcreation
 
 type DelegateArtifactCreationRequest struct {
-	CreatorAddress string `json:"creatorAddress" binding:"required"`
+	CreatorAddress string `json:"creatorAddress" binding:"required,hexadecimal"`
 	MetaDataHash   string `json:"metaDataHash" binding:"required"`
 }
 

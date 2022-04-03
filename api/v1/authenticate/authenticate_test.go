@@ -64,7 +64,7 @@ func Test_PostAuthenticate(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		newWalletAddress := testWallet.WalletAddress + "b"
+		newWalletAddress := testWallet.WalletAddress + "ba"
 		callFlowIdApi(newWalletAddress, t)
 
 		rr := httptest.NewRecorder()
