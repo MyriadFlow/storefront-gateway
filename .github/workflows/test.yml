@@ -24,6 +24,7 @@ jobs:
       CREATOR_EULA: TODO CREATOR EULA
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false
+      SIGNED_BY: "LazarusNetwork"
 
     services:
       postgres:
