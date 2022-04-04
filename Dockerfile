@@ -5,7 +5,7 @@ COPY go.sum .
 RUN apk add build-base
 RUN go mod download
 COPY . .
-RUN go build -o engine .
+RUN apk add --no-cache git && go build -o engine . && apk del git
 
 FROM alpine
 WORKDIR /app
