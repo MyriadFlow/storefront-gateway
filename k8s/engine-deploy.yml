@@ -27,7 +27,9 @@ spec:
               subPath: ".env"
               name: myriad-flow-engine-env-file
               readOnly: true
-
+          env:
+            - name: "APP_PORT"
+              value: "8000"
       volumes:
         - name: myriad-flow-engine-env-file
           secret:
