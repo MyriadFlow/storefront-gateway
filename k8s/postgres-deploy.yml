@@ -29,3 +29,11 @@ spec:
               value: lazarus
             - name: "POSTGRES_DB"
               value: myraid-flow
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/"
+              subPath: "data"
+              name: postgres-pv-storage
+      volumes:
+        - name: postgres-pv-storage
+          persistentVolumeClaim:
+            claimName: gateway-postgres-pv-claim
