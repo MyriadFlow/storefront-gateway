@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,7 @@ func TestDelegateArtifactCreation(t *testing.T) {
 	time.Sleep(4 * time.Second)
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	testWallet := testingcommon.GenerateWallet()
@@ -39,6 +41,7 @@ func TestDelegateArtifactCreation(t *testing.T) {
 		req.Header.Add("Authorization", headers)
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
+		c.Set("walletAddress", testWallet.WalletAddress)
 		deletegateArtifactCreation(c)
 		ok := assert.Equal(t, http.StatusBadRequest, rr.Result().StatusCode, rr.Body.String())
 		if !ok {
@@ -59,6 +62,7 @@ func TestDelegateArtifactCreation(t *testing.T) {
 		req.Header.Add("Authorization", headers)
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
+		c.Set("walletAddress", testWallet.WalletAddress)
 		deletegateArtifactCreation(c)
 		ok := assert.Equal(t, http.StatusOK, rr.Result().StatusCode, rr.Body.String())
 		if !ok {
