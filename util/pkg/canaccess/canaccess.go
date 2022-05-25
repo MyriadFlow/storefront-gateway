@@ -11,7 +11,7 @@ func CanAccess(walletAddress string) bool {
 		return true
 	}
 	for _, v := range global.AllowedWalletAddresses {
-		if strings.ToLower(v) == strings.ToLower(walletAddress) {
+		if strings.EqualFold(v, walletAddress) {
 			return true
 		}
 	}
