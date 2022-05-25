@@ -20,6 +20,7 @@ import (
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/auth"
 	smartcontractcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
+	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 
@@ -34,10 +35,11 @@ func Test_PostClaimRole(t *testing.T) {
 	defer time.Sleep(4 * time.Second)
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 
-	t.Run("Should claim role if signature is correct",func(t *testing.T) {
+	t.Run("Should claim role if signature is correct", func(t *testing.T) {
 		testWallet := testingcommon.GenerateWallet()
 		headers := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 		url := "/api/v1.0/claimrole"
@@ -75,9 +77,9 @@ func Test_PostClaimRole(t *testing.T) {
 		}
 		addr := common.HexToAddress(testWallet.WalletAddress)
 		roleGrantedChannel := make(chan *smartcontractcreatify.CreatifyRoleGranted, 10)
-	
+
 		authBindOpts, err := auth.GetAuth(client)
-	
+
 		if err != nil {
 			t.Fatalf("failed to get auth, error: %v", err.Error())
 		}
@@ -85,7 +87,7 @@ func Test_PostClaimRole(t *testing.T) {
 		if err != nil {
 			t.Fatalf("failed to listen to an event %v, error: %v", "RoleGranted", err.Error())
 		}
-	
+
 		//Check if role trasaction is successfull
 		hasRole, err := instance.HasRole(nil, creatorRole, addr)
 		if err != nil {
@@ -103,7 +105,6 @@ func Test_PostClaimRole(t *testing.T) {
 			}
 		}
 	})
-
 
 }
 

@@ -6,6 +6,7 @@ import (
 	jwtMiddleWare "github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
+	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/canaccess"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/flowid"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
@@ -26,6 +27,10 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func GetRoleId(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
+	if !canaccess.CanAccess(walletAddress) {
+		httphelper.ErrResponse(c, http.StatusForbidden, "this api not open to current wallet")
+		return
+	}
 	roleId, exist := c.Params.Get("roleId")
 	if !exist {
 		httphelper.ErrResponse(c, http.StatusBadRequest, "Param roleId is required")

@@ -25,6 +25,7 @@ jobs:
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false
       SIGNED_BY: "LazarusNetwork"
+      ALLOWED_WALLET_ADDRESS: "*"
 
     services:
       postgres:

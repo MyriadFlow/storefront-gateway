@@ -8,6 +8,7 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
+	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -20,6 +21,7 @@ func Test_GetRoleId(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
 	headers := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
