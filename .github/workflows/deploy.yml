@@ -1,11 +1,11 @@
-name: "Deploy to ECR"
+name: "Deploy to EKS"
 on:
   push:
     branches: [main]
 
 jobs:
   build:
-    name: Build Image
+    name: Build Image and deploy to EKS
     runs-on: ubuntu-latest
 
     steps:
