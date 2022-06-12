@@ -37,7 +37,7 @@ func JWT(c *gin.Context) {
 		return
 	}
 	jwtToken := headers.Authorization[7:]
-	token, _ := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
@@ -45,6 +45,12 @@ func JWT(c *gin.Context) {
 		jwtPrivateKet := []byte(envutil.MustGetEnv("JWT_PRIVATE_KEY"))
 		return jwtPrivateKet, nil
 	})
+
+	if err != nil {
+		logValidationFailed(headers.Authorization, err)
+		c.AbortWithStatus(http.StatusForbidden)
+		return
+	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		walletAddress := claims["walletAddress"]
