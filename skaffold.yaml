@@ -14,5 +14,3 @@ deploy:
       - k8s/engine-deploy.yml
       - k8s/engine-ingress.yml
       - k8s/engine-service.yml
-      - k8s/postgres-deploy.yml
-      - k8s/postgres-service.yml
