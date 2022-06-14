@@ -11,11 +11,11 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/details")
 	{
-		g.GET("", GetDetails)
+		g.GET("", getDetails)
 	}
 }
 
-func GetDetails(c *gin.Context) {
+func getDetails(c *gin.Context) {
 	org, err := Org.GetOrgDetails()
 	if err != nil {
 		httphelper.InternalServerError(c)
