@@ -21,8 +21,8 @@ type Org struct {
 func CreateOrg(org Org) error {
 	return dbconfig.GetDb().Create(&org).Error
 }
-func GetOrgDetails() (error, Org) {
+func GetOrgDetails() (Org, error) {
 	var org Org
 	err := dbconfig.GetDb().First(&org).Error
-	return err, org
+	return org, err
 }

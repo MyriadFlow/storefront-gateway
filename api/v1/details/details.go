@@ -16,7 +16,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 }
 
 func GetDetails(c *gin.Context) {
-	err, org := Org.GetOrgDetails()
+	org, err := Org.GetOrgDetails()
 	if err != nil {
 		httphelper.InternalServerError(c)
 		return
