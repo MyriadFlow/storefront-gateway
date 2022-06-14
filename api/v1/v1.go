@@ -4,6 +4,7 @@ import (
 	authenticate "github.com/TheLazarusNetwork/marketplace-engine/api/v1/authenticate"
 	claimrole "github.com/TheLazarusNetwork/marketplace-engine/api/v1/claimRole"
 	delegateartifactcreation "github.com/TheLazarusNetwork/marketplace-engine/api/v1/delegateArtifactCreation"
+	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/details"
 	flowid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/flowid"
 	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/healthcheck"
 	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/profile"
@@ -24,6 +25,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		claimrole.ApplyRoutes(v1)
 		delegateartifactcreation.ApplyRoutes(v1)
 		uploadtoipfs.ApplyRoutes(v1)
+		details.ApplyRoutes(v1)
 		healthcheck.ApplyRoutes(v1)
 	}
 }

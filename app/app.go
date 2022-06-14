@@ -8,10 +8,10 @@ import (
 	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/gin-contrib/cors"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/gin-contrib/cors"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +20,7 @@ var GinApp *gin.Engine
 func Init(envPath string, logBasePath string) {
 	config.Init(envPath)
 	logwrapper.Init(logBasePath)
+	dbinit.Init()
 	global.InitGlobal()
 	creatify.InitRolesId()
 	GinApp = gin.Default()
@@ -31,6 +32,4 @@ func Init(envPath string, logBasePath string) {
 		AllowOrigins:     []string{envutil.MustGetEnv("ALLOWED_ORIGIN")}})
 	GinApp.Use(corsM)
 	api.ApplyRoutes(GinApp)
-	dbconfig.GetDb()
-
 }
