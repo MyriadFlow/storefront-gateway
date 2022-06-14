@@ -28,6 +28,7 @@ func Init() error {
 			GraphUrl:           envutil.MustGetEnv("GRAPH_URL"),
 			CreatifyAddress:    envutil.MustGetEnv("CREATIFY_ADDRESS"),
 			MarketPlaceAddress: envutil.MustGetEnv("MARKETPLACE_ADDRESS"),
+			Footer:             envutil.MustGetEnv("FOOTER"),
 			TopHighlights:      strings.Split(envutil.MustGetEnv("TOP_HIGHLIGHTS"), ","),
 			Trendings:          strings.Split(envutil.MustGetEnv("TRENDINGS"), ","),
 			TopBids:            strings.Split(envutil.MustGetEnv("TOP_BIDS"), ","),

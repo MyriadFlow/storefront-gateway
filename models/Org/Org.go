@@ -12,6 +12,7 @@ type Org struct {
 	GraphUrl           string         `json:"graphurl"`
 	CreatifyAddress    string         `json:"creatifyAddress"`
 	MarketPlaceAddress string         `json:"marketPlaceAddress"`
+	Footer             string         `json:"footer"`
 	TopHighlights      pq.StringArray `gorm:"type:text[]" json:"topHighlights"`
 	Trendings          pq.StringArray `gorm:"type:text[]" json:"trendings"`
 	TopBids            pq.StringArray `gorm:"type:text[]" json:"topBids"`
