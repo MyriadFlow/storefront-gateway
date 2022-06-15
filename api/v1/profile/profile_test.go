@@ -9,6 +9,7 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -21,6 +22,7 @@ import (
 func Test_PatchProfile(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
 	header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
@@ -57,7 +59,7 @@ func Test_GetProfile(t *testing.T) {
 	logwrapper.Init("../../../logs")
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
-	t.Run("Should be able to get profile details",func(t *testing.T) {
+	t.Run("Should be able to get profile details", func(t *testing.T) {
 		testWallet := testingcommon.GenerateWallet()
 		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 		url := "/api/v1.0/profile"
@@ -85,5 +87,5 @@ func Test_GetProfile(t *testing.T) {
 		assert.Equal(t, "India", user.Country)
 		logrus.Debug(user)
 	})
-	
+
 }

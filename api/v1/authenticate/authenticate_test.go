@@ -13,6 +13,7 @@ import (
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/flowid"
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	testingcommmon "github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 
@@ -26,6 +27,7 @@ import (
 func Test_PostAuthenticate(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	t.Cleanup(testingcommmon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 

@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,7 @@ import (
 func Test_UploadToIpfs(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 
 	t.Run("Should be able to upload file to ipfs", func(t *testing.T) {
