@@ -6,7 +6,7 @@ import (
 )
 
 type Org struct {
-	Name               string         `gorm:"primary_key"`
+	Name               string         `gorm:"primary_key" json:"name"`
 	HomeTitle          string         `json:"homeTitle"`
 	HomeDescription    string         `json:"homeDescription"`
 	GraphUrl           string         `json:"graphurl"`

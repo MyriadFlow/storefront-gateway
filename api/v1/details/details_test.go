@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
-	"github.com/TheLazarusNetwork/marketplace-engine/models/Org"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -18,9 +19,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type apiResponse struct {
+	Name               string   `json:"name"`
+	HomeTitle          string   `json:"homeTitle"`
+	HomeDescription    string   `json:"homeDescription"`
+	GraphUrl           string   `json:"graphurl"`
+	CreatifyAddress    string   `json:"creatifyAddress"`
+	MarketPlaceAddress string   `json:"marketPlaceAddress"`
+	Footer             string   `json:"footer"`
+	TopHighlights      []string `json:"topHighlights"`
+	Trendings          []string `json:"trendings"`
+	TopBids            []string `json:"topBids"`
+}
+
 func Test_GetDetails(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	t.Run("Should be able to get org details", func(t *testing.T) {
@@ -31,7 +46,7 @@ func Test_GetDetails(t *testing.T) {
 		var response types.ApiResponse
 		body := rr.Body
 		json.NewDecoder(body).Decode(&response)
-		var org Org.Org
+		var org apiResponse
 		testingcommon.ExtractPayload(&response, &org)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 		assert.Equal(t, envutil.MustGetEnv("ORG_NAME"), org.Name)
@@ -42,11 +57,11 @@ func Test_GetDetails(t *testing.T) {
 		assert.Equal(t, envutil.MustGetEnv("MARKETPLACE_ADDRESS"), org.MarketPlaceAddress)
 		assert.Equal(t, envutil.MustGetEnv("FOOTER"), org.Footer)
 
-		//TODO
-		// assert.Equal(t, envutil.MustGetEnv("TOP_HIGHLIGHTS"), )
-		// pq.Array(org.TopHighlights)
-		// assert.Equal(t, envutil.MustGetEnv("TRENDINGS"), org.Trendings)
-		// assert.Equal(t, envutil.MustGetEnv("TOP_BIDS"), strings.Join(org.TopBids))
+		assert.Equal(t,
+			envutil.MustGetEnv("TOP_HIGHLIGHTS"), strings.Join(org.TopHighlights, ","),
+		)
+		assert.Equal(t, envutil.MustGetEnv("TRENDINGS"), strings.Join(org.Trendings, ","))
+		assert.Equal(t, envutil.MustGetEnv("TOP_BIDS"), strings.Join(org.TopBids, ","))
 
 		logrus.Debug(org)
 	})
