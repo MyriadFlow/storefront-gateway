@@ -17,6 +17,7 @@ import (
 	roleid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/roleId"
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/auth"
 	smartcontractcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
@@ -35,6 +36,7 @@ func Test_PostClaimRole(t *testing.T) {
 	defer time.Sleep(4 * time.Second)
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
