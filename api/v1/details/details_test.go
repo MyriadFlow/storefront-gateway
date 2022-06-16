@@ -41,6 +41,9 @@ func Test_PostDetails(t *testing.T) {
 			t.Fatal(err)
 		}
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+		if err != nil {
+			t.Fatal(err)
+		}
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
 		postDetails(c)
