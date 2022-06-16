@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 
@@ -18,6 +19,7 @@ import (
 func Test_GetFlowId(t *testing.T) {
 	config.Init("../../../.env")
 	logwrapper.Init("../../../logs")
+	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	testWalletAddress := testingcommon.GenerateWallet().WalletAddress

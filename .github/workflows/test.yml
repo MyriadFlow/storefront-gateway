@@ -30,7 +30,7 @@ jobs:
       HOME_TITLE: Collect And Trade The New Fresh Thing
       HOME_DESCRIPTION: A NFT marketplace to explore the digital gold mine, that supports the creators. A place where you can Make Collect and Sell digital arts.
       GRAPH_URL: https://query.graph.lazarus.network/subgraphs/name/MyriadFlow
-      MARKETPLACE_CONTRACT_ADDRESS: 0x899dEf33857C491Ce61346f6e95b3a5Ee4acd24a
+      MARKETPLACE_CONTRACT_ADDRESS: "0x899dEf33857C491Ce61346f6e95b3a5Ee4acd24a"
       TOP_HIGHLIGHTS: 54,34,65
       TRENDINGS: 54,34,34
       TOP_BIDS: 25,65,34

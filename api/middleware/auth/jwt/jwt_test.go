@@ -9,6 +9,7 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/models/claims"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/auth"
@@ -24,6 +25,7 @@ import (
 func Test_JWT(t *testing.T) {
 	config.Init("../../../../.env")
 	logwrapper.Init("../../../../logs")
+	dbinit.Init()
 	db := dbconfig.GetDb()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
