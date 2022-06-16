@@ -68,7 +68,7 @@ func Test_GetDetails(t *testing.T) {
 		var org Org.Org
 		testingcommon.ExtractPayload(&response, &org)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
-		assert.Equal(t, envutil.MustGetEnv("ORG_NAME"), org.Name)
+		assert.Equal(t, "Max", org.Name)
 		assert.Equal(t, envutil.MustGetEnv("HOME_TITLE"), org.HomeTitle)
 		assert.Equal(t, envutil.MustGetEnv("HOME_DESCRIPTION"), org.HomeDescription)
 		assert.Equal(t, envutil.MustGetEnv("GRAPH_URL"), org.GraphUrl)
@@ -77,10 +77,10 @@ func Test_GetDetails(t *testing.T) {
 		assert.Equal(t, envutil.MustGetEnv("FOOTER"), org.Footer)
 
 		assert.Equal(t,
-			envutil.MustGetEnv("TOP_HIGHLIGHTS"), strings.Join(org.TopHighlights, ","),
+			"43", strings.Join(org.TopHighlights, ","),
 		)
-		assert.Equal(t, envutil.MustGetEnv("TRENDINGS"), strings.Join(org.Trendings, ","))
-		assert.Equal(t, envutil.MustGetEnv("TOP_BIDS"), strings.Join(org.TopBids, ","))
+		assert.Equal(t, "47", strings.Join(org.Trendings, ","))
+		assert.Equal(t, "42", strings.Join(org.TopBids, ","))
 
 		logrus.Debug(org)
 	})

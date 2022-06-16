@@ -23,14 +23,20 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func postDetails(c *gin.Context) {
 	var org Org.Org
-	c.BindJSON(&org)
-	err := Org.UpdateOrg(org)
+	err := c.BindJSON(&org)
+	if err != nil {
+		logwrapper.Errorf("failed to parse body, err: %s", err)
+		return
+	}
+	err = Org.UpdateOrg(org)
 
 	if err != nil {
 		logwrapper.Errorf("failed to update org, err: %s", err)
 		httphelper.InternalServerError(c)
 		return
 	}
+
+	httphelper.SuccessResponse(c, "successfully updated org", nil)
 }
 
 func getDetails(c *gin.Context) {

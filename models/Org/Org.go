@@ -9,7 +9,7 @@ import (
 )
 
 type Org struct {
-	Name               string         `gorm:"primary_key" json:"name" binding:"required"`
+	Name               string         `gorm:"primary_key" json:"name"`
 	HomeTitle          string         `json:"homeTitle,omitempty"`
 	HomeDescription    string         `json:"homeDescription,omitempty"`
 	GraphUrl           string         `json:"graphurl,omitempty"`
