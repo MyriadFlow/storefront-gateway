@@ -72,8 +72,8 @@ func Test_GetDetails(t *testing.T) {
 		assert.Equal(t, envutil.MustGetEnv("HOME_TITLE"), org.HomeTitle)
 		assert.Equal(t, envutil.MustGetEnv("HOME_DESCRIPTION"), org.HomeDescription)
 		assert.Equal(t, envutil.MustGetEnv("GRAPH_URL"), org.GraphUrl)
-		assert.Equal(t, envutil.MustGetEnv("CREATIFY_ADDRESS"), org.CreatifyAddress)
-		assert.Equal(t, envutil.MustGetEnv("MARKETPLACE_ADDRESS"), org.MarketPlaceAddress)
+		assert.Equal(t, envutil.MustGetEnv("CREATIFY_CONTRACT_ADDRESS"), org.CreatifyAddress)
+		assert.Equal(t, envutil.MustGetEnv("MARKETPLACE_CONTRACT_ADDRESS"), org.MarketPlaceAddress)
 		assert.Equal(t, envutil.MustGetEnv("FOOTER"), org.Footer)
 
 		assert.Equal(t,
