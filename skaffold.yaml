@@ -4,13 +4,13 @@ metadata:
   name: me--
 build:
   artifacts:
-    - image: 560914023379.dkr.ecr.us-east-2.amazonaws.com/marketplace-engine
+    - image: public.ecr.aws/s8n8b4h8/myriad-flow-gateway
       docker:
         dockerfile: Dockerfile
 deploy:
   kubectl:
     defaultNamespace: myriad-flow
     manifests:
-      - k8s/engine-deploy.yml
-      - k8s/engine-ingress.yml
-      - k8s/engine-service.yml
+      - k8s/gateway-deploy.yml
+      - k8s/gateway-ingress.yml
+      - k8s/gateway-service.yml
