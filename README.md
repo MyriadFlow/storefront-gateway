@@ -147,3 +147,9 @@ Note - Some unset data is emitted.
 | Parameter | Type                  |
 | :-------- | :-------------------- |
 | `file`    | **Required**. `Files` |
+
+## Custom status codes
+
+| Code   | Meaning         |
+| :----- | :-------------- |
+| `4011` | `Token expired` |

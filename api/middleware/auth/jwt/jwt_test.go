@@ -1,13 +1,16 @@
 package jwt
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
 
+	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 	"github.com/TheLazarusNetwork/marketplace-engine/config"
+	customstatuscodes "github.com/TheLazarusNetwork/marketplace-engine/config/constants/http/custom_status_codes"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
@@ -46,21 +49,21 @@ func Test_JWT(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		statusCode := callApi(t, token)
-		assert.Equal(t, http.StatusOK, statusCode)
+		rr := callApi(t, token)
+		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
 
-	t.Run("Should return 403 with incorret JWT", func(t *testing.T) {
+	t.Run("Should return 401 with incorret JWT", func(t *testing.T) {
 		newClaims := claims.New(testWalletAddress)
 		token, err := auth.GenerateToken(newClaims, "this private key is valid key")
 		if err != nil {
 			t.Fatal(err)
 		}
-		statusCode := callApi(t, token)
-		assert.Equal(t, http.StatusForbidden, statusCode)
+		rr := callApi(t, token)
+		assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
 	})
 
-	t.Run("Should return 403 with expired JWT", func(t *testing.T) {
+	t.Run("Should return 401 and 4011 with expired JWT", func(t *testing.T) {
 		expiration := time.Now().Add(time.Second * 2)
 		signedBy := envutil.MustGetEnv("SIGNED_BY")
 		newClaims := claims.CustomClaims{
@@ -76,13 +79,21 @@ func Test_JWT(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		statusCode := callApi(t, token)
-		assert.Equal(t, http.StatusForbidden, statusCode)
+		rr := callApi(t, token)
+		assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
+		var response types.ApiResponse
+		body := rr.Body
+
+		err = json.NewDecoder(body).Decode(&response)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, customstatuscodes.TokenExpired, response.StatusCode)
 	})
 
 }
 
-func callApi(t *testing.T, token string) int {
+func callApi(t *testing.T, token string) *httptest.ResponseRecorder {
 	rr := httptest.NewRecorder()
 	ginTestApp := gin.New()
 
@@ -95,7 +106,7 @@ func callApi(t *testing.T, token string) int {
 	ginTestApp.Use(JWT)
 	ginTestApp.Use(successHander)
 	ginTestApp.ServeHTTP(rr, rq)
-	return rr.Result().StatusCode
+	return rr
 }
 
 func successHander(c *gin.Context) {

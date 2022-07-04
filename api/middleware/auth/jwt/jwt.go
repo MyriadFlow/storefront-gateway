@@ -8,6 +8,7 @@ import (
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 
+	customstatuscodes "github.com/TheLazarusNetwork/marketplace-engine/config/constants/http/custom_status_codes"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
@@ -47,8 +48,14 @@ func JWT(c *gin.Context) {
 	})
 
 	if err != nil {
+		if err.Error() == "Token is expired" {
+			logValidationFailed(headers.Authorization, err)
+			httphelper.CErrResponse(c, http.StatusUnauthorized, customstatuscodes.TokenExpired, "token expired")
+			c.Abort()
+			return
+		}
 		logValidationFailed(headers.Authorization, err)
-		c.AbortWithStatus(http.StatusForbidden)
+		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
@@ -59,7 +66,7 @@ func JWT(c *gin.Context) {
 		if err != nil {
 			logValidationFailed(headers.Authorization, err)
 			if err.Error() == gorm.ErrRecordNotFound.Error() {
-				c.AbortWithStatus(http.StatusForbidden)
+				c.AbortWithStatus(http.StatusUnauthorized)
 			} else {
 				logwrapper.Log.Error(err)
 				c.AbortWithStatus(http.StatusInternalServerError)
@@ -70,7 +77,7 @@ func JWT(c *gin.Context) {
 		}
 	} else {
 		logValidationFailed(headers.Authorization, err)
-		c.AbortWithStatus(http.StatusForbidden)
+		c.AbortWithStatus(http.StatusUnauthorized)
 	}
 }
 
