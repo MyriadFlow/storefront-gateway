@@ -15,7 +15,7 @@ import (
 
 func Init() error {
 	db := dbconfig.GetDb()
-	err := db.AutoMigrate(&models.FlowId{}, &models.User{}, &models.Role{}, &Org.Org{}).Error
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{})
 	if err != nil {
 		log.Fatal(err)
 		return err

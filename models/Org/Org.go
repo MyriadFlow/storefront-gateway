@@ -28,7 +28,7 @@ func CreateOrg(org Org) error {
 func UpdateOrg(org Org) error {
 	// Make sure org name is same as used while initiating
 	org.Name = envutil.MustGetEnv("ORG_NAME")
-	result := dbconfig.GetDb().Model(&org).Where("name = ?", org.Name).Update(&org)
+	result := dbconfig.GetDb().Model(&org).Where("name = ?", org.Name).Updates(&org)
 	if err := result.Error; err != nil {
 		return err
 	}

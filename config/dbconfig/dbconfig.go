@@ -7,9 +7,8 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 
-	"github.com/jinzhu/gorm"
-
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 var db *gorm.DB
@@ -27,17 +26,23 @@ func GetDb() *gorm.DB {
 		port     = envutil.MustGetEnv("DB_PORT")
 	)
 
-	psqlInfo := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable port=%s",
+	dns := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable port=%s",
 		host, username, password, dbname, port)
+
 	var err error
-	db, err = gorm.Open("postgres", psqlInfo)
+	db, err = gorm.Open(postgres.New(postgres.Config{
+		DSN: dns,
+	}))
 	if err != nil {
 		log.Fatal("failed to connect database", err)
 	}
 
-	if err = db.DB().Ping(); err != nil {
+	sqlDb, err := db.DB()
+	if err != nil {
 		log.Fatal("failed to ping database", err)
 	}
-
+	if err = sqlDb.Ping(); err != nil {
+		log.Fatal("failed to ping database", err)
+	}
 	return db
 }

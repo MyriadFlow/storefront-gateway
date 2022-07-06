@@ -39,7 +39,7 @@ func CheckSign(signature string, flowId string, message string) (string, bool, e
 	var flowIdData models.FlowId
 	res := db.Model(&models.FlowId{}).Where("flow_id = ?", flowId).First(&flowIdData)
 
-	if res.RecordNotFound() {
+	if res.RowsAffected == 0 {
 		return "", false, ErrFlowIdNotFound
 	}
 	if err := res.Error; err != nil {

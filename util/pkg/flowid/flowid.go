@@ -1,9 +1,10 @@
 package flowid
 
 import (
+	"fmt"
+
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/jinzhu/gorm"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -14,7 +15,17 @@ func GenerateFlowId(walletAddress string, flowIdType models.FlowIdType, relatedR
 	flowId := uuid.NewString()
 	var update bool
 	update = true
-	if err := db.Model(&models.User{}).Find(&models.User{}).Error; err == gorm.ErrRecordNotFound {
+
+	findResult := db.Model(&models.User{}).Find(&models.User{}, &models.User{WalletAddress: walletAddress})
+
+	if err := findResult.Error; err != nil {
+		err = fmt.Errorf("while finding user error occured, %s", err)
+		logrus.Error(err)
+		return "", err
+	}
+
+	rowsAffected := findResult.RowsAffected
+	if rowsAffected == 0 {
 		update = false
 	}
 	if update {
@@ -26,7 +37,7 @@ func GenerateFlowId(walletAddress string, flowIdType models.FlowIdType, relatedR
 			logrus.Error(err)
 			return "", err
 		}
-		err := association.Append(&models.FlowId{FlowIdType: flowIdType, WalletAddress: walletAddress, FlowId: flowId, RelatedRoleId: relatedRoleId}).Error
+		err := association.Append(&models.FlowId{FlowIdType: flowIdType, WalletAddress: walletAddress, FlowId: flowId, RelatedRoleId: relatedRoleId})
 		if err != nil {
 			return "", err
 		}

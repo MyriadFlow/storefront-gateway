@@ -15,7 +15,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	jwt "github.com/golang-jwt/jwt/v4"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 var (
