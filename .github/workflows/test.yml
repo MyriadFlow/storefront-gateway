@@ -18,7 +18,7 @@ jobs:
       DB_PORT: 5432
       POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
       MNEMONIC: ${{ secrets.MNEMONIC }}
-      CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
+      CREATIFY_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
       CREATOR_EULA: TODO CREATOR EULA
@@ -38,6 +38,8 @@ jobs:
       JWT_EXPIRATION: 48h
       APP_NAME: myriad-flow-gateway
       GIN_MODE: test
+      ALLOWED_ORIGIN: *
+      APP_PORT: 3000
 
     services:
       postgres:
