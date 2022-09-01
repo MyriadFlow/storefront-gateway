@@ -32,7 +32,6 @@ type config struct {
 	HOME_TITLE                   string   `env:"HOME_TITLE,required"`
 	HOME_DESCRIPTION             string   `env:"HOME_DESCRIPTION,required"`
 	GRAPH_URL                    string   `env:"GRAPH_URL,required"`
-	CREATIFY_ADDRESS             string   `env:"CREATIFY_ADDRESS,required"`
 	MARKETPLACE_CONTRACT_ADDRESS string   `env:"MARKETPLACE_CONTRACT_ADDRESS,required"`
 	TOP_HIGHLIGHTS               []string `env:"TOP_HIGHLIGHTS,required" envSeparator:","`
 	TRENDINGS                    []string `env:"TRENDINGS,required" envSeparator:","`
