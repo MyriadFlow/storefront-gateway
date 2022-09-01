@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -18,6 +19,7 @@ import (
 
 func TestDelegateArtifactCreation(t *testing.T) {
 	time.Sleep(4 * time.Second)
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()

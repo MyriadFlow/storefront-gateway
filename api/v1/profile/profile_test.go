@@ -10,6 +10,7 @@ import (
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -20,6 +21,7 @@ import (
 )
 
 func Test_PatchProfile(t *testing.T) {
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
@@ -54,6 +56,7 @@ func Test_PatchProfile(t *testing.T) {
 }
 
 func Test_GetProfile(t *testing.T) {
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)

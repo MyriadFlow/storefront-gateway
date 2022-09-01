@@ -8,6 +8,7 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/global"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -19,6 +20,7 @@ import (
 
 func Test_GetRoleId(t *testing.T) {
 	gin.SetMode(gin.TestMode)
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()

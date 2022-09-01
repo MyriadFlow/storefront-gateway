@@ -22,25 +22,25 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func uploadtoipfs(c *gin.Context) {
 	ig := ipfsGateway.NewShell(envconfig.EnvVars.IPFS_NODE_URL)
 
-	form, e := c.MultipartForm()
-	if e != nil {
-		httphelper.NewInternalServerError(c, "failed to parse multipart form", "failed to parse multipart form, error: %v", e.Error())
+	form, err := c.MultipartForm()
+	if err != nil {
+		httphelper.NewInternalServerError(c, "failed to parse multipart form", "failed to parse multipart form, error: %v", err.Error())
 		return
 	}
 	files := form.File["file"]
 
 	responsePayload := make([]UploadToIpfsPayload, 0)
 	for _, file := range files {
-		fO, e := file.Open()
+		fO, err := file.Open()
 
-		if e != nil {
-			httphelper.NewInternalServerError(c, "failed to load file", "failed to open file, error: %v", e.Error())
+		if err != nil {
+			httphelper.NewInternalServerError(c, "failed to load file", "failed to open file, error: %v", err.Error())
 			return
 		}
 		//Uploads file to ipfs and returns metahash
 		hash, err := ig.Add(fO)
 		if err != nil {
-			httphelper.NewInternalServerError(c, "failed to add file in ipfs", "failed to add file to ipfs, error: %v", e.Error())
+			httphelper.NewInternalServerError(c, "failed to add file in ipfs", "failed to add file to ipfs, error: %s", err)
 			return
 		}
 		responsePayload = append(responsePayload, UploadToIpfsPayload{

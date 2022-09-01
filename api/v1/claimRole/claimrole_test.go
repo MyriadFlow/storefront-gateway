@@ -18,6 +18,7 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/auth"
 	smartcontractcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
@@ -34,6 +35,7 @@ import (
 
 func Test_PostClaimRole(t *testing.T) {
 	defer time.Sleep(4 * time.Second)
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()

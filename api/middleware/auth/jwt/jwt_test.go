@@ -26,6 +26,7 @@ import (
 )
 
 func Test_JWT(t *testing.T) {
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	db := dbconfig.GetDb()

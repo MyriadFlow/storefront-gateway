@@ -20,6 +20,7 @@ import (
 )
 
 func Test_Details(t *testing.T) {
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
@@ -43,10 +44,9 @@ func Test_Details(t *testing.T) {
 		assert.Equal(t, envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS, org.CreatifyAddress)
 		assert.Equal(t, envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS, org.MarketPlaceAddress)
 		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
-
-		assert.Equal(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
-		assert.Equal(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
-		assert.Equal(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
+		assert.ElementsMatch(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
+		assert.ElementsMatch(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
+		assert.ElementsMatch(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
 		logrus.Debug(org)
 	})
 

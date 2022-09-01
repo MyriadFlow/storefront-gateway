@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 
@@ -16,6 +17,7 @@ import (
 
 // TODO add test for testing when wallet address exist
 func Test_GetFlowId(t *testing.T) {
+	envconfig.InitEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
