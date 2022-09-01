@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/lib/pq"
 )
 
@@ -27,7 +27,7 @@ func CreateOrg(org Org) error {
 
 func UpdateOrg(org Org) error {
 	// Make sure org name is same as used while initiating
-	org.Name = envutil.MustGetEnv("ORG_NAME")
+	org.Name = envconfig.EnvVars.ORG_NAME
 	result := dbconfig.GetDb().Model(&org).Where("name = ?", org.Name).Updates(&org)
 	if err := result.Error; err != nil {
 		return err

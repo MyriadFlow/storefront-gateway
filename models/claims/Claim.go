@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 
 	jwt "github.com/golang-jwt/jwt/v4"
@@ -28,7 +28,7 @@ func New(walletAddress string) CustomClaims {
 			jwtExpirationInHoursInt = time.Duration(res)
 		}
 	}
-	signedBy := envutil.MustGetEnv("SIGNED_BY")
+	signedBy := envconfig.EnvVars.SIGNED_BY
 	return CustomClaims{
 		walletAddress,
 		signedBy,

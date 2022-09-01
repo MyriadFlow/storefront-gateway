@@ -5,14 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models/Org"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 
@@ -22,8 +20,8 @@ import (
 )
 
 func Test_Details(t *testing.T) {
-	config.Init("../../../.env")
-	logwrapper.Init("../../../logs")
+	envconfig.InitEnvVars()
+	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
@@ -39,17 +37,16 @@ func Test_Details(t *testing.T) {
 		var org Org.Org
 		testingcommon.ExtractPayload(&response, &org)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
-		assert.Equal(t, envutil.MustGetEnv("ORG_NAME"), org.Name)
-		assert.Equal(t, envutil.MustGetEnv("HOME_TITLE"), org.HomeTitle)
-		assert.Equal(t, envutil.MustGetEnv("HOME_DESCRIPTION"), org.HomeDescription)
-		assert.Equal(t, envutil.MustGetEnv("GRAPH_URL"), org.GraphUrl)
-		assert.Equal(t, envutil.MustGetEnv("CREATIFY_CONTRACT_ADDRESS"), org.CreatifyAddress)
-		assert.Equal(t, envutil.MustGetEnv("MARKETPLACE_CONTRACT_ADDRESS"), org.MarketPlaceAddress)
-		assert.Equal(t, envutil.MustGetEnv("FOOTER"), org.Footer)
-
-		assert.Equal(t, envutil.MustGetEnv("TOP_HIGHLIGHTS"), strings.Join(org.TopHighlights, ","))
-		assert.Equal(t, envutil.MustGetEnv("TRENDINGS"), strings.Join(org.Trendings, ","))
-		assert.Equal(t, envutil.MustGetEnv("TOP_BIDS"), strings.Join(org.TopBids, ","))
+		assert.Equal(t, envconfig.EnvVars.ORG_NAME, org.Name)
+		assert.Equal(t, envconfig.EnvVars.HOME_TITLE, org.HomeTitle)
+		assert.Equal(t, envconfig.EnvVars.HOME_DESCRIPTION, org.HomeDescription)
+		assert.Equal(t, envconfig.EnvVars.GRAPH_URL, org.GraphUrl)
+		assert.Equal(t, envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS, org.CreatifyAddress)
+		assert.Equal(t, envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS, org.MarketPlaceAddress)
+		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
+		assert.ElementsMatch(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
+		assert.ElementsMatch(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
+		assert.ElementsMatch(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
 		logrus.Debug(org)
 	})
 
@@ -78,16 +75,16 @@ func Test_Details(t *testing.T) {
 		t.Cleanup(func() {
 			err = Org.UpdateOrg(
 				Org.Org{
-					Name:               envutil.MustGetEnv("ORG_NAME"),
-					HomeTitle:          envutil.MustGetEnv("HOME_TITLE"),
-					HomeDescription:    envutil.MustGetEnv("HOME_DESCRIPTION"),
-					GraphUrl:           envutil.MustGetEnv("GRAPH_URL"),
-					CreatifyAddress:    envutil.MustGetEnv("CREATIFY_CONTRACT_ADDRESS"),
-					MarketPlaceAddress: envutil.MustGetEnv("MARKETPLACE_CONTRACT_ADDRESS"),
-					Footer:             envutil.MustGetEnv("FOOTER"),
-					TopHighlights:      strings.Split(envutil.MustGetEnv("TOP_HIGHLIGHTS"), ","),
-					Trendings:          strings.Split(envutil.MustGetEnv("TRENDINGS"), ","),
-					TopBids:            strings.Split(envutil.MustGetEnv("TOP_BIDS"), ","),
+					Name:               envconfig.EnvVars.ORG_NAME,
+					HomeTitle:          envconfig.EnvVars.HOME_TITLE,
+					HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
+					GraphUrl:           envconfig.EnvVars.GRAPH_URL,
+					CreatifyAddress:    envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS,
+					MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
+					Footer:             envconfig.EnvVars.FOOTER,
+					TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
+					Trendings:          envconfig.EnvVars.TRENDINGS,
+					TopBids:            envconfig.EnvVars.TOP_BIDS,
 				},
 			)
 		})

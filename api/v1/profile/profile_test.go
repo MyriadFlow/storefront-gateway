@@ -8,8 +8,9 @@ import (
 	"testing"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	"github.com/TheLazarusNetwork/marketplace-engine/config"
+
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -20,8 +21,8 @@ import (
 )
 
 func Test_PatchProfile(t *testing.T) {
-	config.Init("../../../.env")
-	logwrapper.Init("../../../logs")
+	envconfig.InitEnvVars()
+	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
@@ -55,8 +56,8 @@ func Test_PatchProfile(t *testing.T) {
 }
 
 func Test_GetProfile(t *testing.T) {
-	config.Init("../../../.env")
-	logwrapper.Init("../../../logs")
+	envconfig.InitEnvVars()
+	logwrapper.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	t.Run("Should be able to get profile details", func(t *testing.T) {

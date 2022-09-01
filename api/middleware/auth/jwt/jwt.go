@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 
 	customstatuscodes "github.com/TheLazarusNetwork/marketplace-engine/config/constants/http/custom_status_codes"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 
@@ -43,7 +43,7 @@ func JWT(c *gin.Context) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 
-		jwtPrivateKet := []byte(envutil.MustGetEnv("JWT_PRIVATE_KEY"))
+		jwtPrivateKet := []byte(envconfig.EnvVars.JWT_PRIVATE_KEY)
 		return jwtPrivateKet, nil
 	})
 

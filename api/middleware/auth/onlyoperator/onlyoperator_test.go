@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/ethwallet"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -14,7 +14,7 @@ import (
 )
 
 func Test_OnlyOperator(t *testing.T) {
-
+	envconfig.InitEnvVars()
 	t.Run("should fail if wallet is not of operator", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rr)
@@ -27,7 +27,7 @@ func Test_OnlyOperator(t *testing.T) {
 	t.Run("should pass if wallet is of operator", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rr)
-		_, pubKy, _, err := ethwallet.HdWallet(envutil.MustGetEnv("MNEMONIC"))
+		_, pubKy, _, err := ethwallet.HdWallet(envconfig.EnvVars.MNEMONIC)
 		if err != nil {
 			t.Fatal(err)
 		}

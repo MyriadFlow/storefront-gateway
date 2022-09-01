@@ -18,7 +18,7 @@ jobs:
       DB_PORT: 5432
       POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
       MNEMONIC: ${{ secrets.MNEMONIC }}
-      CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
+      CREATIFY_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
       CREATOR_EULA: TODO CREATOR EULA
@@ -35,6 +35,11 @@ jobs:
       TRENDINGS: 54,34,34
       TOP_BIDS: 25,65,34
       FOOTER: "MyriadFlow | Copyright © 2022 Lazarus Network Inc. All Rights Reserved."
+      JWT_EXPIRATION: 48h
+      APP_NAME: myriad-flow-gateway
+      GIN_MODE: test
+      ALLOWED_ORIGIN: *
+      APP_PORT: 3000
 
     services:
       postgres:
@@ -57,4 +62,4 @@ jobs:
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: LOAD_CONFIG_FILE=false gotestsum -- -coverprofile=cover.out ./...
+        run: gotestsum -- -coverprofile=cover.out ./...

@@ -5,7 +5,7 @@ import (
 	"crypto/ecdsa"
 	"math/big"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/ethwallet"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -22,11 +22,11 @@ var (
 	err        error
 )
 
-//Return error when it occurs
+// Return error when it occurs
 func GetAuth(client *ethclient.Client) (*bind.TransactOpts, error) {
 
 	if auth == nil {
-		mnemonic := envutil.MustGetEnv("MNEMONIC")
+		mnemonic := envconfig.EnvVars.MNEMONIC
 		privateKey, publicKey, _, err = ethwallet.HdWallet(mnemonic) // Verify: https://iancoleman.io/bip39/
 		if err != nil {
 			logwrapper.Errorf("error while getting private and public keu from mnemonic, error: %v", err.Error())

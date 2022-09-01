@@ -5,8 +5,8 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/ethwallet"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -28,7 +28,7 @@ func SendRawTrasac(abiS string, method string, args ...interface{}) (*types.Tran
 	if err != nil {
 		return nil, err
 	}
-	mnemonic := envutil.MustGetEnv("MNEMONIC")
+	mnemonic := envconfig.EnvVars.MNEMONIC
 	privateKey, publicKey, _, err := ethwallet.HdWallet(mnemonic) // Verify: https://iancoleman.io/bip39/
 	if err != nil {
 		logwrapper.Errorf("failed to get private and public key from mnemonic, error %v", err.Error())
@@ -40,7 +40,7 @@ func SendRawTrasac(abiS string, method string, args ...interface{}) (*types.Tran
 		logwrapper.Warnf("failed to get nonce")
 		return nil, err
 	}
-	envContractAddress := envutil.MustGetEnv("CREATIFY_CONTRACT_ADDRESS")
+	envContractAddress := envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS
 
 	toAddress := common.HexToAddress(envContractAddress)
 
