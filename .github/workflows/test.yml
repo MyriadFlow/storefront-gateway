@@ -35,6 +35,7 @@ jobs:
       TRENDINGS: 54,34,34
       TOP_BIDS: 25,65,34
       FOOTER: "MyriadFlow | Copyright © 2022 Lazarus Network Inc. All Rights Reserved."
+      JWT_EXPIRATION: 48h
 
     services:
       postgres:
