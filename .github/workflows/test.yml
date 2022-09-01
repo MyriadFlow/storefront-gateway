@@ -36,6 +36,8 @@ jobs:
       TOP_BIDS: 25,65,34
       FOOTER: "MyriadFlow | Copyright © 2022 Lazarus Network Inc. All Rights Reserved."
       JWT_EXPIRATION: 48h
+      APP_NAME: myriad-flow-gateway
+      GIN_MODE: test
 
     services:
       postgres:
