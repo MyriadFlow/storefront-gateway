@@ -6,6 +6,7 @@ require (
 	github.com/VictoriaMetrics/fastcache v1.10.0 // indirect
 	github.com/btcsuite/btcd v0.22.1
 	github.com/btcsuite/btcutil v1.0.3-0.20201208143702-a53e38424cce
+	github.com/caarlos0/env/v6 v6.10.0
 	github.com/ethereum/go-ethereum v1.10.18
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.8.0

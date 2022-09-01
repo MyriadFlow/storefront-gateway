@@ -2,13 +2,12 @@ package dbinit
 
 import (
 	"log"
-	"strings"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/models/Org"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
@@ -22,16 +21,16 @@ func Init() error {
 	}
 	err = Org.CreateOrg(
 		Org.Org{
-			Name:               envutil.MustGetEnv("ORG_NAME"),
-			HomeTitle:          envutil.MustGetEnv("HOME_TITLE"),
-			HomeDescription:    envutil.MustGetEnv("HOME_DESCRIPTION"),
-			GraphUrl:           envutil.MustGetEnv("GRAPH_URL"),
-			CreatifyAddress:    envutil.MustGetEnv("CREATIFY_CONTRACT_ADDRESS"),
-			MarketPlaceAddress: envutil.MustGetEnv("MARKETPLACE_CONTRACT_ADDRESS"),
-			Footer:             envutil.MustGetEnv("FOOTER"),
-			TopHighlights:      strings.Split(envutil.MustGetEnv("TOP_HIGHLIGHTS"), ","),
-			Trendings:          strings.Split(envutil.MustGetEnv("TRENDINGS"), ","),
-			TopBids:            strings.Split(envutil.MustGetEnv("TOP_BIDS"), ","),
+			Name:               envconfig.EnvVars.ORG_NAME,
+			HomeTitle:          envconfig.EnvVars.HOME_TITLE,
+			HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
+			GraphUrl:           envconfig.EnvVars.GRAPH_URL,
+			CreatifyAddress:    envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS,
+			MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
+			Footer:             envconfig.EnvVars.FOOTER,
+			TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
+			Trendings:          envconfig.EnvVars.TRENDINGS,
+			TopBids:            envconfig.EnvVars.TOP_BIDS,
 		},
 	)
 
@@ -61,7 +60,7 @@ func Init() error {
 		logwrapper.Fatal(err)
 	}
 
-	creatorEula := envutil.MustGetEnv("CREATOR_EULA")
+	creatorEula := envconfig.EnvVars.CREATOR_EULA
 
 	// TODO: create role only if they does not exist
 	rolesToBeAdded := []models.Role{

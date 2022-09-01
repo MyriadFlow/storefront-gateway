@@ -2,7 +2,7 @@ package uploadtoipfs
 
 import (
 	jwtMiddleWare "github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 
@@ -20,7 +20,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 }
 
 func uploadtoipfs(c *gin.Context) {
-	ig := ipfsGateway.NewShell(envutil.MustGetEnv("IPFS_NODE_URL"))
+	ig := ipfsGateway.NewShell(envconfig.EnvVars.IPFS_NODE_URL)
 
 	form, e := c.MultipartForm()
 	if e != nil {

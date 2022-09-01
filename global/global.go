@@ -1,14 +1,11 @@
 package global
 
 import (
-	"strings"
-
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 )
 
 var AllowedWalletAddresses []string
 
 func InitGlobal() {
-	envAllowedWalletAddress := envutil.MustGetEnv("ALLOWED_WALLET_ADDRESS")
-	AllowedWalletAddresses = strings.Split(envAllowedWalletAddress, ",")
+	AllowedWalletAddresses = envconfig.EnvVars.ALLOWED_WALLET_ADDRESS
 }

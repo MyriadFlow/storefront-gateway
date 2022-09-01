@@ -8,10 +8,10 @@ import (
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/models/claims"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/auth"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 
 	"crypto/ecdsa"
 	"log"
@@ -26,7 +26,7 @@ func PrepareAndGetAuthHeader(t *testing.T, testWalletAddress string) string {
 	gin.SetMode(gin.TestMode)
 	CreateTestUser(t, testWalletAddress)
 	customClaims := claims.New(testWalletAddress)
-	jwtPrivateKey := envutil.MustGetEnv("JWT_PRIVATE_KEY")
+	jwtPrivateKey := envconfig.EnvVars.JWT_PRIVATE_KEY
 	token, err := auth.GenerateToken(customClaims, jwtPrivateKey)
 	if err != nil {
 		t.Fatal(err)

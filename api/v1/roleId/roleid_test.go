@@ -6,7 +6,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/global"
@@ -20,8 +19,7 @@ import (
 
 func Test_GetRoleId(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	config.Init("../../../.env")
-	logwrapper.Init("../../../logs")
+	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())

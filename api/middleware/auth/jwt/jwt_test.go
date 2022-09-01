@@ -9,14 +9,14 @@ import (
 	"time"
 
 	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	"github.com/TheLazarusNetwork/marketplace-engine/config"
+
 	customstatuscodes "github.com/TheLazarusNetwork/marketplace-engine/config/constants/http/custom_status_codes"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
 	"github.com/TheLazarusNetwork/marketplace-engine/models/claims"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/auth"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
 	jwt "github.com/golang-jwt/jwt/v4"
@@ -26,8 +26,7 @@ import (
 )
 
 func Test_JWT(t *testing.T) {
-	config.Init("../../../../.env")
-	logwrapper.Init("../../../../logs")
+	logwrapper.Init()
 	dbinit.Init()
 	db := dbconfig.GetDb()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
@@ -45,7 +44,7 @@ func Test_JWT(t *testing.T) {
 	}()
 	t.Run("Should return 200 with correct JWT", func(t *testing.T) {
 		newClaims := claims.New(testWalletAddress)
-		token, err := auth.GenerateToken(newClaims, envutil.MustGetEnv("JWT_PRIVATE_KEY"))
+		token, err := auth.GenerateToken(newClaims, envconfig.EnvVars.JWT_PRIVATE_KEY)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -65,7 +64,7 @@ func Test_JWT(t *testing.T) {
 
 	t.Run("Should return 401 and 4011 with expired JWT", func(t *testing.T) {
 		expiration := time.Now().Add(time.Second * 2)
-		signedBy := envutil.MustGetEnv("SIGNED_BY")
+		signedBy := envconfig.EnvVars.SIGNED_BY
 		newClaims := claims.CustomClaims{
 			WalletAddress: testWalletAddress,
 			SignedBy:      signedBy,
@@ -74,7 +73,7 @@ func Test_JWT(t *testing.T) {
 			},
 		}
 		time.Sleep(time.Second * 2)
-		token, err := auth.GenerateToken(newClaims, envutil.MustGetEnv("JWT_PRIVATE_KEY"))
+		token, err := auth.GenerateToken(newClaims, envconfig.EnvVars.JWT_PRIVATE_KEY)
 		if err != nil {
 			t.Fatal(err)
 		}

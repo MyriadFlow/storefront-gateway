@@ -3,8 +3,8 @@ package flowid
 import (
 	"net/http"
 
+	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
 	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/envutil"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/flowid"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -40,7 +40,7 @@ func GetFlowId(c *gin.Context) {
 
 		return
 	}
-	userAuthEULA := envutil.MustGetEnv("AUTH_EULA")
+	userAuthEULA := envconfig.EnvVars.AUTH_EULA
 	payload := GetFlowIdPayload{
 		FlowId: flowId,
 		Eula:   userAuthEULA,

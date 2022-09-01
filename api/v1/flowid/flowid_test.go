@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config"
 	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
 	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
@@ -15,10 +14,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//TODO add test for testing when wallet address exist
+// TODO add test for testing when wallet address exist
 func Test_GetFlowId(t *testing.T) {
-	config.Init("../../../.env")
-	logwrapper.Init("../../../logs")
+	logwrapper.Init()
 	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
