@@ -18,6 +18,7 @@ var GinApp *gin.Engine
 
 func Init() {
 	envconfig.InitEnvVars()
+	gin.SetMode(envconfig.EnvVars.GIN_MODE)
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()
