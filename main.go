@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/app"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/app"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	_ "github.com/joho/godotenv/autoload"
 )
 

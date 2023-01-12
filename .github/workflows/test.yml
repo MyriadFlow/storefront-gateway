@@ -18,7 +18,7 @@ jobs:
       DB_PORT: 5432
       POLYGON_RPC: ${{ secrets.POLYGON_RPC }}
       MNEMONIC: ${{ secrets.MNEMONIC }}
-      CREATIFY_CONTRACT_ADDRESS: ${{ secrets.CREATIFY_CONTRACT_ADDRESS }}
+      STOREFRONT_CONTRACT_ADDRESS: ${{ secrets.S_CONTRACT_ADDRESS }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
       IPFS_NODE_URL: ${{ secrets.IPFS_NODE_URL }}
       CREATOR_EULA: TODO CREATOR EULA
@@ -34,7 +34,7 @@ jobs:
       TOP_HIGHLIGHTS: 54,34,65
       TRENDINGS: 54,34,34
       TOP_BIDS: 25,65,34
-      FOOTER: "MyriadFlow | Copyright © 2022 Lazarus Network Inc. All Rights Reserved."
+      FOOTER: "MyriadFlow | Copyright © 2023 Lazarus Network Inc. All Rights Reserved."
       JWT_EXPIRATION: 48h
       APP_NAME: myriad-flow-gateway
       GIN_MODE: test

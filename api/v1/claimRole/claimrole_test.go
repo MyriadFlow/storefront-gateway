@@ -13,18 +13,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	roleid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/roleId"
+	"github.com/MyriadFlow/storefront_gateway/api/types"
+	roleid "github.com/MyriadFlow/storefront_gateway/api/v1/roleId"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/auth"
-	smartcontractcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/global"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract/auth"
+	storefront "github.com/MyriadFlow/storefront_gateway/config/storefront"
+	smartcontractstorefront "github.com/MyriadFlow/storefront_gateway/generated/smartcontract/storefront"
+	"github.com/MyriadFlow/storefront_gateway/global"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -70,16 +70,16 @@ func Test_PostClaimRole(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		instance, err := creatify.GetInstance(client)
+		instance, err := storefront.GetInstance(client)
 		if err != nil {
-			t.Fatalf("failed to get instance for %v , error: %v", "CREATIFY", err.Error())
+			t.Fatalf("failed to get instance for %v , error: %v", "STOREFRONT", err.Error())
 		}
-		creatorRole, err := creatify.GetRole(creatify.CREATOR_ROLE)
+		creatorRole, err := storefront.GetRole(storefront.CREATOR_ROLE)
 		if err != nil {
 			t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
 		}
 		addr := common.HexToAddress(testWallet.WalletAddress)
-		roleGrantedChannel := make(chan *smartcontractcreatify.CreatifyRoleGranted, 10)
+		roleGrantedChannel := make(chan *smartcontractstorefront.StorefrontRoleGranted, 10)
 
 		authBindOpts, err := auth.GetAuth(client)
 
@@ -94,7 +94,7 @@ func Test_PostClaimRole(t *testing.T) {
 		//Check if role trasaction is successfull
 		hasRole, err := instance.HasRole(nil, creatorRole, addr)
 		if err != nil {
-			t.Fatalf("failed to call %v smart contract function HasRole , error: %v", "CREATIFY", err.Error())
+			t.Fatalf("failed to call %v smart contract function HasRole , error: %v", "STOREFRONT", err.Error())
 		}
 		success := false
 		if !hasRole {
@@ -111,7 +111,7 @@ func Test_PostClaimRole(t *testing.T) {
 
 }
 
-func failAfter(t *testing.T, success *bool, duration time.Duration, ch chan *smartcontractcreatify.CreatifyRoleGranted) {
+func failAfter(t *testing.T, success *bool, duration time.Duration, ch chan *smartcontractstorefront.StorefrontRoleGranted) {
 	time.Sleep(duration)
 	if !*success {
 		close(ch)
@@ -119,7 +119,7 @@ func failAfter(t *testing.T, success *bool, duration time.Duration, ch chan *sma
 	}
 }
 func requestRole(t *testing.T, headers string, walletAddres string) roleid.GetRoleIdPayload {
-	creatorRole, err := creatify.GetRole(creatify.CREATOR_ROLE)
+	creatorRole, err := storefront.GetRole(storefront.CREATOR_ROLE)
 	if err != nil {
 		t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
 	}

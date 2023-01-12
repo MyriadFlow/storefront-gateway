@@ -3,8 +3,8 @@ package Org
 import (
 	"errors"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/lib/pq"
 )
 
@@ -13,8 +13,8 @@ type Org struct {
 	HomeTitle          string         `json:"homeTitle,omitempty"`
 	HomeDescription    string         `json:"homeDescription,omitempty"`
 	GraphUrl           string         `json:"graphurl,omitempty"`
-	CreatifyAddress    string         `json:"creatifyAddress,omitempty"`
-	MarketPlaceAddress string         `json:"marketPlaceAddress,omitempty"`
+	StoreFrontAddress  string         `json:"storeFrontAddress,omitempty"`
+	MarketPlaceAddress string         `json:"marketplaceAddress,omitempty"`
 	Footer             string         `json:"footer,omitempty"`
 	TopHighlights      pq.StringArray `gorm:"type:text[]" json:"topHighlights,omitempty"`
 	Trendings          pq.StringArray `gorm:"type:text[]" json:"trendings,omitempty"`

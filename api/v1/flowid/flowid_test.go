@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

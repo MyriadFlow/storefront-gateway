@@ -3,14 +3,14 @@ package claimrole
 import (
 	"net/http"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/rawtrasaction"
-	gcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/cryptosign"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract/rawtransaction"
+	storefront "github.com/MyriadFlow/storefront_gateway/generated/smartcontract/storefront"
+	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/cryptosign"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -66,9 +66,9 @@ func postClaimRole(c *gin.Context) {
 	}
 
 	// client := smartcontract.GetClient()
-	// instance, err := creatify.GetInstance(client)
+	// instance, err := storefront.GetInstance(client)
 	if err != nil {
-		logwrapper.Errorf("failed to get instance for %v , error: %v", "CREATIFY", err.Error())
+		logwrapper.Errorf("failed to get instance for %v , error: %v", "STOREFRONT", err.Error())
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 	}
 	roleIdBytesSlice, err := hexutil.Decode(role.RoleId)
@@ -81,7 +81,7 @@ func postClaimRole(c *gin.Context) {
 	var roleIdBytes [32]byte
 	copy(roleIdBytes[:], roleIdBytesSlice)
 
-	tx, err := rawtrasaction.SendRawTrasac(gcreatify.CreatifyABI, "grantRole", roleIdBytes, walletAddressHex)
+	tx, err := rawtransaction.SendRawTransaction(storefront.StorefrontABI, "grantRole", roleIdBytes, walletAddressHex)
 
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")

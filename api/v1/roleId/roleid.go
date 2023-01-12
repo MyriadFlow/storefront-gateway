@@ -3,13 +3,13 @@ package roleid
 import (
 	"net/http"
 
-	jwtMiddleWare "github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/canaccess"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/flowid"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	jwtMiddleWare "github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/canaccess"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/flowid"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

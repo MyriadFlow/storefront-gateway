@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/models"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/models"
 
-	customstatuscodes "github.com/TheLazarusNetwork/marketplace-engine/config/constants/http/custom_status_codes"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	customstatuscodes "github.com/MyriadFlow/storefront_gateway/config/constants/http/custom_status_codes"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 	jwt "github.com/golang-jwt/jwt/v4"

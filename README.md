@@ -38,7 +38,7 @@ Make sure you have an MNEMONIC which has operator role to its first address, if 
 | `CREATOR_EULA`              | EULA to be signed when requesting Creator Role                                                                                 |
 | `APP_NAME`                  | App name to be logged with logger                                                                                              |
 | `GIN_MODE`                  | Gin mode used to specify type of logging for API requests, use `release` for production and `debug` for testing and deployment |
-| `CREATIFY_CONTRACT_ADDRESS` | Contract address of creatify deployed on blockchain                                                                            |
+| `STOREFRONT_CONTRACT_ADDRESS` | Contract address of storefront deployed on blockchain                                                                            |
 | `POLYGON_RPC`               | RPC url of node which is connected to network where your smart contract is deployed                                            |
 | `MNEMONIC`                  | Mnemonic of wallet which has operator role in smart contract                                                                   |
 | `LOG_TO_FILE`               | Specify wheather to log to file unders logs folder                                                                             |

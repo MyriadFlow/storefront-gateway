@@ -3,12 +3,12 @@ package delegateartifactcreation
 import (
 	"net/http"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract/rawtrasaction"
-	gcreatify "github.com/TheLazarusNetwork/marketplace-engine/generated/smartcontract/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/canaccess"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract/rawtransaction"
+	"github.com/MyriadFlow/storefront_gateway/generated/smartcontract/storefront"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/canaccess"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gin-gonic/gin"
 )
@@ -35,12 +35,12 @@ func deletegateArtifactCreation(c *gin.Context) {
 		return
 	}
 	creatorAddr := common.HexToAddress(request.CreatorAddress)
-	abiS := gcreatify.CreatifyABI
+	abiS := storefront.StorefrontABI
 
-	tx, err := rawtrasaction.SendRawTrasac(abiS, "delegateArtifactCreation", creatorAddr, request.MetaDataHash)
+	tx, err := rawtransaction.SendRawTransaction(abiS, "delegateArtifactCreation", creatorAddr, request.MetaDataHash)
 
 	if err != nil {
-		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateArtifactCreation", "Creatify", err.Error())
+		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateArtifactCreation", "StoreFront", err.Error())
 		return
 	}
 	transactionHash := tx.Hash().String()

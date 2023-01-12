@@ -3,10 +3,10 @@ package profile
 import (
 	"net/http"
 
-	jwtMiddleWare "github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
+	jwtMiddleWare "github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

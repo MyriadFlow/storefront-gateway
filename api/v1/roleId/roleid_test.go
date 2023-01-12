@@ -6,12 +6,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/global"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/storefront"
+	"github.com/MyriadFlow/storefront_gateway/global"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +27,7 @@ func Test_GetRoleId(t *testing.T) {
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
 	headers := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
-	creatorRole, err := creatify.GetRole(creatify.CREATOR_ROLE)
+	creatorRole, err := storefront.GetRole(storefront.CREATOR_ROLE)
 	if err != nil {
 		t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
 	}

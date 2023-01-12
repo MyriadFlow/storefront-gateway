@@ -1,10 +1,10 @@
-package creatify
+package storefront
 
 import (
 	"errors"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 )
 
 type tRole int
@@ -41,22 +41,22 @@ func InitRolesId() {
 	}
 	instance, err := GetInstance(client)
 	if err != nil {
-		logwrapper.Fatalf("failed to get instance for %v , error: %v", "CREATIFY", err.Error())
+		logwrapper.Fatalf("failed to get instance for %v , error: %v", "STOREFRONT", err.Error())
 	}
-	creatorRoleId, err := instance.CREATIFYCREATORROLE(nil)
+	creatorRoleId, err := instance.STOREFRONTCREATORROLE(nil)
 	if err != nil {
-		logwrapper.Fatalf("Failed to get %v, error: %v", "CREATIFYCREATORROLE", err.Error())
+		logwrapper.Fatalf("Failed to get %v, error: %v", "STOREFRONTCREATORROLE", err.Error())
 	}
 	roles[CREATOR_ROLE] = creatorRoleId
-	adminRoleId, err := instance.CREATIFYADMINROLE(nil)
+	adminRoleId, err := instance.STOREFRONTADMINROLE(nil)
 	if err != nil {
-		logwrapper.Fatalf("Failed to get %v, error: %v", "CREATIFYADMINROLE", err.Error())
+		logwrapper.Fatalf("Failed to get %v, error: %v", "STOREFRONTADMINROLE", err.Error())
 	}
 	roles[ADMIN_ROLE] = adminRoleId
 
-	operatorRoleId, err := instance.CREATIFYOPERATORROLE(nil)
+	operatorRoleId, err := instance.STOREFRONTOPERATORROLE(nil)
 	if err != nil {
-		logwrapper.Fatalf("Failed to get %v, error: %v", "CREATIFYOPERATORROLE", err.Error())
+		logwrapper.Fatalf("Failed to get %v, error: %v", "STOREFRONTOPERATORROLE", err.Error())
 	}
 	roles[OPERATOR_ROLE] = operatorRoleId
 }

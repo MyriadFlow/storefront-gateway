@@ -1,8 +1,8 @@
 package smartcontract
 
 import (
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 

@@ -3,8 +3,8 @@ package testingcommon
 import (
 	"fmt"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"gorm.io/gorm"
 )
 

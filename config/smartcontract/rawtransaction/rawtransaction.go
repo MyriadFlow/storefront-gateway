@@ -1,14 +1,14 @@
-package rawtrasaction
+package rawtransaction
 
 import (
 	"context"
 	"math/big"
 	"strings"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/smartcontract"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/ethwallet"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/smartcontract"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/ethwallet"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/misc"
@@ -17,7 +17,7 @@ import (
 	"github.com/ethereum/go-ethereum/params"
 )
 
-func SendRawTrasac(abiS string, method string, args ...interface{}) (*types.Transaction, error) {
+func SendRawTransaction(abiS string, method string, args ...interface{}) (*types.Transaction, error) {
 
 	abiP, err := abi.JSON(strings.NewReader(abiS))
 	if err != nil {
@@ -40,7 +40,7 @@ func SendRawTrasac(abiS string, method string, args ...interface{}) (*types.Tran
 		logwrapper.Warnf("failed to get nonce")
 		return nil, err
 	}
-	envContractAddress := envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS
+	envContractAddress := envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS
 
 	toAddress := common.HexToAddress(envContractAddress)
 

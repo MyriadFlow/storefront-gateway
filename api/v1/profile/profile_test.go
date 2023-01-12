@@ -7,13 +7,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
+	"github.com/MyriadFlow/storefront_gateway/api/types"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/models"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

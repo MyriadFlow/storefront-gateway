@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	jwt "github.com/golang-jwt/jwt/v4"
 )

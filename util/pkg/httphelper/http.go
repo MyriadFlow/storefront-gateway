@@ -3,13 +3,13 @@ package httphelper
 import (
 	"net/http"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/api/types"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )
 
-//TODO: add method for internet error with common msg
+// TODO: add method for internet error with common msg
 func ErrResponse(c *gin.Context, statusCode int, errMessage string) {
 	response := types.ApiResponse{
 		StatusCode: statusCode,

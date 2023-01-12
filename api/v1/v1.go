@@ -1,15 +1,15 @@
 package apiv1
 
 import (
-	authenticate "github.com/TheLazarusNetwork/marketplace-engine/api/v1/authenticate"
-	claimrole "github.com/TheLazarusNetwork/marketplace-engine/api/v1/claimRole"
-	delegateartifactcreation "github.com/TheLazarusNetwork/marketplace-engine/api/v1/delegateArtifactCreation"
-	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/details"
-	flowid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/flowid"
-	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/healthcheck"
-	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/profile"
-	roleid "github.com/TheLazarusNetwork/marketplace-engine/api/v1/roleId"
-	"github.com/TheLazarusNetwork/marketplace-engine/api/v1/uploadtoipfs"
+	authenticate "github.com/MyriadFlow/storefront_gateway/api/v1/authenticate"
+	claimrole "github.com/MyriadFlow/storefront_gateway/api/v1/claimRole"
+	delegateartifactcreation "github.com/MyriadFlow/storefront_gateway/api/v1/delegateArtifactCreation"
+	"github.com/MyriadFlow/storefront_gateway/api/v1/details"
+	flowid "github.com/MyriadFlow/storefront_gateway/api/v1/flowid"
+	"github.com/MyriadFlow/storefront_gateway/api/v1/healthcheck"
+	"github.com/MyriadFlow/storefront_gateway/api/v1/profile"
+	roleid "github.com/MyriadFlow/storefront_gateway/api/v1/roleId"
+	"github.com/MyriadFlow/storefront_gateway/api/v1/uploadtoipfs"
 
 	"github.com/gin-gonic/gin"
 )

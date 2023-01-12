@@ -1,11 +1,11 @@
 package details
 
 import (
-	"github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/jwt"
-	"github.com/TheLazarusNetwork/marketplace-engine/api/middleware/auth/onlyoperator"
-	"github.com/TheLazarusNetwork/marketplace-engine/models/Org"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/httphelper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/onlyoperator"
+	"github.com/MyriadFlow/storefront_gateway/models/Org"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )

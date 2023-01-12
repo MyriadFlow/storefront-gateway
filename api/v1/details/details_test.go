@@ -7,12 +7,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api/types"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
-	"github.com/TheLazarusNetwork/marketplace-engine/models/Org"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/testingcommon"
+	"github.com/MyriadFlow/storefront_gateway/api/types"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/models/Org"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -41,8 +41,8 @@ func Test_Details(t *testing.T) {
 		assert.Equal(t, envconfig.EnvVars.HOME_TITLE, org.HomeTitle)
 		assert.Equal(t, envconfig.EnvVars.HOME_DESCRIPTION, org.HomeDescription)
 		assert.Equal(t, envconfig.EnvVars.GRAPH_URL, org.GraphUrl)
-		assert.Equal(t, envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS, org.CreatifyAddress)
 		assert.Equal(t, envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS, org.MarketPlaceAddress)
+		assert.Equal(t, envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS, org.StoreFrontAddress)
 		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
 		assert.ElementsMatch(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
 		assert.ElementsMatch(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
@@ -79,8 +79,8 @@ func Test_Details(t *testing.T) {
 					HomeTitle:          envconfig.EnvVars.HOME_TITLE,
 					HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
 					GraphUrl:           envconfig.EnvVars.GRAPH_URL,
-					CreatifyAddress:    envconfig.EnvVars.CREATIFY_CONTRACT_ADDRESS,
 					MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
+					StoreFrontAddress:  envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS,
 					Footer:             envconfig.EnvVars.FOOTER,
 					TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 					Trendings:          envconfig.EnvVars.TRENDINGS,

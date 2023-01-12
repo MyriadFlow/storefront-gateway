@@ -3,7 +3,7 @@ package canaccess
 import (
 	"strings"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/global"
+	"github.com/MyriadFlow/storefront_gateway/global"
 )
 
 func CanAccess(walletAddress string) bool {

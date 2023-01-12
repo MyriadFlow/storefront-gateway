@@ -3,14 +3,14 @@ package app
 import (
 	"time"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/api"
-	"github.com/TheLazarusNetwork/marketplace-engine/global"
-	"github.com/TheLazarusNetwork/marketplace-engine/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront_gateway/api"
+	"github.com/MyriadFlow/storefront_gateway/global"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/gin-contrib/cors"
 
-	"github.com/TheLazarusNetwork/marketplace-engine/config/creatify"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/dbconfig/dbinit"
-	"github.com/TheLazarusNetwork/marketplace-engine/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront_gateway/config/storefront"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,7 +22,7 @@ func Init() {
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()
-	creatify.InitRolesId()
+	storefront.InitRolesId()
 	GinApp = gin.Default()
 
 	corsM := cors.New(cors.Config{AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
