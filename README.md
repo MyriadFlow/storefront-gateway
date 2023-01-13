@@ -1,6 +1,6 @@
-# Marketplace Engine
+# StoreFront Gateway
 
-REST APIs for Web3 Auth and Smart Contract Functionalities
+REST APIs for Enabling Web3 Authentication and StoreFront Functionalities
 
 [![.github/workflows/test.yml](https://github.com/MyriadFlow/gateway/actions/workflows/test.yml/badge.svg)](https://github.com/MyriadFlow/gateway/actions/workflows/test.yml)
 [![Lint](https://github.com/MyriadFlow/gateway/actions/workflows/lint.yml/badge.svg)](https://github.com/MyriadFlow/gateway/actions/workflows/lint.yml)
@@ -17,16 +17,16 @@ abigen --pkg storefront --abi StoreFront.abi --out ./generated/smartcontract/sto
 ## Postgres for development
 
 ```bash
-docker run --name="marketplace" --rm -d -p 5432:5432 \
+docker run --name="storefront-database" --rm -d -p 5432:5432 \
 -e POSTGRES_PASSWORD=lazarus \
 -e POSTGRES_USER=lazarus \
 -e POSTGRES_DB=lazarus \
 postgres -c log_statement=all
 ```
 
-## Wallet as an operator
+## Operator Wallet
 
-Make sure you have an MNEMONIC which has operator role to its first address, if not then grant operator role to it and then proceed.
+Make sure you have a Wallet MNEMONIC which has operator role to its first address, if not then grant operator role to it and then proceed.
 
 ## Steps to get started
 
@@ -37,20 +37,20 @@ Make sure you have an MNEMONIC which has operator role to its first address, if 
 
 ## Env Reference
 
-| Key                         | Description                                                                                                                    |
-| :-------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| `JWT_PRIVATE_KEY`           | Private key used for signing the issuing JWT tokens                                                                            |
-| `JWT_EXPIRATION_IN_HOURS`   | Hours after which issued JWT token should be invalid                                                                           |
-| `AUTH_EULA`                 | EULA to be signed when requesting JWT token                                                                                    |
-| `CREATOR_EULA`              | EULA to be signed when requesting Creator Role                                                                                 |
-| `APP_NAME`                  | App name to be logged with logger                                                                                              |
-| `GIN_MODE`                  | Gin mode used to specify type of logging for API requests, use `release` for production and `debug` for testing and deployment |
-| `STOREFRONT_CONTRACT_ADDRESS` | Contract address of storefront deployed on blockchain                                                                            |
-| `POLYGON_RPC`               | RPC url of node which is connected to network where your smart contract is deployed                                            |
-| `MNEMONIC`                  | Mnemonic of wallet which has operator role in smart contract                                                                   |
-| `LOG_TO_FILE`               | Specify wheather to log to file unders logs folder                                                                             |
-| `IPFS_NODE_URL`             | Node url of ipfs network                                                                                                       |
-| `ALLOWED_ORIGIN`            | Origin which are allowed to access this APIs                                                                                   |
+| Key                           | Description                                                                                                                    |
+| :--------------------------   | :----------------------------------------------------------------------------------------------------------------------------- |
+| `PASETO_PRIVATE_KEY`          | Private key used for signing the issuing PASETO                                                                                |
+| `PASETO_EXPIRATION_IN_HOURS`  | Hours after which issued PASETO should be invalid                                                                              |
+| `AUTH_EULA`                   | EULA to be signed when requesting JWT token                                                                                    |
+| `CREATOR_EULA`                | EULA to be signed when requesting Creator Role                                                                                 |
+| `APP_NAME`                    | App name to be logged with logger                                                                                              |
+| `GIN_MODE`                    | Gin mode used to specify type of logging for API requests, use `release` for production and `debug` for testing                |
+| `STOREFRONT_CONTRACT_ADDRESS` | Contract address of storefront deployed on blockchain                                                                          |
+| `POLYGON_RPC`                 | RPC URL of node which is connected to network where your smart contract is deployed                                            |
+| `MNEMONIC`                    | Mnemonic of wallet which has operator role in smart contract                                                                   |
+| `LOG_TO_FILE`                 | Specify wheather to log to file unders logs folder                                                                             |
+| `IPFS_NODE_URL`               | Node url of ipfs network                                                                                                       |
+| `ALLOWED_ORIGIN`              | Origin which are allowed to access this APIs                                                                                   |
 
 Note - Database env variables are self explainatory
 
@@ -78,7 +78,7 @@ For protected APIs use bearer token which can be obtained after calling authenti
 
 Use `Authorization` key in header in order to send token,
 also since it is bearer token append `Bearer ` as suffix
-for example, `Bearer mytokenabcd`
+for example, `Bearer v4.public.eyqwrere`
 
 ### APIs
 
