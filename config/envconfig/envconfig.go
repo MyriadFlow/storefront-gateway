@@ -8,8 +8,8 @@ import (
 )
 
 type config struct {
-	JWT_PRIVATE_KEY             string        `env:"JWT_PRIVATE_KEY,required"`
-	JWT_EXPIRATION              time.Duration `env:"JWT_EXPIRATION,required"`
+	PASETO_PRIVATE_KEY          string        `env:"PASETO_PRIVATE_KEY,required" `
+	PASETO_EXPIRATION_IN_HOURS  time.Duration `env:"PASETO_EXPIRATION_IN_HOURS,required" `
 	APP_PORT                    int           `env:"APP_PORT,required"`
 	AUTH_EULA                   string        `env:"AUTH_EULA,required"`
 	CREATOR_EULA                string        `env:"CREATOR_EULA,required"`
@@ -20,7 +20,7 @@ type config struct {
 	DB_PASSWORD                 string        `env:"DB_PASSWORD,required"`
 	DB_NAME                     string        `env:"DB_NAME,required"`
 	DB_PORT                     int           `env:"DB_PORT,required"`
-	STOREFRONT_CONTRACT_ADDRESS string        `env:"STOREFRONT_CONTRACT_ADDRESS,required"`
+	STOREFRONT_CONTRACT_ADDRESS string        `env:"STOREFRONT_CONTRACT_ADDRESS"`
 	POLYGON_RPC                 string        `env:"POLYGON_RPC,required"`
 	MNEMONIC                    string        `env:"MNEMONIC,required"`
 	IPFS_NODE_URL               string        `env:"IPFS_NODE_URL,required"`

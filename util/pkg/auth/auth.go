@@ -1,15 +1,19 @@
 package auth
 
 import (
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/vk-rv/pvx"
 )
 
-func GenerateToken(claims jwt.Claims, privateKey string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
-	tokenString, err := token.SignedString([]byte(privateKey))
+func GenerateTokenPaseto(claims pvx.Claims, privateKey string) (string, error) {
+
+	ask := pvx.NewAsymmetricSecretKey([]byte(privateKey), pvx.Version4)
+
+	pv4 := pvx.NewPV4Public()
+
+	token, err := pv4.Sign(ask, claims)
 
 	if err != nil {
 		return "", err
 	}
-	return tokenString, nil
+	return token, nil
 }

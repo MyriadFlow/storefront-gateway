@@ -1,7 +1,7 @@
 package uploadtoipfs
 
 import (
-	jwtMiddleWare "github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
@@ -14,7 +14,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/uploadtoipfs")
 	{
-		g.Use(jwtMiddleWare.JWT)
+		g.Use(paseto.PASETO)
 		g.POST("", uploadtoipfs)
 	}
 }

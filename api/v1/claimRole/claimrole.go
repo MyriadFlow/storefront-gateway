@@ -3,7 +3,7 @@ package claimrole
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/smartcontract/rawtransaction"
 	storefront "github.com/MyriadFlow/storefront_gateway/generated/smartcontract/storefront"
@@ -23,7 +23,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/claimrole")
 	{
-		g.Use(jwt.JWT)
+		g.Use(paseto.PASETO)
 		g.POST("", postClaimRole)
 	}
 }

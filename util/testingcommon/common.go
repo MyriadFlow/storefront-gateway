@@ -26,8 +26,8 @@ func PrepareAndGetAuthHeader(t *testing.T, testWalletAddress string) string {
 	gin.SetMode(gin.TestMode)
 	CreateTestUser(t, testWalletAddress)
 	customClaims := claims.New(testWalletAddress)
-	jwtPrivateKey := envconfig.EnvVars.JWT_PRIVATE_KEY
-	token, err := auth.GenerateToken(customClaims, jwtPrivateKey)
+	pasetoPrivateKey := envconfig.EnvVars.PASETO_PRIVATE_KEY
+	token, err := auth.GenerateTokenPaseto(customClaims, pasetoPrivateKey)
 	if err != nil {
 		t.Fatal(err)
 	}
