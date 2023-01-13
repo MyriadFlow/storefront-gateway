@@ -30,7 +30,7 @@ var (
 
 // MarketplaceMetaData contains all meta data concerning the Marketplace contract.
 var MarketplaceMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"uint96\",\"name\":\"_platformFee\",\"type\":\"uint96\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"metaDataURI\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"seller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"forSale\",\"type\":\"bool\"}],\"name\":\"MarketItemCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"}],\"name\":\"MarketItemRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"buyer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"MarketItemSold\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"MARKETPLACE_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint96\",\"name\":\"newPlatformFee\",\"type\":\"uint96\"},{\"internalType\":\"address\",\"name\":\"newPayoutAddress\",\"type\":\"address\"}],\"name\":\"changeFeeAndPayoutAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"createMarketItem\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"}],\"name\":\"createMarketSale\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getRoleMember\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleMemberCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idToMarketItem\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"addresspayable\",\"name\":\"seller\",\"type\":\"address\"},{\"internalType\":\"addresspayable\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"forSale\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"deleted\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"payoutAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformFeeBasisPoint\",\"outputs\":[{\"internalType\":\"uint96\",\"name\":\"\",\"type\":\"uint96\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"}],\"name\":\"removeFromSale\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"uint96\",\"name\":\"_platformFee\",\"type\":\"uint96\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"metaDataURI\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"seller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"forSale\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"activity\",\"type\":\"string\"}],\"name\":\"MarketplaceItem\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"MARKETPLACE_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint96\",\"name\":\"newPlatformFee\",\"type\":\"uint96\"},{\"internalType\":\"address\",\"name\":\"newPayoutAddress\",\"type\":\"address\"}],\"name\":\"changeFeeAndPayoutAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"createMarketItem\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"}],\"name\":\"createMarketSale\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getRoleMember\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleMemberCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idToMarketItem\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"nftContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"addresspayable\",\"name\":\"seller\",\"type\":\"address\"},{\"internalType\":\"addresspayable\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"forSale\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"deleted\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"payoutAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"platformFeeBasisPoint\",\"outputs\":[{\"internalType\":\"uint96\",\"name\":\"\",\"type\":\"uint96\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"itemId\",\"type\":\"uint256\"}],\"name\":\"removeFromSale\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // MarketplaceABI is the input ABI used to generate the binding from.
@@ -575,25 +575,25 @@ func (_Marketplace *MarketplaceTransactorSession) CreateMarketItem(nftContract c
 	return _Marketplace.Contract.CreateMarketItem(&_Marketplace.TransactOpts, nftContract, tokenId, price)
 }
 
-// CreateMarketSale is a paid mutator transaction binding the contract method 0xc23b139e.
+// CreateMarketSale is a paid mutator transaction binding the contract method 0xbe9af536.
 //
-// Solidity: function createMarketSale(address nftContract, uint256 itemId) payable returns()
-func (_Marketplace *MarketplaceTransactor) CreateMarketSale(opts *bind.TransactOpts, nftContract common.Address, itemId *big.Int) (*types.Transaction, error) {
-	return _Marketplace.contract.Transact(opts, "createMarketSale", nftContract, itemId)
+// Solidity: function createMarketSale(uint256 itemId) payable returns()
+func (_Marketplace *MarketplaceTransactor) CreateMarketSale(opts *bind.TransactOpts, itemId *big.Int) (*types.Transaction, error) {
+	return _Marketplace.contract.Transact(opts, "createMarketSale", itemId)
 }
 
-// CreateMarketSale is a paid mutator transaction binding the contract method 0xc23b139e.
+// CreateMarketSale is a paid mutator transaction binding the contract method 0xbe9af536.
 //
-// Solidity: function createMarketSale(address nftContract, uint256 itemId) payable returns()
-func (_Marketplace *MarketplaceSession) CreateMarketSale(nftContract common.Address, itemId *big.Int) (*types.Transaction, error) {
-	return _Marketplace.Contract.CreateMarketSale(&_Marketplace.TransactOpts, nftContract, itemId)
+// Solidity: function createMarketSale(uint256 itemId) payable returns()
+func (_Marketplace *MarketplaceSession) CreateMarketSale(itemId *big.Int) (*types.Transaction, error) {
+	return _Marketplace.Contract.CreateMarketSale(&_Marketplace.TransactOpts, itemId)
 }
 
-// CreateMarketSale is a paid mutator transaction binding the contract method 0xc23b139e.
+// CreateMarketSale is a paid mutator transaction binding the contract method 0xbe9af536.
 //
-// Solidity: function createMarketSale(address nftContract, uint256 itemId) payable returns()
-func (_Marketplace *MarketplaceTransactorSession) CreateMarketSale(nftContract common.Address, itemId *big.Int) (*types.Transaction, error) {
-	return _Marketplace.Contract.CreateMarketSale(&_Marketplace.TransactOpts, nftContract, itemId)
+// Solidity: function createMarketSale(uint256 itemId) payable returns()
+func (_Marketplace *MarketplaceTransactorSession) CreateMarketSale(itemId *big.Int) (*types.Transaction, error) {
+	return _Marketplace.Contract.CreateMarketSale(&_Marketplace.TransactOpts, itemId)
 }
 
 // GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
@@ -680,9 +680,9 @@ func (_Marketplace *MarketplaceTransactorSession) RevokeRole(role [32]byte, acco
 	return _Marketplace.Contract.RevokeRole(&_Marketplace.TransactOpts, role, account)
 }
 
-// MarketplaceMarketItemCreatedIterator is returned from FilterMarketItemCreated and is used to iterate over the raw logs and unpacked data for MarketItemCreated events raised by the Marketplace contract.
-type MarketplaceMarketItemCreatedIterator struct {
-	Event *MarketplaceMarketItemCreated // Event containing the contract specifics and raw log
+// MarketplaceMarketplaceItemIterator is returned from FilterMarketplaceItem and is used to iterate over the raw logs and unpacked data for MarketplaceItem events raised by the Marketplace contract.
+type MarketplaceMarketplaceItemIterator struct {
+	Event *MarketplaceMarketplaceItem // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -696,7 +696,7 @@ type MarketplaceMarketItemCreatedIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *MarketplaceMarketItemCreatedIterator) Next() bool {
+func (it *MarketplaceMarketplaceItemIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -705,7 +705,7 @@ func (it *MarketplaceMarketItemCreatedIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(MarketplaceMarketItemCreated)
+			it.Event = new(MarketplaceMarketplaceItem)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -720,7 +720,7 @@ func (it *MarketplaceMarketItemCreatedIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(MarketplaceMarketItemCreated)
+		it.Event = new(MarketplaceMarketplaceItem)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -736,19 +736,19 @@ func (it *MarketplaceMarketItemCreatedIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *MarketplaceMarketItemCreatedIterator) Error() error {
+func (it *MarketplaceMarketplaceItemIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *MarketplaceMarketItemCreatedIterator) Close() error {
+func (it *MarketplaceMarketplaceItemIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// MarketplaceMarketItemCreated represents a MarketItemCreated event raised by the Marketplace contract.
-type MarketplaceMarketItemCreated struct {
+// MarketplaceMarketplaceItem represents a MarketplaceItem event raised by the Marketplace contract.
+type MarketplaceMarketplaceItem struct {
 	ItemId      *big.Int
 	NftContract common.Address
 	TokenId     *big.Int
@@ -757,13 +757,14 @@ type MarketplaceMarketItemCreated struct {
 	Owner       common.Address
 	Price       *big.Int
 	ForSale     bool
+	Activity    string
 	Raw         types.Log // Blockchain specific contextual infos
 }
 
-// FilterMarketItemCreated is a free log retrieval operation binding the contract event 0xd39071221960ab18bca34a3fb540f0da19655735105a97ecd89dc2482dc4f857.
+// FilterMarketplaceItem is a free log retrieval operation binding the contract event 0x441ce8810cb23039fd1298c2fe1e7b82e2886a738cfc3281515eedfb7f0e60af.
 //
-// Solidity: event MarketItemCreated(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale)
-func (_Marketplace *MarketplaceFilterer) FilterMarketItemCreated(opts *bind.FilterOpts, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (*MarketplaceMarketItemCreatedIterator, error) {
+// Solidity: event MarketplaceItem(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale, string activity)
+func (_Marketplace *MarketplaceFilterer) FilterMarketplaceItem(opts *bind.FilterOpts, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (*MarketplaceMarketplaceItemIterator, error) {
 
 	var itemIdRule []interface{}
 	for _, itemIdItem := range itemId {
@@ -778,17 +779,17 @@ func (_Marketplace *MarketplaceFilterer) FilterMarketItemCreated(opts *bind.Filt
 		tokenIdRule = append(tokenIdRule, tokenIdItem)
 	}
 
-	logs, sub, err := _Marketplace.contract.FilterLogs(opts, "MarketItemCreated", itemIdRule, nftContractRule, tokenIdRule)
+	logs, sub, err := _Marketplace.contract.FilterLogs(opts, "MarketplaceItem", itemIdRule, nftContractRule, tokenIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &MarketplaceMarketItemCreatedIterator{contract: _Marketplace.contract, event: "MarketItemCreated", logs: logs, sub: sub}, nil
+	return &MarketplaceMarketplaceItemIterator{contract: _Marketplace.contract, event: "MarketplaceItem", logs: logs, sub: sub}, nil
 }
 
-// WatchMarketItemCreated is a free log subscription operation binding the contract event 0xd39071221960ab18bca34a3fb540f0da19655735105a97ecd89dc2482dc4f857.
+// WatchMarketplaceItem is a free log subscription operation binding the contract event 0x441ce8810cb23039fd1298c2fe1e7b82e2886a738cfc3281515eedfb7f0e60af.
 //
-// Solidity: event MarketItemCreated(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale)
-func (_Marketplace *MarketplaceFilterer) WatchMarketItemCreated(opts *bind.WatchOpts, sink chan<- *MarketplaceMarketItemCreated, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (event.Subscription, error) {
+// Solidity: event MarketplaceItem(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale, string activity)
+func (_Marketplace *MarketplaceFilterer) WatchMarketplaceItem(opts *bind.WatchOpts, sink chan<- *MarketplaceMarketplaceItem, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (event.Subscription, error) {
 
 	var itemIdRule []interface{}
 	for _, itemIdItem := range itemId {
@@ -803,7 +804,7 @@ func (_Marketplace *MarketplaceFilterer) WatchMarketItemCreated(opts *bind.Watch
 		tokenIdRule = append(tokenIdRule, tokenIdItem)
 	}
 
-	logs, sub, err := _Marketplace.contract.WatchLogs(opts, "MarketItemCreated", itemIdRule, nftContractRule, tokenIdRule)
+	logs, sub, err := _Marketplace.contract.WatchLogs(opts, "MarketplaceItem", itemIdRule, nftContractRule, tokenIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -813,8 +814,8 @@ func (_Marketplace *MarketplaceFilterer) WatchMarketItemCreated(opts *bind.Watch
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(MarketplaceMarketItemCreated)
-				if err := _Marketplace.contract.UnpackLog(event, "MarketItemCreated", log); err != nil {
+				event := new(MarketplaceMarketplaceItem)
+				if err := _Marketplace.contract.UnpackLog(event, "MarketplaceItem", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -835,310 +836,12 @@ func (_Marketplace *MarketplaceFilterer) WatchMarketItemCreated(opts *bind.Watch
 	}), nil
 }
 
-// ParseMarketItemCreated is a log parse operation binding the contract event 0xd39071221960ab18bca34a3fb540f0da19655735105a97ecd89dc2482dc4f857.
+// ParseMarketplaceItem is a log parse operation binding the contract event 0x441ce8810cb23039fd1298c2fe1e7b82e2886a738cfc3281515eedfb7f0e60af.
 //
-// Solidity: event MarketItemCreated(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale)
-func (_Marketplace *MarketplaceFilterer) ParseMarketItemCreated(log types.Log) (*MarketplaceMarketItemCreated, error) {
-	event := new(MarketplaceMarketItemCreated)
-	if err := _Marketplace.contract.UnpackLog(event, "MarketItemCreated", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// MarketplaceMarketItemRemovedIterator is returned from FilterMarketItemRemoved and is used to iterate over the raw logs and unpacked data for MarketItemRemoved events raised by the Marketplace contract.
-type MarketplaceMarketItemRemovedIterator struct {
-	Event *MarketplaceMarketItemRemoved // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *MarketplaceMarketItemRemovedIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(MarketplaceMarketItemRemoved)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(MarketplaceMarketItemRemoved)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *MarketplaceMarketItemRemovedIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *MarketplaceMarketItemRemovedIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// MarketplaceMarketItemRemoved represents a MarketItemRemoved event raised by the Marketplace contract.
-type MarketplaceMarketItemRemoved struct {
-	ItemId *big.Int
-	Raw    types.Log // Blockchain specific contextual infos
-}
-
-// FilterMarketItemRemoved is a free log retrieval operation binding the contract event 0xd371e668750cb458fa9a55e99ade07ce913d63ab733d6e30fe303723e106cf96.
-//
-// Solidity: event MarketItemRemoved(uint256 itemId)
-func (_Marketplace *MarketplaceFilterer) FilterMarketItemRemoved(opts *bind.FilterOpts) (*MarketplaceMarketItemRemovedIterator, error) {
-
-	logs, sub, err := _Marketplace.contract.FilterLogs(opts, "MarketItemRemoved")
-	if err != nil {
-		return nil, err
-	}
-	return &MarketplaceMarketItemRemovedIterator{contract: _Marketplace.contract, event: "MarketItemRemoved", logs: logs, sub: sub}, nil
-}
-
-// WatchMarketItemRemoved is a free log subscription operation binding the contract event 0xd371e668750cb458fa9a55e99ade07ce913d63ab733d6e30fe303723e106cf96.
-//
-// Solidity: event MarketItemRemoved(uint256 itemId)
-func (_Marketplace *MarketplaceFilterer) WatchMarketItemRemoved(opts *bind.WatchOpts, sink chan<- *MarketplaceMarketItemRemoved) (event.Subscription, error) {
-
-	logs, sub, err := _Marketplace.contract.WatchLogs(opts, "MarketItemRemoved")
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(MarketplaceMarketItemRemoved)
-				if err := _Marketplace.contract.UnpackLog(event, "MarketItemRemoved", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseMarketItemRemoved is a log parse operation binding the contract event 0xd371e668750cb458fa9a55e99ade07ce913d63ab733d6e30fe303723e106cf96.
-//
-// Solidity: event MarketItemRemoved(uint256 itemId)
-func (_Marketplace *MarketplaceFilterer) ParseMarketItemRemoved(log types.Log) (*MarketplaceMarketItemRemoved, error) {
-	event := new(MarketplaceMarketItemRemoved)
-	if err := _Marketplace.contract.UnpackLog(event, "MarketItemRemoved", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// MarketplaceMarketItemSoldIterator is returned from FilterMarketItemSold and is used to iterate over the raw logs and unpacked data for MarketItemSold events raised by the Marketplace contract.
-type MarketplaceMarketItemSoldIterator struct {
-	Event *MarketplaceMarketItemSold // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *MarketplaceMarketItemSoldIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(MarketplaceMarketItemSold)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(MarketplaceMarketItemSold)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *MarketplaceMarketItemSoldIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *MarketplaceMarketItemSoldIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// MarketplaceMarketItemSold represents a MarketItemSold event raised by the Marketplace contract.
-type MarketplaceMarketItemSold struct {
-	ItemId      *big.Int
-	NftContract common.Address
-	TokenId     *big.Int
-	Buyer       common.Address
-	Price       *big.Int
-	Raw         types.Log // Blockchain specific contextual infos
-}
-
-// FilterMarketItemSold is a free log retrieval operation binding the contract event 0x9789d8d6748e7f3e6c12fe6b244e2765b7e805f6b4b65a2474cad0ca8e788408.
-//
-// Solidity: event MarketItemSold(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, address buyer, uint256 price)
-func (_Marketplace *MarketplaceFilterer) FilterMarketItemSold(opts *bind.FilterOpts, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (*MarketplaceMarketItemSoldIterator, error) {
-
-	var itemIdRule []interface{}
-	for _, itemIdItem := range itemId {
-		itemIdRule = append(itemIdRule, itemIdItem)
-	}
-	var nftContractRule []interface{}
-	for _, nftContractItem := range nftContract {
-		nftContractRule = append(nftContractRule, nftContractItem)
-	}
-	var tokenIdRule []interface{}
-	for _, tokenIdItem := range tokenId {
-		tokenIdRule = append(tokenIdRule, tokenIdItem)
-	}
-
-	logs, sub, err := _Marketplace.contract.FilterLogs(opts, "MarketItemSold", itemIdRule, nftContractRule, tokenIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &MarketplaceMarketItemSoldIterator{contract: _Marketplace.contract, event: "MarketItemSold", logs: logs, sub: sub}, nil
-}
-
-// WatchMarketItemSold is a free log subscription operation binding the contract event 0x9789d8d6748e7f3e6c12fe6b244e2765b7e805f6b4b65a2474cad0ca8e788408.
-//
-// Solidity: event MarketItemSold(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, address buyer, uint256 price)
-func (_Marketplace *MarketplaceFilterer) WatchMarketItemSold(opts *bind.WatchOpts, sink chan<- *MarketplaceMarketItemSold, itemId []*big.Int, nftContract []common.Address, tokenId []*big.Int) (event.Subscription, error) {
-
-	var itemIdRule []interface{}
-	for _, itemIdItem := range itemId {
-		itemIdRule = append(itemIdRule, itemIdItem)
-	}
-	var nftContractRule []interface{}
-	for _, nftContractItem := range nftContract {
-		nftContractRule = append(nftContractRule, nftContractItem)
-	}
-	var tokenIdRule []interface{}
-	for _, tokenIdItem := range tokenId {
-		tokenIdRule = append(tokenIdRule, tokenIdItem)
-	}
-
-	logs, sub, err := _Marketplace.contract.WatchLogs(opts, "MarketItemSold", itemIdRule, nftContractRule, tokenIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(MarketplaceMarketItemSold)
-				if err := _Marketplace.contract.UnpackLog(event, "MarketItemSold", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseMarketItemSold is a log parse operation binding the contract event 0x9789d8d6748e7f3e6c12fe6b244e2765b7e805f6b4b65a2474cad0ca8e788408.
-//
-// Solidity: event MarketItemSold(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, address buyer, uint256 price)
-func (_Marketplace *MarketplaceFilterer) ParseMarketItemSold(log types.Log) (*MarketplaceMarketItemSold, error) {
-	event := new(MarketplaceMarketItemSold)
-	if err := _Marketplace.contract.UnpackLog(event, "MarketItemSold", log); err != nil {
+// Solidity: event MarketplaceItem(uint256 indexed itemId, address indexed nftContract, uint256 indexed tokenId, string metaDataURI, address seller, address owner, uint256 price, bool forSale, string activity)
+func (_Marketplace *MarketplaceFilterer) ParseMarketplaceItem(log types.Log) (*MarketplaceMarketplaceItem, error) {
+	event := new(MarketplaceMarketplaceItem)
+	if err := _Marketplace.contract.UnpackLog(event, "MarketplaceItem", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

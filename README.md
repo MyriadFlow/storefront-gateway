@@ -7,6 +7,13 @@ REST APIs for Web3 Auth and Smart Contract Functionalities
 
 # Getting Started
 
+# Generate Go Bindings
+
+```bash
+abigen --pkg marketplace --abi Marketplace.abi --out ./generated/smartcontract/marketplace/Marketplace.go
+abigen --pkg storefront --abi StoreFront.abi --out ./generated/smartcontract/storefront/StoreFront.go
+```
+
 ## Postgres for development
 
 ```bash
