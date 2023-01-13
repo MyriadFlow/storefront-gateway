@@ -3,10 +3,12 @@ package authenticate
 import (
 	"net/http"
 
+	"github.com/MyriadFlow/storefront_gateway/models/claims"
+
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/models/claims"
+
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/cryptosign"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
@@ -67,10 +69,10 @@ func authenticate(c *gin.Context) {
 	}
 	if isCorrect {
 		customClaims := claims.New(walletAddress)
-		jwtPrivateKey := envconfig.EnvVars.JWT_PRIVATE_KEY
-		jwtToken, err := auth.GenerateToken(customClaims, jwtPrivateKey)
+		pasetoPrivateKey := envconfig.EnvVars.PASETO_PRIVATE_KEY
+		pasetoToken, err := auth.GenerateTokenPaseto(customClaims, pasetoPrivateKey)
 		if err != nil {
-			httphelper.NewInternalServerError(c, "", "failed to generate token, error %v", err.Error())
+			httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
 			return
 		}
 		err = db.Where("flow_id = ?", req.FlowId).Delete(&models.FlowId{}).Error
@@ -79,7 +81,7 @@ func authenticate(c *gin.Context) {
 			return
 		}
 		payload := AuthenticatePayload{
-			Token: jwtToken,
+			Token: pasetoToken,
 		}
 		httphelper.SuccessResponse(c, "Token generated successfully", payload)
 	} else {

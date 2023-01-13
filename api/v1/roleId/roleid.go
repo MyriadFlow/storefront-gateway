@@ -3,7 +3,7 @@ package roleid
 import (
 	"net/http"
 
-	jwtMiddleWare "github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/models"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/canaccess"
@@ -19,7 +19,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/roleId")
 	{
-		g.Use(jwtMiddleWare.JWT)
+		g.Use(paseto.PASETO)
 		g.GET(":roleId", GetRoleId)
 	}
 }

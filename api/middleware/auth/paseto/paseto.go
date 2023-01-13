@@ -1,83 +1,80 @@
-package jwt
+package paseto
 
 import (
 	"errors"
 	"fmt"
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront_gateway/models/claims"
+	"gorm.io/gorm"
+
+	"github.com/vk-rv/pvx"
 
 	customstatuscodes "github.com/MyriadFlow/storefront_gateway/config/constants/http/custom_status_codes"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
-	jwt "github.com/golang-jwt/jwt/v4"
-	"gorm.io/gorm"
 )
 
 var (
 	ErrAuthHeaderMissing = errors.New("authorization header is required")
 )
 
-func JWT(c *gin.Context) {
-	db := dbconfig.GetDb()
+func PASETO(c *gin.Context) {
 	var headers GenericAuthHeaders
 	err := c.BindHeader(&headers)
 	if err != nil {
+		err = fmt.Errorf("failed to bind header, %s", err)
 		logValidationFailed(headers.Authorization, err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 	if headers.Authorization == "" {
-		logValidationFailed(headers.Authorization, err)
+		logValidationFailed(headers.Authorization, ErrAuthHeaderMissing)
 		httphelper.ErrResponse(c, http.StatusBadRequest, ErrAuthHeaderMissing.Error())
 		c.Abort()
 		return
 	}
-	jwtToken := headers.Authorization[7:]
-	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-
-		jwtPrivateKet := []byte(envconfig.EnvVars.JWT_PRIVATE_KEY)
-		return jwtPrivateKet, nil
-	})
-
+	pasetoToken := headers.Authorization
+	pv4 := pvx.NewPV4Public()
+	k := envconfig.EnvVars.PASETO_PRIVATE_KEY
+	symK := pvx.NewAsymmetricPublicKey([]byte(k), pvx.Version4)
+	var cc claims.CustomClaims
+	err = pv4.
+		Verify(pasetoToken, symK).
+		ScanClaims(&cc)
 	if err != nil {
-		if err.Error() == "Token is expired" {
-			logValidationFailed(headers.Authorization, err)
-			httphelper.CErrResponse(c, http.StatusUnauthorized, customstatuscodes.TokenExpired, "token expired")
-			c.Abort()
-			return
+		var validationErr *pvx.ValidationError
+		if errors.As(err, &validationErr) {
+			if validationErr.HasExpiredErr() {
+				err = fmt.Errorf("failed to scan claims for paseto token, %s", err)
+				logValidationFailed(headers.Authorization, err)
+				httphelper.CErrResponse(c, http.StatusUnauthorized, customstatuscodes.TokenExpired, "token expired")
+				c.Abort()
+				return
+			}
+
 		}
+		err = fmt.Errorf("failed to scan claims for paseto token, %s", err)
 		logValidationFailed(headers.Authorization, err)
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
-	}
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		walletAddress := claims["walletAddress"]
-
-		err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress.(string)).First(&models.User{}).Error
-		if err != nil {
+	} else {
+		if err := cc.Valid(); err != nil {
 			logValidationFailed(headers.Authorization, err)
 			if err.Error() == gorm.ErrRecordNotFound.Error() {
 				c.AbortWithStatus(http.StatusUnauthorized)
 			} else {
+				err = fmt.Errorf("failed to validate claim, %s", err)
 				logwrapper.Log.Error(err)
 				c.AbortWithStatus(http.StatusInternalServerError)
 			}
 		} else {
-			c.Set("walletAddress", walletAddress)
+			c.Set("walletAddress", cc.WalletAddress)
 			c.Next()
 		}
-	} else {
-		logValidationFailed(headers.Authorization, err)
-		c.AbortWithStatus(http.StatusUnauthorized)
 	}
 }
 

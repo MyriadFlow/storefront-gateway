@@ -1,8 +1,8 @@
 package details
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/jwt"
 	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/onlyoperator"
+	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront_gateway/models/Org"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
@@ -15,7 +15,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/details")
 	{
 		g.GET("", getDetails)
-		g.Use(jwt.JWT)
+		g.Use(paseto.PASETO)
 		g.Use(onlyoperator.OnlyOperator)
 		g.POST("", postDetails)
 	}
