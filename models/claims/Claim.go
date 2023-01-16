@@ -1,6 +1,7 @@
 package claims
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -33,12 +34,14 @@ func (c CustomClaims) Valid() error {
 func New(walletAddress string) CustomClaims {
 	pasetoExpirationInHours, ok := os.LookupEnv("PASETO_EXPIRATION_IN_HOURS")
 	pasetoExpirationInHoursInt := time.Duration(24)
+	fmt.Println("ok value walletaddress", ok)
 	if ok {
 		res, err := strconv.Atoi(pasetoExpirationInHours)
 		if err != nil {
 			logwrapper.Log.Warnf("Failed to parse PASETO_EXPIRATION_IN_HOURS as int : %v", err.Error())
 		} else {
 			pasetoExpirationInHoursInt = time.Duration(res)
+			fmt.Println("time taken ", pasetoExpirationInHoursInt)
 		}
 	}
 	expiration := time.Now().Add(pasetoExpirationInHoursInt * time.Hour)

@@ -2,31 +2,31 @@ package envconfig
 
 import (
 	"log"
-	"time"
 
 	"github.com/caarlos0/env/v6"
 )
 
 type config struct {
-	PASETO_PRIVATE_KEY          string        `env:"PASETO_PRIVATE_KEY,required" `
-	PASETO_EXPIRATION_IN_HOURS  time.Duration `env:"PASETO_EXPIRATION_IN_HOURS,required" `
-	APP_PORT                    int           `env:"APP_PORT,required"`
-	AUTH_EULA                   string        `env:"AUTH_EULA,required"`
-	CREATOR_EULA                string        `env:"CREATOR_EULA,required"`
-	APP_NAME                    string        `env:"APP_NAME,required"`
-	GIN_MODE                    string        `env:"GIN_MODE,required"`
-	DB_HOST                     string        `env:"DB_HOST,required"`
-	DB_USERNAME                 string        `env:"DB_USERNAME,required"`
-	DB_PASSWORD                 string        `env:"DB_PASSWORD,required"`
-	DB_NAME                     string        `env:"DB_NAME,required"`
-	DB_PORT                     int           `env:"DB_PORT,required"`
-	STOREFRONT_CONTRACT_ADDRESS string        `env:"STOREFRONT_CONTRACT_ADDRESS"`
-	POLYGON_RPC                 string        `env:"POLYGON_RPC,required"`
-	MNEMONIC                    string        `env:"MNEMONIC,required"`
-	IPFS_NODE_URL               string        `env:"IPFS_NODE_URL,required"`
-	ALLOWED_ORIGIN              []string      `env:"ALLOWED_ORIGIN,required" envSeparator:","`
-	SIGNED_BY                   string        `env:"SIGNED_BY,required"`
-	ALLOWED_WALLET_ADDRESS      []string      `env:"ALLOWED_WALLET_ADDRESS,required" envSeparator:","`
+	PASETO_PRIVATE_KEY          string   `env:"PASETO_PRIVATE_KEY,required" `
+	PASETO_EXPIRATION_IN_HOURS  string   `env:"PASETO_EXPIRATION_IN_HOURS,required" `
+	PASETO_PUBLIC_KEY           string   `env:"PASETO_PUBLIC_KEY,required" `
+	APP_PORT                    int      `env:"APP_PORT,required"`
+	AUTH_EULA                   string   `env:"AUTH_EULA,required"`
+	CREATOR_EULA                string   `env:"CREATOR_EULA,required"`
+	APP_NAME                    string   `env:"APP_NAME,required"`
+	GIN_MODE                    string   `env:"GIN_MODE,required"`
+	DB_HOST                     string   `env:"DB_HOST,required"`
+	DB_USERNAME                 string   `env:"DB_USERNAME,required"`
+	DB_PASSWORD                 string   `env:"DB_PASSWORD,required"`
+	DB_NAME                     string   `env:"DB_NAME,required"`
+	DB_PORT                     int      `env:"DB_PORT,required"`
+	STOREFRONT_CONTRACT_ADDRESS string   `env:"STOREFRONT_CONTRACT_ADDRESS"`
+	POLYGON_RPC                 string   `env:"POLYGON_RPC,required"`
+	MNEMONIC                    string   `env:"MNEMONIC,required"`
+	IPFS_NODE_URL               string   `env:"IPFS_NODE_URL,required"`
+	ALLOWED_ORIGIN              []string `env:"ALLOWED_ORIGIN,required" envSeparator:","`
+	SIGNED_BY                   string   `env:"SIGNED_BY,required"`
+	ALLOWED_WALLET_ADDRESS      []string `env:"ALLOWED_WALLET_ADDRESS,required" envSeparator:","`
 
 	ORG_NAME                     string   `env:"ORG_NAME,required"`
 	HOME_TITLE                   string   `env:"HOME_TITLE,required"`
