@@ -38,13 +38,15 @@ func PASETO(c *gin.Context) {
 		return
 	}
 	pasetoToken := headers.Authorization
+	fmt.Println("header token", pasetoToken)
 	pv4 := pvx.NewPV4Public()
-	k := envconfig.EnvVars.PASETO_PRIVATE_KEY
+	k := envconfig.EnvVars.PASETO_PUBLIC_KEY
 	symK := pvx.NewAsymmetricPublicKey([]byte(k), pvx.Version4)
 	var cc claims.CustomClaims
 	err = pv4.
 		Verify(pasetoToken, symK).
 		ScanClaims(&cc)
+
 	if err != nil {
 		var validationErr *pvx.ValidationError
 		if errors.As(err, &validationErr) {
