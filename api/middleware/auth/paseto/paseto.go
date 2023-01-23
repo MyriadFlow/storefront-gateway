@@ -1,17 +1,16 @@
 package paseto
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	gopaseto "aidanwoods.dev/go-paseto"
+
 	"github.com/MyriadFlow/storefront_gateway/models/claims"
-	"gorm.io/gorm"
-
-	"github.com/vk-rv/pvx"
-
-	customstatuscodes "github.com/MyriadFlow/storefront_gateway/config/constants/http/custom_status_codes"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 
@@ -37,47 +36,26 @@ func PASETO(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	pasetoToken := headers.Authorization
-	fmt.Println("header token", pasetoToken)
-	pv4 := pvx.NewPV4Public()
-	k := envconfig.EnvVars.PASETO_PUBLIC_KEY
-	symK := pvx.NewAsymmetricPublicKey([]byte(k), pvx.Version4)
-	var cc claims.CustomClaims
-	err = pv4.
-		Verify(pasetoToken, symK).
-		ScanClaims(&cc)
-
+	token := headers.Authorization
+	splitToken := strings.Split(token, "Bearer ")
+	pasetoToken := splitToken[1]
+	parser := gopaseto.NewParser()
+	parser.AddRule(gopaseto.NotExpired())
+	publickey := auth.Getpublickey()
+	parsedToken, err := parser.ParseV4Public(publickey, pasetoToken, nil)
+	jsonvalue := parsedToken.ClaimsJSON()
+	ClaimsValue := claims.CustomClaims{}
+	json.Unmarshal(jsonvalue, &ClaimsValue)
 	if err != nil {
-		var validationErr *pvx.ValidationError
-		if errors.As(err, &validationErr) {
-			if validationErr.HasExpiredErr() {
-				err = fmt.Errorf("failed to scan claims for paseto token, %s", err)
-				logValidationFailed(headers.Authorization, err)
-				httphelper.CErrResponse(c, http.StatusUnauthorized, customstatuscodes.TokenExpired, "token expired")
-				c.Abort()
-				return
-			}
-
-		}
 		err = fmt.Errorf("failed to scan claims for paseto token, %s", err)
 		logValidationFailed(headers.Authorization, err)
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	} else {
-		if err := cc.Valid(); err != nil {
-			logValidationFailed(headers.Authorization, err)
-			if err.Error() == gorm.ErrRecordNotFound.Error() {
-				c.AbortWithStatus(http.StatusUnauthorized)
-			} else {
-				err = fmt.Errorf("failed to validate claim, %s", err)
-				logwrapper.Log.Error(err)
-				c.AbortWithStatus(http.StatusInternalServerError)
-			}
-		} else {
-			c.Set("walletAddress", cc.WalletAddress)
-			c.Next()
-		}
+		c.Set("walletAddress", ClaimsValue.WalletAddress)
+		c.Next()
 	}
+
 }
 
 func logValidationFailed(token string, err error) {

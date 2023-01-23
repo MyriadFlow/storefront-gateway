@@ -10,20 +10,20 @@ import (
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront_gateway/models"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
-	"github.com/vk-rv/pvx"
 )
 
 type CustomClaims struct {
-	WalletAddress string `json:"walletAddress"`
-	SignedBy      string `json:"signedBy"`
-	pvx.RegisteredClaims
+	WalletAddress string    `json:"walletAddress"`
+	SignedBy      string    `json:"signedBy"`
+	Expiration    time.Time `json:"expiryTime"`
 }
 
 func (c CustomClaims) Valid() error {
 	db := dbconfig.GetDb()
-	if err := c.RegisteredClaims.Valid(); err != nil {
-		return err
-	}
+
+	// if time.; err != nil {
+	// 	return err
+	// }
 	err := db.Model(&models.User{}).Where("wallet_address = ?", c.WalletAddress).First(&models.User{}).Error
 	if err != nil {
 		return err
@@ -41,16 +41,14 @@ func New(walletAddress string) CustomClaims {
 			logwrapper.Log.Warnf("Failed to parse PASETO_EXPIRATION_IN_HOURS as int : %v", err.Error())
 		} else {
 			pasetoExpirationInHoursInt = time.Duration(res)
-			fmt.Println("time taken ", pasetoExpirationInHoursInt)
 		}
 	}
-	expiration := time.Now().Add(pasetoExpirationInHoursInt * time.Hour)
+	pasetoExpirationHours := pasetoExpirationInHoursInt * time.Hour
+	expiration := time.Now().Add(pasetoExpirationHours)
 	signedBy := envconfig.EnvVars.SIGNED_BY
 	return CustomClaims{
 		walletAddress,
 		signedBy,
-		pvx.RegisteredClaims{
-			Expiration: &expiration,
-		},
+		expiration,
 	}
 }
