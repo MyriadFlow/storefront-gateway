@@ -16,7 +16,6 @@ import (
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
-	"github.com/vk-rv/pvx"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -65,9 +64,7 @@ func Test_PASETO(t *testing.T) {
 		newClaims := claims.CustomClaims{
 			WalletAddress: testWalletAddress,
 			SignedBy:      signedBy,
-			RegisteredClaims: pvx.RegisteredClaims{
-				Expiration: &expiration,
-			},
+			Expiration:    expiration,
 		}
 		time.Sleep(time.Second * 2)
 		token, err := auth.GenerateTokenPaseto(newClaims, envconfig.EnvVars.PASETO_PRIVATE_KEY)

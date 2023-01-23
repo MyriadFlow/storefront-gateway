@@ -5,6 +5,7 @@ import (
 
 	"github.com/MyriadFlow/storefront_gateway/api"
 	"github.com/MyriadFlow/storefront_gateway/global"
+	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
 	"github.com/gin-contrib/cors"
 
@@ -19,6 +20,7 @@ var GinApp *gin.Engine
 func Init() {
 	envconfig.InitEnvVars()
 	gin.SetMode(envconfig.EnvVars.GIN_MODE)
+	auth.Init()
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()
