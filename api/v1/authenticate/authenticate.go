@@ -69,8 +69,7 @@ func authenticate(c *gin.Context) {
 	}
 	if isCorrect {
 		customClaims := claims.New(walletAddress)
-		pasetoPrivateKey := envconfig.EnvVars.PASETO_PRIVATE_KEY
-		pasetoToken, err := auth.GenerateTokenPaseto(customClaims, pasetoPrivateKey)
+		pasetoToken, err := auth.GenerateTokenPaseto(customClaims)
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
 			return

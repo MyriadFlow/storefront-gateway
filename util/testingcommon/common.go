@@ -8,7 +8,6 @@ import (
 
 	"github.com/MyriadFlow/storefront_gateway/api/types"
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront_gateway/models"
 	"github.com/MyriadFlow/storefront_gateway/models/claims"
 	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
@@ -26,8 +25,7 @@ func PrepareAndGetAuthHeader(t *testing.T, testWalletAddress string) string {
 	gin.SetMode(gin.TestMode)
 	CreateTestUser(t, testWalletAddress)
 	customClaims := claims.New(testWalletAddress)
-	pasetoPrivateKey := envconfig.EnvVars.PASETO_PRIVATE_KEY
-	token, err := auth.GenerateTokenPaseto(customClaims, pasetoPrivateKey)
+	token, err := auth.GenerateTokenPaseto(customClaims)
 	if err != nil {
 		t.Fatal(err)
 	}

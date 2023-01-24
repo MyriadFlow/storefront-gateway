@@ -20,7 +20,7 @@ func Init() {
 	secretKey = gopaseto.NewV4AsymmetricSecretKey()
 	PublicKey = secretKey.Public()
 }
-func GenerateTokenPaseto(claim claims.CustomClaims, privateKey string) (string, error) {
+func GenerateTokenPaseto(claim claims.CustomClaims) (string, error) {
 	footer := envconfig.EnvVars.FOOTER
 	claimbyte, _ := json.Marshal(claim)
 	fmt.Println("claim value", claimbyte)
