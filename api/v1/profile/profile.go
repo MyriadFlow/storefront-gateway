@@ -31,6 +31,7 @@ func patchProfile(c *gin.Context) {
 		return
 	}
 	walletAddress := c.GetString("walletAddress")
+	user.WalletAddress=walletAddress
 	result := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Updates(user)
 
 	if result.Error != nil {
