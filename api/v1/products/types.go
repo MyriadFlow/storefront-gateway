@@ -16,10 +16,14 @@ type MarketPlaceCounts struct {
 }
 
 var Highlights = []Product{
-	{Name:"VR BOY", ProductID: "#070", Image:"url", Price:"$100,000", SellerName:" John Sander", Likes:"78"},
-	{Name:"VR BOY", ProductID: "#070", Image:"url", Price:"$100,000", SellerName:" John Sander", Likes:"78"},
-	{Name:"VR BOY", ProductID: "#070", Image:"url", Price:"$100,000", SellerName:" John Sander", Likes:"78"},
-	{Name:"VR BOY", ProductID: "#070", Image:"url", Price:"$100,000", SellerName:" John Sander", Likes:"78"},
+    {Name:"Crypto Raptors", ProductID: "#123", Image:"url", Price:"$23984", SellerName:"Sonu Nigam", Likes:"100"},
+    {Name:"The Binary Girl", ProductID: "#124", Image:"url", Price:"$3765", SellerName:" Manashi parajpe", Likes:"728"},
+    {Name:"The Binary Girl", ProductID: "#456", Image:"url", Price:"$643528", SellerName:" Prajakta Mali", Likes:"738"},
+    {Name:"Sphere Art", ProductID: "#654", Image:"url", Price:"$64252", SellerName:"Monika Binsal", Likes:"378"},
+	{Name:"Crypto Raptors", ProductID: "#123", Image:"url", Price:"$23984", SellerName:"Sonu Nigam", Likes:"100"},
+    {Name:"The Binary Girl", ProductID: "#124", Image:"url", Price:"$3765", SellerName:" Manashi parajpe", Likes:"728"},
+    {Name:"The Binary Girl", ProductID: "#456", Image:"url", Price:"$643528", SellerName:" Prajakta Mali", Likes:"738"},
+    {Name:"Sphere Art", ProductID: "#654", Image:"url", Price:"$64252", SellerName:"Monika Binsal", Likes:"378"},
 }
 
 var Trending = []Product{
