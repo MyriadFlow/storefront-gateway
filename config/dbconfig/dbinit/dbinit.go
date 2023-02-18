@@ -14,7 +14,7 @@ import (
 
 func Init() error {
 	db := dbconfig.GetDb()
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -67,6 +67,17 @@ func Init() error {
 		{Name: "Creator Role", RoleId: hexutil.Encode(creatorRoleId[:]), Eula: creatorEula}}
 	for _, role := range rolesToBeAdded {
 		if err := db.Model(&models.Role{}).FirstOrCreate(&role).Error; err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	//add dummy products details
+	demoProduct := []models.Product{
+		{ItemId:1,NFT_Contract_Address:"nftcontractaddr1",TokenId:"tokenid1",MetaDataURI:"metadatauri1"},
+		{ItemId:2,NFT_Contract_Address:"nftcontractaddr2",TokenId:"tokenid2",MetaDataURI:"metadatauri2"},
+	}
+	for _, product := range demoProduct {
+		if err := db.Model(&models.Product{}).Create(&product).Error; err != nil {
 			log.Fatal(err)
 		}
 	}

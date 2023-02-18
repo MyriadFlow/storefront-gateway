@@ -34,7 +34,7 @@ func Test_PatchProfile(t *testing.T) {
 	t.Run("Should be able to update name", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 
-		requestBody := PatchProfileRequest{
+		requestBody := GetProfilePayload{
 			Name: "Yash",
 		}
 		jsonData, err := json.Marshal(requestBody)
