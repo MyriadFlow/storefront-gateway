@@ -22,6 +22,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("/trending", getTrending)
 		g.GET("/highlights", getHighlights)
 		g.GET("/marketplaceCounts", getMarketPlaceCounts)
+		g.GET("/marketplaceInfo", getmarketplaceInfo)
 	}
 }
 var productIds []string
@@ -99,5 +100,10 @@ func getHighlights(c *gin.Context) {
 
 func getMarketPlaceCounts(c *gin.Context) {
 	payload:=[]MarketPlaceCounts{{7878,4545,5546}}
+	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
+}
+
+func getmarketplaceInfo(c *gin.Context) {
+	payload:=[]MarketPlaceInfo{{"MyriadFlow","An innovative platform to explore & launch NFT Experiences.","@0xMyriadFlow"}}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
 }
