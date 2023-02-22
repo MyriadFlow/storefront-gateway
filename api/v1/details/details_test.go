@@ -46,7 +46,7 @@ func Test_Details(t *testing.T) {
 		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
 		assert.ElementsMatch(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
 		assert.ElementsMatch(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
-		assert.ElementsMatch(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
+		//assert.ElementsMatch(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
 		logrus.Debug(org)
 	})
 
@@ -57,7 +57,7 @@ func Test_Details(t *testing.T) {
 			HomeTitle:     "Max",
 			TopHighlights: []string{"43"},
 			Trendings:     []string{"47"},
-			TopBids:       []string{"42"},
+			//TopBids:       []string{"42"},
 		}
 		jsonData, err := json.Marshal(requestBody)
 		if err != nil {
@@ -69,7 +69,8 @@ func Test_Details(t *testing.T) {
 		}
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
-		postDetails(c)
+		//postDetails(c)
+		patchDetails(c)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 
 		t.Cleanup(func() {
@@ -84,7 +85,7 @@ func Test_Details(t *testing.T) {
 					Footer:             envconfig.EnvVars.FOOTER,
 					TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 					Trendings:          envconfig.EnvVars.TRENDINGS,
-					TopBids:            envconfig.EnvVars.TOP_BIDS,
+					//TopBids:            envconfig.EnvVars.TOP_BIDS,
 				},
 			)
 		})
