@@ -2,7 +2,8 @@ package dbinit
 
 import (
 	"log"
-
+	// "errors"
+	// "encoding/json"
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/storefront"
@@ -12,13 +13,38 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
+
 func Init() error {
 	db := dbconfig.GetDb()
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
+	//err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{},&models.Product{})
 	if err != nil {
 		log.Fatal(err)
 		return err
+	
 	}
+	//create org table
+	db.Exec(`create table if not exists orgs (
+		name text,
+		home_title text,
+		home_description text,
+		graph_url text,
+		store_front_address text,
+		market_place_address text,
+		footer text,
+		top_highlights text[],
+		trendings text[],
+		contact jsonb,
+		unique (name)
+		)`)
+	
+	contacts:=Org.Contacts{
+		DiscordId:"-",
+		InstagramId:"-",
+		TelegramId:"-",
+		TwitterId:"@0xMyriadFlow",
+	}
+
 	err = Org.CreateOrg(
 		Org.Org{
 			Name:               envconfig.EnvVars.ORG_NAME,
@@ -30,7 +56,8 @@ func Init() error {
 			Footer:             envconfig.EnvVars.FOOTER,
 			TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 			Trendings:          envconfig.EnvVars.TRENDINGS,
-			TopBids:            envconfig.EnvVars.TOP_BIDS,
+			Contact:			contacts,
+
 		},
 	)
 

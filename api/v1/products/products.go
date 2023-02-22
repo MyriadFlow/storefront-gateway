@@ -16,17 +16,14 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/products")
 	{
 		g.Use(paseto.PASETO)
-		g.PATCH("/", patchProduct)
-		g.GET("/itemIds", getItemIds)
-		g.GET("/itemId/:id", getItemById)
-		g.GET("/trending", getTrending)
-		g.GET("/highlights", getHighlights)
-		g.GET("/marketplaceCounts", getMarketPlaceCounts)
-		g.GET("/marketplaceInfo", getmarketplaceInfo)
+		g.PATCH("/itemId/:id", patchProductById)
+		g.GET("/itemIds", getProductItemIds)
+		g.GET("/itemId/:id", getProductById)
+
 	}
 }
-var productIds []string
-func patchProduct(c *gin.Context) {
+
+func patchProductById(c *gin.Context) {
 	db := dbconfig.GetDb()
 	var product models.Product
 	err := c.BindJSON(&product)
@@ -35,7 +32,7 @@ func patchProduct(c *gin.Context) {
 		return
 	}
 
-	itemId := product.ItemId
+	itemId := c.Params.ByName("id")
 	result := db.Model(&models.Product{}).Where("item_id = ?", itemId).Updates(product)
 
 	if result.Error != nil {
@@ -48,21 +45,11 @@ func patchProduct(c *gin.Context) {
 
 		return
 	}
-	httphelper.SuccessResponse(c, "Profile successfully updated", nil)
+	httphelper.SuccessResponse(c, "Product Details successfully updated", nil)
 
 }
 
-func getProductsIds(c *gin.Context){
-	db := dbconfig.GetDb()
-	err := db.Table("products").Order("item_id").Select("item_id").Find(&productIds).Error
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}	
-}
-
-func getItemIds(c *gin.Context) {
+func getProductItemIds(c *gin.Context) {
 	db := dbconfig.GetDb()
 	var list []string
 	err := db.Table("products").Order("item_id").Select("item_id").Find(&list).Error
@@ -72,10 +59,10 @@ func getItemIds(c *gin.Context) {
 		return
 	}
 
-	productIds=list
-	httphelper.SuccessResponse(c, "Profile fetched successfully", list)
+	httphelper.SuccessResponse(c, "Product ItemIds List fetched successfully", list)
 }
-func getItemById(c *gin.Context) {
+
+func getProductById(c *gin.Context) {
 	db := dbconfig.GetDb()
 	var product models.Product
 	id := c.Params.ByName("id")
@@ -86,24 +73,5 @@ func getItemById(c *gin.Context) {
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Profile fetched successfully", product)
-}
-func getTrending(c *gin.Context) {
-	getProductsIds(c)
-	httphelper.SuccessResponse(c, "Profile fetched successfully", productIds)
-}
-
-func getHighlights(c *gin.Context) {
-	getProductsIds(c)
-	httphelper.SuccessResponse(c, "Profile fetched successfully", productIds)
-}
-
-func getMarketPlaceCounts(c *gin.Context) {
-	payload:=[]MarketPlaceCounts{{7878,4545,5546}}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
-}
-
-func getmarketplaceInfo(c *gin.Context) {
-	payload:=[]MarketPlaceInfo{{"MyriadFlow","An innovative platform to explore & launch NFT Experiences.","@0xMyriadFlow"}}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
+	httphelper.SuccessResponse(c, "Product Details fetched successfully", product)
 }

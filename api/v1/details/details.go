@@ -17,11 +17,13 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", getDetails)
 		g.Use(paseto.PASETO)
 		g.Use(onlyoperator.OnlyOperator)
-		g.POST("", postDetails)
+		//g.POST("", postDetails)
+		g.PATCH("", patchDetails)
 	}
 }
 
-func postDetails(c *gin.Context) {
+//func postDetails(c *gin.Context) {
+func patchDetails(c *gin.Context) {
 	var org Org.Org
 	err := c.BindJSON(&org)
 	if err != nil {
