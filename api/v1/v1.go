@@ -10,6 +10,7 @@ import (
 	"github.com/MyriadFlow/storefront_gateway/api/v1/profile"
 	roleid "github.com/MyriadFlow/storefront_gateway/api/v1/roleId"
 	"github.com/MyriadFlow/storefront_gateway/api/v1/uploadtoipfs"
+	"github.com/MyriadFlow/storefront_gateway/api/v1/uploadtonfts"
 	"github.com/MyriadFlow/storefront_gateway/api/v1/products"
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +26,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		claimrole.ApplyRoutes(v1)
 		delegateartifactcreation.ApplyRoutes(v1)
 		uploadtoipfs.ApplyRoutes(v1)
+		uploadtonfts.ApplyRoutes(v1)
 		details.ApplyRoutes(v1)
 		healthcheck.ApplyRoutes(v1)
 		products.ApplyRoutes(v1)

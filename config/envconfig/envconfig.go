@@ -10,6 +10,7 @@ type config struct {
 	PASETO_PRIVATE_KEY          string   `env:"PASETO_PRIVATE_KEY,required" `
 	PASETO_EXPIRATION_IN_HOURS  string   `env:"PASETO_EXPIRATION_IN_HOURS,required" `
 	PASETO_PUBLIC_KEY           string   `env:"PASETO_PUBLIC_KEY,required" `
+	NFT_API_KEY			        string   `env:"NFT_API_KEY,required" `
 	APP_PORT                    int      `env:"APP_PORT,required"`
 	AUTH_EULA                   string   `env:"AUTH_EULA,required"`
 	CREATOR_EULA                string   `env:"CREATOR_EULA,required"`
