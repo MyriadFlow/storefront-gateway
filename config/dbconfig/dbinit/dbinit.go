@@ -17,7 +17,7 @@ import (
 func Init() error {
 	db := dbconfig.GetDb()
 	//err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{},&models.Product{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{},&models.Marketplace{})
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -98,13 +98,13 @@ func Init() error {
 		}
 	}
 
-	//add dummy products details
-	demoProduct := []models.Product{
+	//add dummy marketplace details
+	demoProduct := []models.Marketplace{
 		{ItemId:1,NFT_Contract_Address:"nftcontractaddr1",TokenId:"tokenid1",MetaDataURI:"metadatauri1"},
 		{ItemId:2,NFT_Contract_Address:"nftcontractaddr2",TokenId:"tokenid2",MetaDataURI:"metadatauri2"},
 	}
 	for _, product := range demoProduct {
-		if err := db.Model(&models.Product{}).Create(&product).Error; err != nil {
+		if err := db.Model(&models.Marketplace{}).Create(&product).Error; err != nil {
 			log.Fatal(err)
 		}
 	}

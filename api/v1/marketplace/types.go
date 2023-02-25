@@ -1,4 +1,4 @@
-package products
+package marketplace
 
 type MarketPlaceCounts struct {	
 	Actions		int `json:"action,omitempty"`

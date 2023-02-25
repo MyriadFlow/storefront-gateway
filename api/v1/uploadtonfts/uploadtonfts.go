@@ -54,7 +54,7 @@ func uploadtonfts(c *gin.Context) {
 			httphelper.NewInternalServerError(c, "failed to upload ", "Full HTTP response, error: %v", r)
 			return
 		}
-
+		fO.Close()
 		cid, _ := json.Marshal(resp.Value.Cid)
 
 		responsePayload=append(responsePayload,UploadToNftsPayload{file,string(cid)})

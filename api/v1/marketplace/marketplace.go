@@ -1,4 +1,4 @@
-package products
+package marketplace
 
 import (
 	"net/http"
@@ -13,19 +13,19 @@ import (
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/products")
+	g := r.Group("/marketplace")
 	{
 		g.Use(paseto.PASETO)
-		g.PATCH("/itemId/:id", patchProductById)
-		g.GET("/itemIds", getProductItemIds)
-		g.GET("/itemId/:id", getProductById)
+		g.PATCH("/itemId/:id", patchMarketplaceById)
+		g.GET("/itemIds", getMarketplaceItemIds)
+		g.GET("/itemId/:id", getMarketplaceById)
 
 	}
 }
 
-func patchProductById(c *gin.Context) {
+func patchMarketplaceById(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var product models.Product
+	var product models.Marketplace
 	err := c.BindJSON(&product)
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
@@ -33,7 +33,7 @@ func patchProductById(c *gin.Context) {
 	}
 
 	itemId := c.Params.ByName("id")
-	result := db.Model(&models.Product{}).Where("item_id = ?", itemId).Updates(product)
+	result := db.Model(&models.Marketplace{}).Where("item_id = ?", itemId).Updates(product)
 
 	if result.Error != nil {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -45,33 +45,35 @@ func patchProductById(c *gin.Context) {
 
 		return
 	}
-	httphelper.SuccessResponse(c, "Product Details successfully updated", nil)
+	httphelper.SuccessResponse(c, "Marketplace Details successfully updated", nil)
 
 }
 
-func getProductItemIds(c *gin.Context) {
+func getMarketplaceItemIds(c *gin.Context) {
 	db := dbconfig.GetDb()
 	var list []string
-	err := db.Table("products").Order("item_id").Select("item_id").Find(&list).Error
+	//err := db.Table("marketplace").Order("item_id").Select("item_id").Find(&list).Error
+	err := db.Model(&models.Marketplace{}).Order("item_id").Select("item_id").Find(&list).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Product ItemIds List fetched successfully", list)
+	httphelper.SuccessResponse(c, "Marketplace ItemIds List fetched successfully", list)
 }
 
-func getProductById(c *gin.Context) {
+func getMarketplaceById(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var product models.Product
+	var product models.Marketplace
 	id := c.Params.ByName("id")
-	err := db.Table("products").Where("item_id = ?", id).First(&product).Error
+	//err := db.Table("marketplace").Where("item_id = ?", id).First(&product).Error
+	err := db.Model(&models.Marketplace{}).Where("item_id = ?", id).First(&product).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Product Details fetched successfully", product)
+	httphelper.SuccessResponse(c, "Marketplace Details fetched successfully", product)
 }
