@@ -24,7 +24,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func uploadtonfts(c *gin.Context) {
 
-	token:=envconfig.EnvVars.NFT_API_KEY
+	token:=envconfig.EnvVars.NFT_STORAGE_API_KEY
 	configuration := client.NewConfiguration()
 	ctx := context.WithValue(context.Background(), client.ContextAccessToken, token)
 	api_client := client.NewAPIClient(configuration)
@@ -66,12 +66,14 @@ func uploadtonfts(c *gin.Context) {
 			return
 		}
 		cid, _ := json.Marshal(resp.Value.Cid)
+		//remove ' " ' from extrem ends 
+		cid=cid[1:]
+		cid=cid[:len(cid)-2]
 
 		responsePayload=append(responsePayload,UploadToNftsPayload{file.Filename,string(cid)})
 
-
 	}
-
+	logrus.Info("\n responsePayload :",responsePayload)
 	httphelper.SuccessResponse(c, "file successfully uploaded to nft storage", responsePayload)
 }
 

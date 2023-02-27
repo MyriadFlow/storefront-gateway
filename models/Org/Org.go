@@ -9,7 +9,7 @@ import (
 	"database/sql/driver"
 )
 
-type Contacts struct {	
+type OrgContacts struct {	
 	DiscordId	string		`json:"discordId,omitempty"`
 	InstagramId	string		`json:"instagramId,omitempty"`
 	TelegramId	string		`json:"telegramId,omitempty"`
@@ -27,13 +27,13 @@ type Org struct {
 	TopHighlights      pq.StringArray `gorm:"type:text[]" json:"topHighlights,omitempty"`
 	Trendings          pq.StringArray `gorm:"type:text[]" json:"trendings,omitempty"`
 
-	Contact				Contacts		`json:"contact_json_object,omitempty"`      
+	Contacts				OrgContacts		`json:"contacts,omitempty"`      
 }
-func (contact Contacts) Value() (driver.Value, error) {
+func (contact OrgContacts) Value() (driver.Value, error) {
 	return json.Marshal(contact)
 }
 
-func (contact *Contacts) Scan(value interface{}) error {
+func (contact *OrgContacts) Scan(value interface{}) error {
 	parse, ok := value.([]byte)
     if !ok {
         return errors.New("type assertion to []byte failed")

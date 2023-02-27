@@ -34,11 +34,11 @@ func Init() error {
 		footer text,
 		top_highlights text[],
 		trendings text[],
-		contact jsonb,
+		contacts jsonb,
 		unique (name)
 		)`)
 	
-	contacts:=Org.Contacts{
+	contacts:=Org.OrgContacts{
 		DiscordId:"-",
 		InstagramId:"-",
 		TelegramId:"-",
@@ -56,7 +56,7 @@ func Init() error {
 			Footer:             envconfig.EnvVars.FOOTER,
 			TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 			Trendings:          envconfig.EnvVars.TRENDINGS,
-			Contact:			contacts,
+			Contacts:			contacts,
 
 		},
 	)
