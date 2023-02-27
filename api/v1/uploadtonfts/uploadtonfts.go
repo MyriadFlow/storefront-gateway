@@ -9,6 +9,7 @@ import (
 	"context"
 	"os"
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -34,30 +35,39 @@ func uploadtonfts(c *gin.Context) {
 		return
 	}
 
-	values:=form.Value
-	file_names:=values["file"]
-
 	responsePayload := make([]UploadToNftsPayload, 0)
+	files:=form.File["file"]
 
-	for _, file := range file_names {
-
-		fO, err :=os.Open(file)
-
+	for _, file := range files {
+		//tempporarily storing multipart file and then read as os file	
+		filename := "./" + file.Filename
+		err:=c.SaveUploadedFile(file, filename)
+		if err != nil {
+			httphelper.NewInternalServerError(c, "failed to SaveUpload file", "failed to open file, error: %v", err.Error())
+			return
+		}
+		logrus.Info("\n File Saved at :",filename)
+		bO, err := os.Open(filename)
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to load file", "failed to open file, error: %v", err.Error())
 			return
 		}
 
-		resp, r, err := api_client.NFTStorageAPI.Store(ctx).Body(fO).Execute()
+		resp, r, err := api_client.NFTStorageAPI.Store(ctx).Body(bO).Execute()
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to upload ", "Error when calling `NFTStorageAPI.Store``: error: %v", err.Error())
 			httphelper.NewInternalServerError(c, "failed to upload ", "Full HTTP response, error: %v", r)
 			return
 		}
-		fO.Close()
+		bO.Close()
+		err=os.Remove(filename)
+		if err != nil {
+			httphelper.NewInternalServerError(c, "failed to clear temporary file stored", "failed to clear temporary file stored, error: %v", err.Error())
+			return
+		}
 		cid, _ := json.Marshal(resp.Value.Cid)
 
-		responsePayload=append(responsePayload,UploadToNftsPayload{file,string(cid)})
+		responsePayload=append(responsePayload,UploadToNftsPayload{file.Filename,string(cid)})
 
 
 	}
