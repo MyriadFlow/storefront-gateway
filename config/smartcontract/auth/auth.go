@@ -5,9 +5,9 @@ import (
 	"crypto/ecdsa"
 	"math/big"
 
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/ethwallet"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/ethwallet"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"

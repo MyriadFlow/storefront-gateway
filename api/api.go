@@ -1,7 +1,7 @@
 package api
 
 import (
-	v1 "github.com/MyriadFlow/storefront_gateway/api/v1"
+	v1 "github.com/MyriadFlow/storefront-gateway/api/v1"
 
 	"github.com/gin-gonic/gin"
 )

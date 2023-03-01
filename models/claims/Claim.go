@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 )
 
 type CustomClaims struct {

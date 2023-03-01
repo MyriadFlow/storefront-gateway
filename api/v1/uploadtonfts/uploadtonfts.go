@@ -1,14 +1,15 @@
 package uploadtonfts
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"context"
+	"encoding/json"
+	"os"
+
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
 	client "github.com/nftstorage/go-client"
-	"context"
-	"os"
-	"encoding/json"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,14 +22,13 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	}
 }
 
-
 func uploadtonfts(c *gin.Context) {
 
-	token:=envconfig.EnvVars.NFT_STORAGE_API_KEY
+	token := envconfig.EnvVars.NFT_STORAGE_API_KEY
 	configuration := client.NewConfiguration()
 	ctx := context.WithValue(context.Background(), client.ContextAccessToken, token)
 	api_client := client.NewAPIClient(configuration)
-	
+
 	form, err := c.MultipartForm()
 	if err != nil {
 		httphelper.NewInternalServerError(c, "failed to parse multipart form", "failed to parse multipart form, error: %v", err.Error())
@@ -36,17 +36,17 @@ func uploadtonfts(c *gin.Context) {
 	}
 
 	responsePayload := make([]UploadToNftsPayload, 0)
-	files:=form.File["file"]
+	files := form.File["file"]
 
 	for _, file := range files {
-		//tempporarily storing multipart file and then read as os file	
+		//tempporarily storing multipart file and then read as os file
 		filename := "./" + file.Filename
-		err:=c.SaveUploadedFile(file, filename)
+		err := c.SaveUploadedFile(file, filename)
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to SaveUpload file", "failed to open file, error: %v", err.Error())
 			return
 		}
-		logrus.Info("\n File Saved at :",filename)
+		logrus.Info("\n File Saved at :", filename)
 		bO, err := os.Open(filename)
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to load file", "failed to open file, error: %v", err.Error())
@@ -60,20 +60,19 @@ func uploadtonfts(c *gin.Context) {
 			return
 		}
 		bO.Close()
-		err=os.Remove(filename)
+		err = os.Remove(filename)
 		if err != nil {
 			httphelper.NewInternalServerError(c, "failed to clear temporary file stored", "failed to clear temporary file stored, error: %v", err.Error())
 			return
 		}
 		cid, _ := json.Marshal(resp.Value.Cid)
-		//remove ' " ' from extrem ends 
-		cid=cid[1:]
-		cid=cid[:len(cid)-2]
+		//remove ' " ' from extrem ends
+		cid = cid[1:]
+		cid = cid[:len(cid)-2]
 
-		responsePayload=append(responsePayload,UploadToNftsPayload{file.Filename,string(cid)})
+		responsePayload = append(responsePayload, UploadToNftsPayload{file.Filename, string(cid)})
 
 	}
-	logrus.Info("\n responsePayload :",responsePayload)
+	logrus.Info("\n responsePayload :", responsePayload)
 	httphelper.SuccessResponse(c, "file successfully uploaded to nft storage", responsePayload)
 }
-

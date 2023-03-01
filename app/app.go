@@ -3,15 +3,15 @@ package app
 import (
 	"time"
 
-	"github.com/MyriadFlow/storefront_gateway/api"
-	"github.com/MyriadFlow/storefront_gateway/global"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/api"
+	"github.com/MyriadFlow/storefront-gateway/global"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/gin-contrib/cors"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/storefront"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	"github.com/gin-gonic/gin"
 )
 

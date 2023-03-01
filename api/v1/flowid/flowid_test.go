@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
-	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

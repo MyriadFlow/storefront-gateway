@@ -2,14 +2,14 @@ package marketplace
 
 import (
 	"net/http"
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
 	"github.com/sirupsen/logrus"
 )
-
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {

@@ -3,10 +3,10 @@ package flowid
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/flowid"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/flowid"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
 	"github.com/gin-gonic/gin"

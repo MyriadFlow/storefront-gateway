@@ -3,12 +3,12 @@ package testingcommon
 import (
 	"fmt"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"gorm.io/gorm"
 )
 
-//Referred from https://medium.com/@jarifibrahim/using-gorm-hooks-to-clean-up-test-fixtures-in-golang-99b0fcb04354
+// Referred from https://medium.com/@jarifibrahim/using-gorm-hooks-to-clean-up-test-fixtures-in-golang-99b0fcb04354
 func DeleteCreatedEntities() func() {
 	db := dbconfig.GetDb()
 	type entity struct {

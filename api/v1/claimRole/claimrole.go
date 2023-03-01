@@ -3,14 +3,14 @@ package claimrole
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/smartcontract/rawtransaction"
-	storefront "github.com/MyriadFlow/storefront_gateway/generated/smartcontract/storefront"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/cryptosign"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/smartcontract/rawtransaction"
+	storefront "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/storefront"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/cryptosign"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"

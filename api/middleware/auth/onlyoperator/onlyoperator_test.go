@@ -5,9 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/ethwallet"
-	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/ethwallet"
+	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"

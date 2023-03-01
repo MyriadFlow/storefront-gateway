@@ -8,9 +8,9 @@ import (
 	"time"
 
 	gopaseto "aidanwoods.dev/go-paseto"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models/claims"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models/claims"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 )
 
 var PublicKey gopaseto.V4AsymmetricPublicKey

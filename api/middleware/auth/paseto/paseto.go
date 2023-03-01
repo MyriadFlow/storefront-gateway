@@ -9,10 +9,10 @@ import (
 
 	gopaseto "aidanwoods.dev/go-paseto"
 
-	"github.com/MyriadFlow/storefront_gateway/models/claims"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/models/claims"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,8 +1,8 @@
 package smartcontract
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 

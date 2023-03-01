@@ -4,24 +4,23 @@ import (
 	"log"
 	// "errors"
 	// "encoding/json"
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/storefront"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/models/Org"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/storefront"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/models/Org"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 )
-
 
 func Init() error {
 	db := dbconfig.GetDb()
 	//err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{},&models.Marketplace{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &models.Marketplace{})
 	if err != nil {
 		log.Fatal(err)
 		return err
-	
+
 	}
 	//create org table
 	db.Exec(`create table if not exists orgs (
@@ -37,12 +36,12 @@ func Init() error {
 		contacts jsonb,
 		unique (name)
 		)`)
-	
-	contacts:=Org.OrgContacts{
-		DiscordId:"-",
-		InstagramId:"-",
-		TelegramId:"-",
-		TwitterId:"@0xMyriadFlow",
+
+	contacts := Org.OrgContacts{
+		DiscordId:   "-",
+		InstagramId: "-",
+		TelegramId:  "-",
+		TwitterId:   "@0xMyriadFlow",
 	}
 
 	err = Org.CreateOrg(
@@ -56,8 +55,7 @@ func Init() error {
 			Footer:             envconfig.EnvVars.FOOTER,
 			TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 			Trendings:          envconfig.EnvVars.TRENDINGS,
-			Contacts:			contacts,
-
+			Contacts:           contacts,
 		},
 	)
 
@@ -100,8 +98,8 @@ func Init() error {
 
 	//add dummy marketplace details
 	demoProduct := []models.Marketplace{
-		{ItemId:1,NFT_Contract_Address:"nftcontractaddr1",TokenId:"tokenid1",MetaDataURI:"metadatauri1"},
-		{ItemId:2,NFT_Contract_Address:"nftcontractaddr2",TokenId:"tokenid2",MetaDataURI:"metadatauri2"},
+		{ItemId: 1, NFT_Contract_Address: "nftcontractaddr1", TokenId: "tokenid1", MetaDataURI: "metadatauri1"},
+		{ItemId: 2, NFT_Contract_Address: "nftcontractaddr2", TokenId: "tokenid2", MetaDataURI: "metadatauri2"},
 	}
 	for _, product := range demoProduct {
 		if err := db.Model(&models.Marketplace{}).Create(&product).Error; err != nil {

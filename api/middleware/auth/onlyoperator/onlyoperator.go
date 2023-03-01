@@ -3,10 +3,10 @@ package onlyoperator
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/config/smartcontract"
-	storefront "github.com/MyriadFlow/storefront_gateway/config/storefront"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/smartcontract"
+	storefront "github.com/MyriadFlow/storefront-gateway/config/storefront"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gin-gonic/gin"
 )

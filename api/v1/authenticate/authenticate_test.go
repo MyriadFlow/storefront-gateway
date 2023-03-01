@@ -10,13 +10,13 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/api/types"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/flowid"
+	"github.com/MyriadFlow/storefront-gateway/api/types"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/flowid"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
-	testingcommmon "github.com/MyriadFlow/storefront_gateway/util/testingcommon"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	testingcommmon "github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"

@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/api/types"
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/models/claims"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
+	"github.com/MyriadFlow/storefront-gateway/api/types"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/models/claims"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
 
 	"crypto/ecdsa"
 	"log"

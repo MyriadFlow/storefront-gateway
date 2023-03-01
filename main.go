@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/MyriadFlow/storefront_gateway/app"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/app"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	_ "github.com/joho/godotenv/autoload"
 )
 

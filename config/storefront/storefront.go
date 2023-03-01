@@ -3,8 +3,8 @@ package storefront
 import (
 	"errors"
 
-	"github.com/MyriadFlow/storefront_gateway/config/smartcontract"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/config/smartcontract"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 )
 
 type tRole int

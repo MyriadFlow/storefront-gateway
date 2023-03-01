@@ -3,8 +3,8 @@ package flowid
 import (
 	"fmt"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"

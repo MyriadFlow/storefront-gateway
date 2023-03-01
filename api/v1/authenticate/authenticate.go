@@ -3,16 +3,16 @@ package authenticate
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/models/claims"
+	"github.com/MyriadFlow/storefront-gateway/models/claims"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
 
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/auth"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/cryptosign"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/cryptosign"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )

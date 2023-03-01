@@ -7,13 +7,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/api/types"
+	"github.com/MyriadFlow/storefront-gateway/api/types"
 
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
-	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -32,7 +32,6 @@ func Test_PatchProfile(t *testing.T) {
 
 	// TODO: Write more tests
 	t.Run("Should be able to update name", func(t *testing.T) {
-		
 
 		rr := httptest.NewRecorder()
 
@@ -63,7 +62,6 @@ func Test_GetProfile(t *testing.T) {
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	t.Run("Should be able to get profile details", func(t *testing.T) {
-	
 
 		testWallet := testingcommon.GenerateWallet()
 		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)

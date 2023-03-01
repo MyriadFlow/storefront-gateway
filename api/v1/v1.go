@@ -1,17 +1,17 @@
 package apiv1
 
 import (
-	authenticate "github.com/MyriadFlow/storefront_gateway/api/v1/authenticate"
-	claimrole "github.com/MyriadFlow/storefront_gateway/api/v1/claimRole"
-	delegateartifactcreation "github.com/MyriadFlow/storefront_gateway/api/v1/delegateArtifactCreation"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/details"
-	flowid "github.com/MyriadFlow/storefront_gateway/api/v1/flowid"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/healthcheck"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/profile"
-	roleid "github.com/MyriadFlow/storefront_gateway/api/v1/roleId"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/uploadtoipfs"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/uploadtonfts"
-	"github.com/MyriadFlow/storefront_gateway/api/v1/marketplace"
+	authenticate "github.com/MyriadFlow/storefront-gateway/api/v1/authenticate"
+	claimrole "github.com/MyriadFlow/storefront-gateway/api/v1/claimRole"
+	delegateartifactcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateArtifactCreation"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/details"
+	flowid "github.com/MyriadFlow/storefront-gateway/api/v1/flowid"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/healthcheck"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/marketplace"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/profile"
+	roleid "github.com/MyriadFlow/storefront-gateway/api/v1/roleId"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/uploadtoipfs"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/uploadtonfts"
 	"github.com/gin-gonic/gin"
 )
 

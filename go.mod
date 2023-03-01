@@ -1,4 +1,4 @@
-module github.com/MyriadFlow/storefront_gateway
+module github.com/MyriadFlow/storefront-gateway
 
 go 1.19
 
@@ -11,7 +11,6 @@ require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-playground/assert/v2 v2.2.0
-	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/google/uuid v1.3.0
 	github.com/ipfs/go-ipfs-api v0.3.0
 	github.com/joho/godotenv v1.4.0
@@ -42,6 +41,7 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
@@ -87,7 +87,6 @@ require (
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/tklauser/numcpus v0.2.2 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	github.com/vk-rv/pvx v0.0.0-20210912195928-ac00bc32f6e7 // indirect
 	github.com/whyrusleeping/tar-utils v0.0.0-20180509141711-8c6c8ba81d5c // indirect
 	go.opencensus.io v0.22.4 // indirect
 	golang.org/x/crypto v0.5.0 // indirect

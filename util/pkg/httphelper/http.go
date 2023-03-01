@@ -3,8 +3,8 @@ package httphelper
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront_gateway/api/types"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/api/types"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )

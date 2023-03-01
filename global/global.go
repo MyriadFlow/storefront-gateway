@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 )
 
 var AllowedWalletAddresses []string

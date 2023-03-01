@@ -7,12 +7,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/MyriadFlow/storefront_gateway/api/types"
-	"github.com/MyriadFlow/storefront_gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/models/Org"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
-	"github.com/MyriadFlow/storefront_gateway/util/testingcommon"
+	"github.com/MyriadFlow/storefront-gateway/api/types"
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models/Org"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

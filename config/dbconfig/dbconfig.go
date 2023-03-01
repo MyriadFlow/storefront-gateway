@@ -3,7 +3,7 @@ package dbconfig
 import (
 	"fmt"
 
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	log "github.com/sirupsen/logrus"
 
 	"gorm.io/driver/postgres"

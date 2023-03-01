@@ -1,10 +1,10 @@
 package uploadtoipfs
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 	ipfsGateway "github.com/ipfs/go-ipfs-api"

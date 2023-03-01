@@ -1,11 +1,11 @@
 package details
 
 import (
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/onlyoperator"
-	"github.com/MyriadFlow/storefront_gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront_gateway/models/Org"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront_gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/onlyoperator"
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/models/Org"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +22,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	}
 }
 
-//func postDetails(c *gin.Context) {
+// func postDetails(c *gin.Context) {
 func patchDetails(c *gin.Context) {
 	var org Org.Org
 	err := c.BindJSON(&org)
