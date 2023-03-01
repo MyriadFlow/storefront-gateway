@@ -31,6 +31,7 @@ func patchProfile(c *gin.Context) {
 		return
 	}
 	walletAddress := c.GetString("walletAddress")
+	user.WalletAddress=walletAddress
 	result := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Updates(user)
 
 	if result.Error != nil {
@@ -61,7 +62,7 @@ func getProfile(c *gin.Context) {
 	}
 
 	payload := GetProfilePayload{
-		user.Name, user.WalletAddress, user.ProfilePictureUrl, user.Country,user.FacebookId, user.InstagramId,
+		user.Name, user.WalletAddress, user.ProfilePictureUrl, user.Country,user.FacebookId, user.InstagramId,user.TwitterId, user.DiscordId, user.TelegramId,
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
 }

@@ -32,9 +32,11 @@ func Test_PatchProfile(t *testing.T) {
 
 	// TODO: Write more tests
 	t.Run("Should be able to update name", func(t *testing.T) {
+		
+
 		rr := httptest.NewRecorder()
 
-		requestBody := PatchProfileRequest{
+		requestBody := GetProfilePayload{
 			Name: "Yash",
 		}
 		jsonData, err := json.Marshal(requestBody)
@@ -61,6 +63,8 @@ func Test_GetProfile(t *testing.T) {
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	t.Run("Should be able to get profile details", func(t *testing.T) {
+	
+
 		testWallet := testingcommon.GenerateWallet()
 		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 		url := "/api/v1.0/profile"

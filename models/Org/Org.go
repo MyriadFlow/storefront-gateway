@@ -2,11 +2,19 @@ package Org
 
 import (
 	"errors"
-
+	"encoding/json"
 	"github.com/MyriadFlow/storefront_gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront_gateway/config/envconfig"
 	"github.com/lib/pq"
+	"database/sql/driver"
 )
+
+type OrgContacts struct {	
+	DiscordId	string		`json:"discordId,omitempty"`
+	InstagramId	string		`json:"instagramId,omitempty"`
+	TelegramId	string		`json:"telegramId,omitempty"`
+	TwitterId	string		`json:"twitterId,omitempty"`
+}
 
 type Org struct {
 	Name               string         `gorm:"primary_key" json:"name"`
@@ -18,8 +26,21 @@ type Org struct {
 	Footer             string         `json:"footer,omitempty"`
 	TopHighlights      pq.StringArray `gorm:"type:text[]" json:"topHighlights,omitempty"`
 	Trendings          pq.StringArray `gorm:"type:text[]" json:"trendings,omitempty"`
-	TopBids            pq.StringArray `gorm:"type:text[]" json:"topBids,omitempty"`
+
+	Contacts				OrgContacts		`json:"contacts,omitempty"`      
 }
+func (contact OrgContacts) Value() (driver.Value, error) {
+	return json.Marshal(contact)
+}
+
+func (contact *OrgContacts) Scan(value interface{}) error {
+	parse, ok := value.([]byte)
+    if !ok {
+        return errors.New("type assertion to []byte failed")
+    }
+    return json.Unmarshal(parse, &contact)
+}
+
 
 func CreateOrg(org Org) error {
 	return dbconfig.GetDb().Create(&org).Error
