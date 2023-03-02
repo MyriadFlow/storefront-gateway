@@ -16,7 +16,7 @@ import (
 func Init() error {
 	db := dbconfig.GetDb()
 	//err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &Org.Org{},&models.Product{})
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &models.Marketplace{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &models.Marketplace{}, &Org.Org{})
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -38,10 +38,10 @@ func Init() error {
 		)`)
 
 	contacts := Org.OrgContacts{
-		DiscordId:   "-",
-		InstagramId: "-",
-		TelegramId:  "-",
-		TwitterId:   "@0xMyriadFlow",
+		DiscordId:   envconfig.EnvVars.DISCORD_ID,
+		InstagramId: envconfig.EnvVars.INSTAGRAM_ID,
+		TelegramId:  envconfig.EnvVars.TELEGRAM_ID,
+		TwitterId:   envconfig.EnvVars.TWITTER_ID,
 	}
 
 	err = Org.CreateOrg(
@@ -49,7 +49,7 @@ func Init() error {
 			Name:               envconfig.EnvVars.ORG_NAME,
 			HomeTitle:          envconfig.EnvVars.HOME_TITLE,
 			HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
-			GraphUrl:           envconfig.EnvVars.GRAPHQL_MARKETPLACE,
+			GraphqlMarketplace: envconfig.EnvVars.GRAPHQL_MARKETPLACE,
 			MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
 			StoreFrontAddress:  envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS,
 			Footer:             envconfig.EnvVars.FOOTER,
@@ -96,15 +96,5 @@ func Init() error {
 	// 	}
 	// }
 
-	//add dummy marketplace details
-	demoProduct := []models.Marketplace{
-		{ItemId: 1, NFT_Contract_Address: "nftcontractaddr1", TokenId: "tokenid1", MetaDataURI: "metadatauri1"},
-		{ItemId: 2, NFT_Contract_Address: "nftcontractaddr2", TokenId: "tokenid2", MetaDataURI: "metadatauri2"},
-	}
-	for _, product := range demoProduct {
-		if err := db.Model(&models.Marketplace{}).Create(&product).Error; err != nil {
-			log.Fatal(err)
-		}
-	}
 	return nil
 }

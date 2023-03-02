@@ -1,6 +1,6 @@
-package uploadtonfts
+package nftstorage
 
-type UploadToNftsPayload struct {
+type NftStorageUploadResponse struct {
 	FileName string `json:"name"`
 	CID string `json:"cid"`
 }

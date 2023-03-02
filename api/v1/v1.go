@@ -11,7 +11,7 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/api/v1/profile"
 	roleid "github.com/MyriadFlow/storefront-gateway/api/v1/roleId"
 	//"github.com/MyriadFlow/storefront-gateway/api/v1/uploadtoipfs"
-	"github.com/MyriadFlow/storefront-gateway/api/v1/uploadtonfts"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/nftstorage"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,7 +26,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		claimrole.ApplyRoutes(v1)
 		delegateartifactcreation.ApplyRoutes(v1)
 		//uploadtoipfs.ApplyRoutes(v1)
-		uploadtonfts.ApplyRoutes(v1)
+		nftstorage.ApplyRoutes(v1)
 		details.ApplyRoutes(v1)
 		healthcheck.ApplyRoutes(v1)
 		marketplace.ApplyRoutes(v1)

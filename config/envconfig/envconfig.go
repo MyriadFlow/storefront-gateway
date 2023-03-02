@@ -37,6 +37,11 @@ type config struct {
 	TOP_HIGHLIGHTS               []string `env:"TOP_HIGHLIGHTS" envSeparator:","`
 	TRENDINGS                    []string `env:"TRENDINGS" envSeparator:","`
 	//TOP_BIDS                     []string `env:"TOP_BIDS,required" envSeparator:","`
+	DISCORD_ID					string   `env:"DISCORD_ID"`
+	TELEGRAM_ID					string   `env:"TELEGRAM_ID"`
+	INSTAGRAM_ID				string   `env:"INSTAGRAM_ID"`
+	TWITTER_ID					string   `env:"TWITTER_ID"`
+
 	FOOTER                       string   `env:"FOOTER,required"`
 }
 
