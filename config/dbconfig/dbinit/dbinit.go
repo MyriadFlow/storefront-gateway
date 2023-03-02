@@ -6,11 +6,11 @@ import (
 	// "encoding/json"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront-gateway/config/storefront"
+	//"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/models/Org"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
-	"github.com/ethereum/go-ethereum/common/hexutil"
+	//"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	//"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 func Init() error {
@@ -27,7 +27,7 @@ func Init() error {
 		name text,
 		home_title text,
 		home_description text,
-		graph_url text,
+		graphql_marketpace text,
 		store_front_address text,
 		market_place_address text,
 		footer text,
@@ -49,7 +49,7 @@ func Init() error {
 			Name:               envconfig.EnvVars.ORG_NAME,
 			HomeTitle:          envconfig.EnvVars.HOME_TITLE,
 			HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
-			GraphUrl:           envconfig.EnvVars.GRAPH_URL,
+			GraphUrl:           envconfig.EnvVars.GRAPHQL_MARKETPLACE,
 			MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
 			StoreFrontAddress:  envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS,
 			Footer:             envconfig.EnvVars.FOOTER,
@@ -80,21 +80,21 @@ func Init() error {
     	WHEN duplicate_object THEN null;
 	END $$;`)
 
-	creatorRoleId, err := storefront.GetRole(storefront.CREATOR_ROLE)
-	if err != nil {
-		logwrapper.Fatal(err)
-	}
+	// creatorRoleId, err := storefront.GetRole(storefront.CREATOR_ROLE)
+	// if err != nil {
+	// 	logwrapper.Fatal(err)
+	// }
 
-	creatorEula := envconfig.EnvVars.CREATOR_EULA
+	// creatorEula := envconfig.EnvVars.CREATOR_EULA
 
-	// TODO: create role only if they does not exist
-	rolesToBeAdded := []models.Role{
-		{Name: "Creator Role", RoleId: hexutil.Encode(creatorRoleId[:]), Eula: creatorEula}}
-	for _, role := range rolesToBeAdded {
-		if err := db.Model(&models.Role{}).FirstOrCreate(&role).Error; err != nil {
-			log.Fatal(err)
-		}
-	}
+	// // TODO: create role only if they does not exist
+	// rolesToBeAdded := []models.Role{
+	// 	{Name: "Creator Role", RoleId: hexutil.Encode(creatorRoleId[:]), Eula: creatorEula}}
+	// for _, role := range rolesToBeAdded {
+	// 	if err := db.Model(&models.Role{}).FirstOrCreate(&role).Error; err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }
 
 	//add dummy marketplace details
 	demoProduct := []models.Marketplace{
