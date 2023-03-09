@@ -5,3 +5,8 @@ type NftStorageUploadResponse struct {
 	CID string `json:"cid"`
 }
 
+type LikeNft struct {
+	CID string `json:"cid"`
+}
+
+
