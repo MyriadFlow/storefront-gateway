@@ -45,7 +45,7 @@ func New(walletAddress string) CustomClaims {
 	}
 	pasetoExpirationHours := pasetoExpirationInHoursInt * time.Hour
 	expiration := time.Now().Add(pasetoExpirationHours)
-	signedBy := envconfig.EnvVars.SIGNED_BY
+	signedBy := envconfig.EnvVars.PASETO_SIGNED_BY
 	return CustomClaims{
 		walletAddress,
 		signedBy,

@@ -21,7 +21,7 @@ type Org struct {
 	Name               string         `gorm:"primary_key" json:"name"`
 	HomeTitle          string         `json:"homeTitle,omitempty"`
 	HomeDescription    string         `json:"homeDescription,omitempty"`
-	GraphUrl           string         `json:"graphurl,omitempty"`
+	GraphqlMarketplace           string         `json:"graphMarketplace,omitempty"`
 	StoreFrontAddress  string         `json:"storeFrontAddress,omitempty"`
 	MarketPlaceAddress string         `json:"marketplaceAddress,omitempty"`
 	Footer             string         `json:"footer,omitempty"`
