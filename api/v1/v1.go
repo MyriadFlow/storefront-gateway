@@ -3,7 +3,7 @@ package apiv1
 import (
 	authenticate "github.com/MyriadFlow/storefront-gateway/api/v1/authenticate"
 	claimrole "github.com/MyriadFlow/storefront-gateway/api/v1/claimRole"
-	delegateartifactcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateArtifactCreation"
+	delegateassetcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateAssetCreation"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/details"
 	flowid "github.com/MyriadFlow/storefront-gateway/api/v1/flowid"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/healthcheck"
@@ -24,7 +24,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		profile.ApplyRoutes(v1)
 		roleid.ApplyRoutes(v1)
 		claimrole.ApplyRoutes(v1)
-		delegateartifactcreation.ApplyRoutes(v1)
+		delegateassetcreation.ApplyRoutes(v1)
 		//uploadtoipfs.ApplyRoutes(v1)
 		nftstorage.ApplyRoutes(v1)
 		details.ApplyRoutes(v1)

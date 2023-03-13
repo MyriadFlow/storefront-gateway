@@ -6,7 +6,9 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract/rawtransaction"
+	storefront_instance"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	storefront "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/storefront"
+	"github.com/MyriadFlow/storefront-gateway/config/smartcontract"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/cryptosign"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
@@ -64,13 +66,43 @@ func postClaimRole(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Wallet address is not correct")
 		return
 	}
-
-	// client := smartcontract.GetClient()
+	walletAddress = c.GetString("walletAddress")
+	client, err := smartcontract.GetClient()
+	if err != nil {
+		httphelper.InternalServerError(c)
+		c.Abort()
+		return
+	}
 	// instance, err := storefront.GetInstance(client)
+	instance, err := storefront_instance.GetInstance(client)
 	if err != nil {
 		logwrapper.Errorf("failed to get instance for %v , error: %v", "STOREFRONT", err.Error())
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		httphelper.InternalServerError(c)
+		c.Abort()
+		return
 	}
+
+	operatorRole, err := instance.STOREFRONTOPERATORROLE(nil)
+	if err != nil {
+		logwrapper.Errorf("Failed to get %v, error: %v", "STOREFRONTOPERATORROLE", err.Error())
+		httphelper.InternalServerError(c)
+		c.Abort()
+		return
+	}
+	hasRole, err := instance.HasRole(nil, operatorRole, common.HexToAddress(walletAddress))
+	if err != nil {
+		logwrapper.Errorf("failed to call %v smart contract function HasRole , error: %v", "STOREFRONT", err.Error())
+		httphelper.InternalServerError(c)
+		c.Abort()
+		return
+	}
+
+	if !hasRole {
+		httphelper.ErrResponse(c, http.StatusForbidden, "only operator can access this API")
+		c.Abort()
+		return
+	}
+
 	roleIdBytesSlice, err := hexutil.Decode(role.RoleId)
 	if err != nil {
 		logwrapper.Warnf("failed to decode hex string : %v, for role for wallet address %v", role.RoleId, walletAddress)
@@ -81,7 +113,7 @@ func postClaimRole(c *gin.Context) {
 	var roleIdBytes [32]byte
 	copy(roleIdBytes[:], roleIdBytesSlice)
 
-	tx, err := rawtransaction.SendRawTransaction(storefront.StorefrontABI, "grantRole", roleIdBytes, walletAddressHex)
+	tx, err := rawtransaction.SendRawTransaction(storefront.StoreABI, "grantRole", roleIdBytes, walletAddressHex)
 
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")

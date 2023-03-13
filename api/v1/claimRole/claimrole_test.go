@@ -79,7 +79,7 @@ func Test_PostClaimRole(t *testing.T) {
 			t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
 		}
 		addr := common.HexToAddress(testWallet.WalletAddress)
-		roleGrantedChannel := make(chan *smartcontractstorefront.StorefrontRoleGranted, 10)
+		roleGrantedChannel := make(chan *smartcontractstorefront.StoreRoleGranted, 10)
 
 		authBindOpts, err := auth.GetAuth(client)
 

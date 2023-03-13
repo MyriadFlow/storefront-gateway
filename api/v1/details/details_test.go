@@ -40,7 +40,7 @@ func Test_Details(t *testing.T) {
 		assert.Equal(t, envconfig.EnvVars.ORG_NAME, org.Name)
 		assert.Equal(t, envconfig.EnvVars.HOME_TITLE, org.HomeTitle)
 		assert.Equal(t, envconfig.EnvVars.HOME_DESCRIPTION, org.HomeDescription)
-		assert.Equal(t, envconfig.EnvVars.GRAPHQL_MARKETPLACE, org.GraphUrl)
+		assert.Equal(t, envconfig.EnvVars.GRAPHQL_MARKETPLACE, org.GraphqlMarketplace)
 		assert.Equal(t, envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS, org.MarketPlaceAddress)
 		assert.Equal(t, envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS, org.StoreFrontAddress)
 		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
@@ -79,7 +79,7 @@ func Test_Details(t *testing.T) {
 					Name:               envconfig.EnvVars.ORG_NAME,
 					HomeTitle:          envconfig.EnvVars.HOME_TITLE,
 					HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
-					GraphUrl:           envconfig.EnvVars.GRAPHQL_MARKETPLACE,
+					GraphqlMarketplace: envconfig.EnvVars.GRAPHQL_MARKETPLACE,
 					MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
 					StoreFrontAddress:  envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS,
 					Footer:             envconfig.EnvVars.FOOTER,

@@ -1,10 +1,10 @@
 package delegateartifactcreation
 
-type DelegateArtifactCreationRequest struct {
+type DelegateAssetCreationRequest struct {
 	CreatorAddress string `json:"creatorAddress" binding:"required,hexadecimal"`
 	MetaDataHash   string `json:"metaDataHash" binding:"required"`
 }
 
-type DelegateArtifactCreationPayload struct {
+type DelegateAssetCreationPayload struct {
 	TransactionHash string `json:"transactionHash"`
 }

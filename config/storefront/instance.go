@@ -10,13 +10,13 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-var instance *storefront.Storefront
+var instance *storefront.Store
 
 var (
 	errEnvVariableNotDefined = errors.New("environment variable STOREFRONT_CONTRACT_ADDRESS is required")
 )
 
-func GetInstance(client *ethclient.Client) (*storefront.Storefront, error) {
+func GetInstance(client *ethclient.Client) (*storefront.Store, error) {
 	if instance != nil {
 		return instance, nil
 	}
@@ -27,7 +27,7 @@ func GetInstance(client *ethclient.Client) (*storefront.Storefront, error) {
 	}
 	addr := common.HexToAddress(envContractAddress)
 	var err error
-	instance, err = storefront.NewStorefront(addr, client)
+	instance, err = storefront.NewStore(addr, client)
 	if err != nil {
 		logwrapper.Errorf("failed to load storefront contract at address %v, error: %v", envContractAddress, err.Error())
 		return nil, err

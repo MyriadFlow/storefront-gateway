@@ -4,16 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"os"
-	"net/http"
-	"github.com/MyriadFlow/storefront-gateway/models"
+	// "net/http"
+	// "github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	// "github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/gin-gonic/gin"
 	client "github.com/nftstorage/go-client"
 	"github.com/sirupsen/logrus"
-	"gorm.io/gorm"
+	// "gorm.io/gorm"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -22,20 +22,20 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		g.Use(paseto.PASETO)
 		g.POST("/upload", uploadtonftstorage)
-		g.POST("/like", updatenftlikes)
-		g.GET("/likes/:cid", getnftlikes)
+		// g.POST("/like", updatenftlikes)
+		// g.GET("/likes/:cid", getnftlikes)
 	}
 }
-func insertcidtodb(cid string)(error){
-	//insert record with like count equals to 1
-	nftlikes := models.NftLikes{
-		Cid: cid,
-		Likes: 1,
-	}
-	db := dbconfig.GetDb()
-	err := db.Model(&models.NftLikes{}).Create(&nftlikes).Error
-	return err
-}
+// func insertcidtodb(cid string)(error){
+// 	//insert record with like count equals to 1
+// 	nftlikes := models.NftLikes{
+// 		Cid: cid,
+// 		Likes: 1,
+// 	}
+// 	db := dbconfig.GetDb()
+// 	err := db.Model(&models.NftLikes{}).Create(&nftlikes).Error
+// 	return err
+// }
 func uploadtonftstorage(c *gin.Context) {
 
 	token := envconfig.EnvVars.NFT_STORAGE_API_KEY
@@ -84,12 +84,12 @@ func uploadtonftstorage(c *gin.Context) {
 		cid = cid[1:]
 		cid = cid[:len(cid)-2]
 		
-		//add the cid for likes count
-		err = insertcidtodb(string(cid))
-		if err != nil {
-			httphelper.ErrResponse(c, http.StatusInternalServerError, "Fail to insert NFT likes record")
-			return 
-		}
+		// //add the cid for likes count
+		// err = insertcidtodb(string(cid))
+		// if err != nil {
+		// 	httphelper.ErrResponse(c, http.StatusInternalServerError, "Fail to insert NFT likes record")
+		// 	return 
+		// }
 
 		responsePayload = append(responsePayload, NftStorageUploadResponse{file.Filename, string(cid)})
 
@@ -98,41 +98,41 @@ func uploadtonftstorage(c *gin.Context) {
 	httphelper.SuccessResponse(c, "file successfully uploaded to nft storage", responsePayload)
 }
 
-func updatenftlikes(c *gin.Context) {
+// func updatenftlikes(c *gin.Context) {
 
-	db := dbconfig.GetDb()
-	var nftcid LikeNft
+// 	db := dbconfig.GetDb()
+// 	var nftcid LikeNft
 	
-	err := c.BindJSON(&nftcid)
-	if err != nil {
-		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
-		return
-	}
+// 	err := c.BindJSON(&nftcid)
+// 	if err != nil {
+// 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
+// 		return
+// 	}
 	
-	result := db.Model(&models.NftLikes{}).Where("cid = ?", nftcid.CID).Update("likes", gorm.Expr("likes + ?", 1))
-	if result.Error != nil {
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured : Unable to update Likes")
-		return
-	}
-	if result.RowsAffected == 0 {
-		httphelper.ErrResponse(c, http.StatusNotFound, "Record not found")
-		return
-	}
+// 	result := db.Model(&models.NftLikes{}).Where("cid = ?", nftcid.CID).Update("likes", gorm.Expr("likes + ?", 1))
+// 	if result.Error != nil {
+// 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured : Unable to update Likes")
+// 		return
+// 	}
+// 	if result.RowsAffected == 0 {
+// 		httphelper.ErrResponse(c, http.StatusNotFound, "Record not found")
+// 		return
+// 	}
 
-	httphelper.SuccessResponse(c, "Like successfully updated", nil)
+// 	httphelper.SuccessResponse(c, "Like successfully updated", nil)
 
-}
+// }
 
-func getnftlikes(c *gin.Context) {
-	db := dbconfig.GetDb()
-	var nftlikes models.NftLikes
-	cid := c.Params.ByName("cid")
+// func getnftlikes(c *gin.Context) {
+// 	db := dbconfig.GetDb()
+// 	var nftlikes models.NftLikes
+// 	cid := c.Params.ByName("cid")
 
-	err := db.Model(&models.NftLikes{}).Where("cid = ?", cid).First(&nftlikes).Error
-	if err != nil {
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}
-	httphelper.SuccessResponse(c, "Likes fetched successfully", nftlikes.Likes)
+// 	err := db.Model(&models.NftLikes{}).Where("cid = ?", cid).First(&nftlikes).Error
+// 	if err != nil {
+// 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+// 		return
+// 	}
+// 	httphelper.SuccessResponse(c, "Likes fetched successfully", nftlikes.Likes)
 
-}
+// }

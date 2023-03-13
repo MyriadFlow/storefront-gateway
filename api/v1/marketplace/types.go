@@ -11,3 +11,9 @@ type MarketPlaceInfo struct {
 	Description			string `json:"description,omitempty"`
 	Contact			string `json:"contact,omitempty"`
 }
+
+
+type LikesQueryPayload struct {	
+	NFT_Contract_Address     string   `json:"nft-contract-address"`
+	TokenId            string   `json:"tokenId,omitempty"`
+}
