@@ -16,8 +16,6 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/api/types"
 	roleid "github.com/MyriadFlow/storefront-gateway/api/v1/roleId"
 
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract"
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract/auth"
 	storefront "github.com/MyriadFlow/storefront-gateway/config/storefront"
@@ -35,9 +33,9 @@ import (
 
 func Test_PostClaimRole(t *testing.T) {
 	defer time.Sleep(4 * time.Second)
-	envconfig.InitEnvVars()
+
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
-	dbinit.Init()
 	global.InitGlobal()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
@@ -79,7 +77,7 @@ func Test_PostClaimRole(t *testing.T) {
 			t.Fatalf("failed to get role id for %v , error: %v", "CREATOR ROLE", err.Error())
 		}
 		addr := common.HexToAddress(testWallet.WalletAddress)
-		roleGrantedChannel := make(chan *smartcontractstorefront.StoreRoleGranted, 10)
+		roleGrantedChannel := make(chan *smartcontractstorefront.StorefrontRoleGranted, 10)
 
 		authBindOpts, err := auth.GetAuth(client)
 

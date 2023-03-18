@@ -9,15 +9,10 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"testing"
-
 	"github.com/MyriadFlow/storefront-gateway/api/types"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/flowid"
-
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	testingcommmon "github.com/MyriadFlow/storefront-gateway/util/testingcommon"
-
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/gin-gonic/gin"
@@ -26,36 +21,15 @@ import (
 
 // TODO: Write test to verify expiry
 func Test_PostAuthenticate(t *testing.T) {
-	envconfig.InitEnvVars()
+
+	testingcommmon.InitializeEnvVars()
 	logwrapper.Init()
-	dbinit.Init()
+
 	t.Cleanup(testingcommmon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 
 	url := "/api/v1.0/authenticate"
 
-	t.Run("Should return 200 with correct wallet address", func(t *testing.T) {
-		testWallet := testingcommmon.GenerateWallet()
-		eula, flowId := callFlowIdApi(testWallet.WalletAddress, t)
-		signature := getSignature(eula, flowId, testWallet.PrivateKey)
-		body := AuthenticateRequest{Signature: signature, FlowId: flowId}
-		jsonBody, err := json.Marshal(body)
-		if err != nil {
-			t.Fatal(err)
-		}
-		rr := httptest.NewRecorder()
-
-		//Request with signature created from correct wallet address
-		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		c, _ := gin.CreateTestContext(rr)
-		c.Request = req
-		authenticate(c)
-		assert.Equal(t, http.StatusOK, rr.Code, rr.Body.String())
-	})
 	t.Run("Should return 403 with different wallet address", func(t *testing.T) {
 		testWallet := testingcommmon.GenerateWallet()
 		eula, flowId := callFlowIdApi(testWallet.WalletAddress, t)
@@ -82,6 +56,31 @@ func Test_PostAuthenticate(t *testing.T) {
 		authenticate(c)
 		assert.Equal(t, http.StatusForbidden, rr.Code, rr.Body.String())
 	})
+
+	t.Run("Should return 200 with correct wallet address", func(t *testing.T) {
+		testWallet := testingcommmon.GenerateWallet()
+		eula, flowId := callFlowIdApi(testWallet.WalletAddress, t)
+		
+		signature := getSignature(eula, flowId, testWallet.PrivateKey)
+		body := AuthenticateRequest{Signature: signature, FlowId: flowId}
+		jsonBody, err := json.Marshal(body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+
+		//Request with signature created from correct wallet address
+		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonBody))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		c, _ := gin.CreateTestContext(rr)
+		c.Request = req
+		authenticate(c)
+		assert.Equal(t, http.StatusOK, rr.Code, rr.Body.String())
+	})
+	
 
 }
 
@@ -118,7 +117,6 @@ func callFlowIdApi(walletAddress string, t *testing.T) (eula string, flowidStrin
 func getSignature(eula string, flowId string, hexPrivateKey string) string {
 	message := eula + flowId
 	newMsg := fmt.Sprintf("\x19Ethereum Signed Message:\n%v%v", len(message), message)
-
 	privateKey, err := crypto.HexToECDSA(hexPrivateKey)
 	if err != nil {
 		log.Fatal("HexToECDSA failed ", err)

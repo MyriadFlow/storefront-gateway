@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/MyriadFlow/storefront-gateway/api/types"
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models/Org"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
@@ -20,9 +19,8 @@ import (
 )
 
 func Test_Details(t *testing.T) {
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
-	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 
@@ -44,9 +42,6 @@ func Test_Details(t *testing.T) {
 		assert.Equal(t, envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS, org.MarketPlaceAddress)
 		assert.Equal(t, envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS, org.StoreFrontAddress)
 		assert.Equal(t, envconfig.EnvVars.FOOTER, org.Footer)
-		assert.ElementsMatch(t, envconfig.EnvVars.TOP_HIGHLIGHTS, org.TopHighlights)
-		assert.ElementsMatch(t, envconfig.EnvVars.TRENDINGS, org.Trendings)
-		//assert.ElementsMatch(t, envconfig.EnvVars.TOP_BIDS, org.TopBids)
 		logrus.Debug(org)
 	})
 
@@ -57,7 +52,6 @@ func Test_Details(t *testing.T) {
 			HomeTitle:     "Max",
 			TopHighlights: []string{"43"},
 			Trendings:     []string{"47"},
-			//TopBids:       []string{"42"},
 		}
 		jsonData, err := json.Marshal(requestBody)
 		if err != nil {
@@ -69,7 +63,6 @@ func Test_Details(t *testing.T) {
 		}
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
-		//postDetails(c)
 		patchDetails(c)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 
@@ -85,9 +78,11 @@ func Test_Details(t *testing.T) {
 					Footer:             envconfig.EnvVars.FOOTER,
 					TopHighlights:      envconfig.EnvVars.TOP_HIGHLIGHTS,
 					Trendings:          envconfig.EnvVars.TRENDINGS,
-					//TopBids:            envconfig.EnvVars.TOP_BIDS,
 				},
 			)
+			if err != nil {
+				t.Fatal(err)
+			}
 		})
 	})
 

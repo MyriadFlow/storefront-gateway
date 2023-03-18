@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	"github.com/MyriadFlow/storefront-gateway/global"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
@@ -20,7 +19,7 @@ import (
 
 func Test_GetRoleId(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()

@@ -6,20 +6,16 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
-
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
 // TODO add test for testing when wallet address exist
 func Test_GetFlowId(t *testing.T) {
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
-	dbinit.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	testWalletAddress := testingcommon.GenerateWallet().WalletAddress

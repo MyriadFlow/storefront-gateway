@@ -19,10 +19,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"fmt"
 )
 
 func Test_PASETO(t *testing.T) {
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
 	db := dbconfig.GetDb()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
@@ -38,25 +39,17 @@ func Test_PASETO(t *testing.T) {
 	defer func() {
 		db.Delete(&newUser)
 	}()
+
 	t.Run("Should return 200 with correct PASETO", func(t *testing.T) {
 		newClaims := claims.New(testWalletAddress)
 		token, err := auth.GenerateTokenPaseto(newClaims)
 		if err != nil {
 			t.Fatal(err)
 		}
+		token="Bearer "+token
 		rr := callApi(t, token)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
-
-	// t.Run("Should return 401 with incorret PASETO", func(t *testing.T) {
-	// 	newClaims := claims.New(testWalletAddress)
-	// 	token, err := auth.GenerateTokenPaseto(newClaims, "aaaabbaa")
-	// 	if err != nil {
-	// 		t.Fatal(err)
-	// 	}
-	// 	rr := callApi(t, token)
-	// 	assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
-	// })
 
 	t.Run("Should return 401 and 4011 with expired PASETO", func(t *testing.T) {
 		expiration := time.Now().Add(time.Second * 2)
@@ -66,12 +59,13 @@ func Test_PASETO(t *testing.T) {
 			SignedBy:      signedBy,
 			Expiration:    expiration,
 		}
-		time.Sleep(time.Second * 2)
+		fmt.Println("newClaims : ",newClaims)
+		time.Sleep(time.Second * 5)
 		token, err := auth.GenerateTokenPaseto(newClaims)
 		if err != nil {
 			t.Fatal(err)
 		}
-
+		token="Bearer "+token
 		rr := callApi(t, token)
 		assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
 		var response types.ApiResponse

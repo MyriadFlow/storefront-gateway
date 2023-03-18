@@ -113,7 +113,7 @@ func postClaimRole(c *gin.Context) {
 	var roleIdBytes [32]byte
 	copy(roleIdBytes[:], roleIdBytesSlice)
 
-	tx, err := rawtransaction.SendRawTransaction(storefront.StoreABI, "grantRole", roleIdBytes, walletAddressHex)
+	tx, err := rawtransaction.SendRawTransaction(storefront.StorefrontABI, "grantRole", roleIdBytes, walletAddressHex)
 
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")

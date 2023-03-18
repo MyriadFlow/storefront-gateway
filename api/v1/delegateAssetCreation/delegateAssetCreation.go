@@ -35,9 +35,9 @@ func deletegateAssetCreation(c *gin.Context) {
 		return
 	}
 	creatorAddr := common.HexToAddress(request.CreatorAddress)
-	abiS := storefront.StoreABI
+	abiS := storefront.StorefrontABI
 
-	tx, err := rawtransaction.SendRawTransaction(abiS, "delegateAssetCreation", creatorAddr, request.MetaDataHash)
+	tx, err := rawtransaction.SendRawTransaction(abiS, "delegateAssetCreation", creatorAddr, request.MetaDataHash, request.RoyaltyPercentBasisPoint)
 
 	if err != nil {
 		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateAssetCreation", "StoreFront", err.Error())

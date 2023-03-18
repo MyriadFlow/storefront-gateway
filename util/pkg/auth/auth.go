@@ -3,7 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
-	"os"
+	//"os"
 	"strconv"
 	"time"
 
@@ -15,21 +15,36 @@ import (
 
 var PublicKey gopaseto.V4AsymmetricPublicKey
 var secretKey gopaseto.V4AsymmetricSecretKey
+var initialized bool
 
 func Init() {
 	secretKey = gopaseto.NewV4AsymmetricSecretKey()
 	PublicKey = secretKey.Public()
+	initialized=true
 }
+
+
 func GenerateTokenPaseto(claim claims.CustomClaims) (string, error) {
+	if !initialized {
+		secretKey = gopaseto.NewV4AsymmetricSecretKey()
+		PublicKey = secretKey.Public()
+	}
+	
 	footer := envconfig.EnvVars.FOOTER
 	claimbyte, _ := json.Marshal(claim)
-	fmt.Println("claim value", claimbyte)
 	token, err := gopaseto.NewTokenFromClaimsJSON(claimbyte, []byte(footer))
 	if err != nil {
 		return "", err
 	}
-	pasetoExpirationInHours, ok := os.LookupEnv("PASETO_EXPIRATION_IN_HOURS")
+
+	pasetoExpirationInHours := envconfig.EnvVars.PASETO_EXPIRATION_IN_HOURS
+	ok:=false
+	if pasetoExpirationInHours != "" {
+		ok=true
+	}
+	fmt.Println("ok value walletaddress", ok)
 	pasetoExpirationInHoursInt := time.Duration(24)
+	
 	if ok {
 		res, err := strconv.Atoi(pasetoExpirationInHours)
 		if err != nil {
@@ -46,6 +61,11 @@ func GenerateTokenPaseto(claim claims.CustomClaims) (string, error) {
 }
 
 func Getpublickey() gopaseto.V4AsymmetricPublicKey {
+	publickey := PublicKey
+	return publickey
+}
+
+func GetTestpublickey() gopaseto.V4AsymmetricPublicKey {
 	publickey := PublicKey
 	return publickey
 }
