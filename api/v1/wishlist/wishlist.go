@@ -101,8 +101,5 @@ func checkIfAlreadyWishlisted(c *gin.Context) bool {
 	}
 
 	fmt.Println("already exited count :",count)
-	if count!=1 {
-		return false //not wishlisted yet
-	}
-	return true //already wishlisted once
+	return count == 1
 }
