@@ -14,12 +14,12 @@ import (
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/like")
+	g := r.Group("/likes")
 	{
 		g.Use(paseto.PASETO)
-		g.GET("/allUsersLikesCount/:itemId", getAllUsersLikesCount)
-		g.POST("/addUserLike/:itemId", postUserLike)
-		g.DELETE("/removeUserLike/:itemId", deleteUserLike)
+		g.GET("/:itemId", getAllUsersLikesCount)
+		g.POST("/:itemId", postUserLike)
+		g.DELETE("/:itemId", deleteUserLike)
 
 	}
 }

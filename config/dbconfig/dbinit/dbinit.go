@@ -2,20 +2,17 @@ package dbinit
 
 import (
 	"log"
-	// "errors"
-	// "encoding/json"
+
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
-	"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/models/Org"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
-	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 func Init() error {
 	db := dbconfig.GetDb()
-	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &models.Marketplace{}, &Org.Org{}, &models.Likes{}, &models.Wishlist{})
+	//err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Role{}, &models.Highlights{}, &Org.Org{}, &models.Likes{}, &models.Wishlist{})
+	err := db.AutoMigrate(&models.User{}, &models.FlowId{}, &models.Highlights{}, &Org.Org{}, &models.Likes{}, &models.Wishlist{})
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -63,11 +60,11 @@ func Init() error {
 	}
 
 	//Create user_roles table
-	db.Exec(`create table if not exists user_roles (
-			wallet_address text,
-			role_id text,
-			unique (wallet_address,role_id)
-			)`)
+	// db.Exec(`create table if not exists user_roles (
+	// 		wallet_address text,
+	// 		role_id text,
+	// 		unique (wallet_address,role_id)
+	// 		)`)
 
 	//Create flow id
 	db.Exec(`
@@ -80,22 +77,22 @@ func Init() error {
 	END $$;`)
 
 	//required for test cases
-	creatorRoleId, err := storefront.GetRole(storefront.CREATOR_ROLE)
-	if err != nil {
-		logwrapper.Fatal(err)
-	}
+	// creatorRoleId, err := storefront.GetRole(storefront.CREATOR_ROLE)
+	// if err != nil {
+	// 	logwrapper.Fatal(err)
+	// }
 
 	//creatorEula := envconfig.EnvVars.CREATOR_EULA
-	creatorEula := envconfig.EnvVars.AUTH_EULA
+	// creatorEula := envconfig.EnvVars.AUTH_EULA
 
 	// TODO: create role only if they does not exist
-	rolesToBeAdded := []models.Role{
-		{Name: "Creator Role", RoleId: hexutil.Encode(creatorRoleId[:]), Eula: creatorEula}}
-	for _, role := range rolesToBeAdded {
-		if err := db.Model(&models.Role{}).FirstOrCreate(&role).Error; err != nil {
-			log.Fatal(err)
-		}
-	}
+	// rolesToBeAdded := []models.Role{
+	// 	{Name: "Creator Role", RoleId: hexutil.Encode(creatorRoleId[:]), Eula: creatorEula}}
+	// for _, role := range rolesToBeAdded {
+	// 	if err := db.Model(&models.Role{}).FirstOrCreate(&role).Error; err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }
 
 	return nil
 }

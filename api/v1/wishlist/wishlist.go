@@ -17,9 +17,9 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/wishlist")
 	{
 		g.Use(paseto.PASETO)
-		g.GET("/userWishlist", getUserWishlist)
-		g.POST("/addToUserWishlist/:itemId", postItemIdToUserWishlist)
-		g.DELETE("/removeFromUserWishlist/:itemId", deleteFromUserWishlist)
+		g.GET("", getUserWishlist)
+		g.POST("/:itemId", postItemIdToUserWishlist)
+		g.DELETE("/:itemId", deleteFromUserWishlist)
 
 	}
 }

@@ -43,9 +43,17 @@ func PASETO(c *gin.Context) {
 	parser.AddRule(gopaseto.NotExpired())
 	publickey := auth.Getpublickey()
 	parsedToken, err := parser.ParseV4Public(publickey, pasetoToken, nil)
+	if err != nil {
+		err = fmt.Errorf("failed to parsed paseto token, %s", err)
+		logValidationFailed(headers.Authorization, err)
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	exp,_:=parsedToken.GetExpiration()
+	fmt.Println("parsed exp time set : ",exp)
 	jsonvalue := parsedToken.ClaimsJSON()
 	ClaimsValue := claims.CustomClaims{}
-	json.Unmarshal(jsonvalue, &ClaimsValue)
+	err = json.Unmarshal(jsonvalue, &ClaimsValue)
 	if err != nil {
 		err = fmt.Errorf("failed to scan claims for paseto token, %s", err)
 		logValidationFailed(headers.Authorization, err)
