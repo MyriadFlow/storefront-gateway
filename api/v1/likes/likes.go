@@ -3,13 +3,14 @@ package likes
 import (
 	"net/http"
 	"strconv"
+
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"fmt"
+	//"fmt"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -27,7 +28,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func getAllUsersLikesCount(c *gin.Context) {
 	db := dbconfig.GetDb()
 	itemId := c.Params.ByName("itemId")
-	if itemId==""{
+	if itemId == "" {
 		httphelper.ErrResponse(c, http.StatusForbidden, "no itemId passed")
 		return
 	}
@@ -53,7 +54,7 @@ func deleteUserLike(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Unable to Parse item id")
 		return
 	}
-	err = db.Where("item_id = ? AND user_wallet_address = ?", id,walletAddress).Delete(&models.Likes{}).Error
+	err = db.Where("item_id = ? AND user_wallet_address = ?", id, walletAddress).Delete(&models.Likes{}).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -73,15 +74,15 @@ func postUserLike(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Unable to Parse item id")
 		return
 	}
-	//check if item already liked 
-	isLiked:=checkIfAlreadyLiked(c)
+	//check if item already liked
+	isLiked := checkIfAlreadyLiked(c)
 	if isLiked {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Item Liked Already")
 		return
 	}
-	fmt.Println("isLiked found :",isLiked)
+
 	addUserLike := models.Likes{
-		ItemId: id,
+		ItemId:            id,
 		UserWalletAddress: walletAddress,
 	}
 	err = db.Model(&models.Likes{}).Create(&addUserLike).Error
@@ -99,15 +100,12 @@ func checkIfAlreadyLiked(c *gin.Context) bool {
 	walletAddress := c.GetString("walletAddress")
 	itemId := c.Params.ByName("itemId")
 	var count int64
-	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ?", itemId,walletAddress).Count(&count).Error
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ?", itemId, walletAddress).Count(&count).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 
 	}
-	fmt.Println("already exited count :",count)
-	if count!=1 {
-		return false //not liked yet
-	}
-	return true //already liked once
+
+	return count == 1
 }

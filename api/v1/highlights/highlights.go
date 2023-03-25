@@ -36,11 +36,11 @@ func postHighlightsItemId(c *gin.Context) {
 	err = db.Model(&models.Highlights{}).Create(&highlightItem).Error
 	if err != nil {
 		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured : Unable to add Like")
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured : Unable to post Highlight")
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Highlights Details successfully updated", nil)
+	httphelper.SuccessResponse(c, "Highlights Details successfully added", nil)
 
 }
 

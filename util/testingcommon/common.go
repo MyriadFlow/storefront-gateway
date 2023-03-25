@@ -122,6 +122,7 @@ func InitializeEnvVars() {
 	envconfig.EnvVars.APP_PORT = 8000
 	envconfig.EnvVars.APP_MODE = "debug"
 	envconfig.EnvVars.APP_ALLOWED_ORIGIN = []string{"*"}
+
 	envconfig.EnvVars.DB_HOST = hostname
 	envconfig.EnvVars.DB_USERNAME = "postgres"
 	envconfig.EnvVars.DB_PASSWORD = "root"
@@ -142,11 +143,6 @@ func InitializeEnvVars() {
 	envconfig.EnvVars.HOME_TITLE = "MyriadFLow"
 	envconfig.EnvVars.HOME_DESCRIPTION = "MyriadFlow StoreFront"
 	envconfig.EnvVars.FOOTER = "MyriadFlow 2023"
-
-	envconfig.EnvVars.DISCORD_ID = ""
-	envconfig.EnvVars.TELEGRAM_ID = ""
-	envconfig.EnvVars.INSTAGRAM_ID = ""
-	envconfig.EnvVars.TWITTER_ID = "@0xMyriadFlow"
 
 	envconfig.EnvVars.ALLOWED_WALLET_ADDRESS = []string{"*"}
 

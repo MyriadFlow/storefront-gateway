@@ -129,7 +129,6 @@ func Test_PostAuthenticate(t *testing.T) {
 
 func callFlowIdApi(walletAddress string, t *testing.T) (eula string, flowidString string) {
 	// Call flowid api
-	//u, err := url.Parse("/api/v1.0/flowid")
 	u, err := url.Parse("/api/v1.0/authenticate")
 	q := url.Values{}
 	q.Set("walletAddress", walletAddress)
@@ -145,7 +144,6 @@ func callFlowIdApi(walletAddress string, t *testing.T) (eula string, flowidStrin
 	}
 	c, _ := gin.CreateTestContext(rr)
 	c.Request = req
-	//GetFlowId(c)
 	getFlowId(c)
 	assert.Equal(t, http.StatusOK, rr.Code, "Failed to call flowApi")
 	var flowIdPayload GetFlowIdPayload

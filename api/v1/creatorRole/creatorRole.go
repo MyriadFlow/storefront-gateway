@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract"
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract/rawtransaction"
 	storefront_instance "github.com/MyriadFlow/storefront-gateway/config/storefront"
 	storefront "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/storefront"
-	"github.com/MyriadFlow/storefront-gateway/models"
+
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 
@@ -95,22 +95,6 @@ func postGrantRole(c *gin.Context) {
 	payload := CreatorRolePayload{
 		TransactionHash: transactionHash,
 	}
-	httphelper.SuccessResponse(c, "role grant transaction has been broadcasted", payload)
+	httphelper.SuccessResponse(c, "creatorrole grant transaction has been broadcasted", payload)
 
-}
-
-func getRoleByFlowId(flowId string) (models.Role, error) {
-	db := dbconfig.GetDb()
-	var flowIdRecord models.FlowId
-	err := db.Model(&models.FlowId{}).Where("flow_id = ?", flowId).First(&flowIdRecord).Error
-	if err != nil {
-		return models.Role{}, err
-	}
-
-	var role models.Role
-	err = db.Model(&models.Role{}).Where("role_id = ?", flowIdRecord.RelatedRoleId).First(&role).Error
-	if err != nil {
-		return models.Role{}, err
-	}
-	return role, nil
 }
