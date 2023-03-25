@@ -19,7 +19,6 @@ type config struct {
 	DB_PORT     int    `env:"DB_PORT,required"`
 
 	AUTH_EULA                    string `env:"AUTH_EULA,required"`
-	GRAPHQL_MARKETPLACE          string `env:"GRAPHQL_MARKETPLACE,required"`
 	MARKETPLACE_CONTRACT_ADDRESS string `env:"MARKETPLACE_CONTRACT_ADDRESS,required"`
 	STOREFRONT_CONTRACT_ADDRESS  string `env:"STOREFRONT_CONTRACT_ADDRESS"`
 	POLYGON_RPC                  string `env:"POLYGON_RPC,required"`

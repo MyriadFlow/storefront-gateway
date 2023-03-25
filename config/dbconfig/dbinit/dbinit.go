@@ -38,7 +38,6 @@ func Init() error {
 			Name:               envconfig.EnvVars.ORG_NAME,
 			HomeTitle:          envconfig.EnvVars.HOME_TITLE,
 			HomeDescription:    envconfig.EnvVars.HOME_DESCRIPTION,
-			GraphqlMarketplace: envconfig.EnvVars.GRAPHQL_MARKETPLACE,
 			MarketPlaceAddress: envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS,
 			StoreFrontAddress:  envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS,
 			Footer:             envconfig.EnvVars.FOOTER,

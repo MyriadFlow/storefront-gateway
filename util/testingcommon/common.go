@@ -130,7 +130,6 @@ func InitializeEnvVars() {
 	envconfig.EnvVars.DB_PORT = 5432
 
 	envconfig.EnvVars.AUTH_EULA = "I Accept the MyriadFlow Terms of Service https://myriadflow.com/terms.html for accessing the application. Challenge ID: "
-	envconfig.EnvVars.GRAPHQL_MARKETPLACE = "https://api.thegraph.com/subgraphs/name/myriadflow/marketplacev1"
 	envconfig.EnvVars.MARKETPLACE_CONTRACT_ADDRESS = "0x72AFc9D60EBd2265a2420d580D2918392fae47f6"
 	envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS = "0xe0CdEbF537574BcbB362885593Ee896D58Aa88Ec"
 	envconfig.EnvVars.POLYGON_RPC = "https://rpc-mumbai.maticvigil.com/v1/f336dfba703440ee198bf937d5c065b8fe04891c"
