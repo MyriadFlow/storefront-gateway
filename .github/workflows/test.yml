@@ -24,12 +24,12 @@ jobs:
       CREATOR_EULA: TODO CREATOR EULA
       AUTH_EULA: TODO AUTH EULA
       LOG_TO_FILE: false
-      SIGNED_BY: "LazarusNetwork"
+      PASETO_SIGNED_BY: "LazarusNetwork"
       ALLOWED_WALLET_ADDRESS: "*"
       ORG_NAME: MyriadFlow
       HOME_TITLE: Collect And Trade The New Fresh Thing
       HOME_DESCRIPTION: A NFT marketplace to explore the digital gold mine, that supports the creators. A place where you can Make Collect and Sell digital arts.
-      GRAPH_URL: https://api.thegraph.com/subgraphs/name/myriadflow/storefront-v1
+      GRAPHQL_STOREFRONT: https://api.thegraph.com/subgraphs/name/myriadflow/storefront-v1
       MARKETPLACE_CONTRACT_ADDRESS: "0x899dEf33857C491Ce61346f6e95b3a5Ee4acd24a"
       TOP_HIGHLIGHTS: 54,34,65
       TRENDINGS: 54,34,34
@@ -37,8 +37,8 @@ jobs:
       FOOTER: "MyriadFlow | Copyright © 2023 Lazarus Network Inc. All Rights Reserved."
       JWT_EXPIRATION: 48h
       APP_NAME: myriad-flow-gateway
-      GIN_MODE: test
-      ALLOWED_ORIGIN: "*"
+      APP_MODE: test
+      APP_ALLOWED_ORIGIN: "*"
       APP_PORT: 3000
 
     services:

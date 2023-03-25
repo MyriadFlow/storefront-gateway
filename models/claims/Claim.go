@@ -2,7 +2,7 @@ package claims
 
 import (
 	"fmt"
-	"os"
+	//"os"
 	"strconv"
 	"time"
 
@@ -32,7 +32,11 @@ func (c CustomClaims) Valid() error {
 }
 
 func New(walletAddress string) CustomClaims {
-	pasetoExpirationInHours, ok := os.LookupEnv("PASETO_EXPIRATION_IN_HOURS")
+	pasetoExpirationInHours := envconfig.EnvVars.PASETO_EXPIRATION_IN_HOURS
+	ok:=false
+	if pasetoExpirationInHours != "" {
+		ok=true
+	}
 	pasetoExpirationInHoursInt := time.Duration(24)
 	fmt.Println("ok value walletaddress", ok)
 	if ok {
@@ -45,7 +49,7 @@ func New(walletAddress string) CustomClaims {
 	}
 	pasetoExpirationHours := pasetoExpirationInHoursInt * time.Hour
 	expiration := time.Now().Add(pasetoExpirationHours)
-	signedBy := envconfig.EnvVars.SIGNED_BY
+	signedBy := envconfig.EnvVars.PASETO_SIGNED_BY
 	return CustomClaims{
 		walletAddress,
 		signedBy,

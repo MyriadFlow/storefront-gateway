@@ -8,22 +8,16 @@ import (
 	"testing"
 
 	"github.com/MyriadFlow/storefront-gateway/api/types"
-
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_PatchProfile(t *testing.T) {
-	envconfig.InitEnvVars()
-	logwrapper.Init()
-	dbinit.Init()
+	testingcommon.InitializeEnvVars()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	testWallet := testingcommon.GenerateWallet()
 	header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
@@ -48,6 +42,7 @@ func Test_PatchProfile(t *testing.T) {
 			t.Fatal(err)
 		}
 		c, _ := gin.CreateTestContext(rr)
+
 		c.Request = req
 		c.Set("walletAddress", testWallet.WalletAddress)
 
@@ -57,7 +52,8 @@ func Test_PatchProfile(t *testing.T) {
 }
 
 func Test_GetProfile(t *testing.T) {
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
+
 	logwrapper.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)

@@ -8,11 +8,13 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
-
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/cryptosign"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/flowid"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +23,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/authenticate")
 	{
+		g.GET("", getFlowId)
 		g.POST("", authenticate)
 	}
 }
@@ -74,11 +77,7 @@ func authenticate(c *gin.Context) {
 			httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
 			return
 		}
-		err = db.Where("flow_id = ?", req.FlowId).Delete(&models.FlowId{}).Error
-		if err != nil {
-			httphelper.NewInternalServerError(c, "", "failed to delete flowId, error %v", err.Error())
-			return
-		}
+
 		payload := AuthenticatePayload{
 			Token: pasetoToken,
 		}
@@ -87,4 +86,31 @@ func authenticate(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Wallet Address is not correct")
 		return
 	}
+}
+
+func getFlowId(c *gin.Context) {
+	walletAddress := c.Query("walletAddress")
+
+	if walletAddress == "" {
+		httphelper.ErrResponse(c, http.StatusBadRequest, "Wallet address (walletAddress) is required")
+		return
+	}
+	_, err := hexutil.Decode(walletAddress)
+	if err != nil {
+		httphelper.ErrResponse(c, http.StatusBadRequest, "Wallet address (walletAddress) is not valid")
+		return
+	}
+	flowId, err := flowid.GenerateFlowId(walletAddress, models.AUTH, "")
+	if err != nil {
+		log.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+
+		return
+	}
+	userAuthEULA := envconfig.EnvVars.AUTH_EULA
+	payload := GetFlowIdPayload{
+		FlowId: flowId,
+		Eula:   userAuthEULA,
+	}
+	httphelper.SuccessResponse(c, "Flowid successfully generated", payload)
 }

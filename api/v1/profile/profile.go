@@ -52,7 +52,7 @@ func getProfile(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	var user models.User
-	//err := db.Model(&models.User{}).Select("name, profile_picture_url,country, wallet_address").Where("wallet_address = ?", walletAddress).First(&user).Error
+
 	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).First(&user).Error
 	if err != nil {
 		logrus.Error(err)

@@ -44,13 +44,13 @@ Make sure you have a Wallet MNEMONIC which has operator role to its first addres
 | `AUTH_EULA`                   | EULA to be signed when requesting JWT token                                                                                    |
 | `CREATOR_EULA`                | EULA to be signed when requesting Creator Role                                                                                 |
 | `APP_NAME`                    | App name to be logged with logger                                                                                              |
-| `GIN_MODE`                    | Gin mode used to specify type of logging for API requests, use `release` for production and `debug` for testing                |
+| `APP_MODE`                    | Gin mode used to specify type of logging for API requests, use `release` for production and `debug` for testing                |
 | `STOREFRONT_CONTRACT_ADDRESS` | Contract address of storefront deployed on blockchain                                                                          |
 | `POLYGON_RPC`                 | RPC URL of node which is connected to network where your smart contract is deployed                                            |
 | `MNEMONIC`                    | Mnemonic of wallet which has operator role in smart contract                                                                   |
 | `LOG_TO_FILE`                 | Specify wheather to log to file unders logs folder                                                                             |
 | `IPFS_NODE_URL`               | Node url of ipfs network                                                                                                       |
-| `ALLOWED_ORIGIN`              | Origin which are allowed to access this APIs                                                                                   |
+| `APP_ALLOWED_ORIGIN`              | Origin which are allowed to access this APIs                                                                                   |
 
 Note - Database env variables are self explainatory
 

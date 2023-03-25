@@ -14,7 +14,8 @@ import (
 )
 
 func Test_OnlyOperator(t *testing.T) {
-	envconfig.InitEnvVars()
+
+	testingcommon.InitializeEnvVars()
 	t.Run("should fail if wallet is not of operator", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 		c, _ := gin.CreateTestContext(rr)
