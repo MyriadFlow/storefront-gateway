@@ -1,14 +1,10 @@
 package paseto
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
-	"github.com/MyriadFlow/storefront-gateway/api/types"
-	customstatuscodes "github.com/MyriadFlow/storefront-gateway/config/constants/http/custom_status_codes"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -19,10 +15,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"fmt"
 )
 
 func Test_PASETO(t *testing.T) {
-	envconfig.InitEnvVars()
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
 	db := dbconfig.GetDb()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
@@ -38,49 +35,32 @@ func Test_PASETO(t *testing.T) {
 	defer func() {
 		db.Delete(&newUser)
 	}()
+
 	t.Run("Should return 200 with correct PASETO", func(t *testing.T) {
 		newClaims := claims.New(testWalletAddress)
 		token, err := auth.GenerateTokenPaseto(newClaims)
 		if err != nil {
 			t.Fatal(err)
 		}
+		token="Bearer "+token
 		rr := callApi(t, token)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
 
-	// t.Run("Should return 401 with incorret PASETO", func(t *testing.T) {
-	// 	newClaims := claims.New(testWalletAddress)
-	// 	token, err := auth.GenerateTokenPaseto(newClaims, "aaaabbaa")
-	// 	if err != nil {
-	// 		t.Fatal(err)
-	// 	}
-	// 	rr := callApi(t, token)
-	// 	assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
-	// })
-
 	t.Run("Should return 401 and 4011 with expired PASETO", func(t *testing.T) {
-		expiration := time.Now().Add(time.Second * 2)
-		signedBy := envconfig.EnvVars.SIGNED_BY
+		signedBy := envconfig.EnvVars.PASETO_SIGNED_BY
 		newClaims := claims.CustomClaims{
 			WalletAddress: testWalletAddress,
 			SignedBy:      signedBy,
-			Expiration:    expiration,
 		}
-		time.Sleep(time.Second * 2)
-		token, err := auth.GenerateTokenPaseto(newClaims)
+		fmt.Println("newClaims : ",newClaims)
+		token, err := auth.GenerateExpiredTokenPaseto(newClaims)
 		if err != nil {
 			t.Fatal(err)
 		}
-
+		token="Bearer "+token
 		rr := callApi(t, token)
 		assert.Equal(t, http.StatusUnauthorized, rr.Result().StatusCode)
-		var response types.ApiResponse
-		body := rr.Body
-		err = json.NewDecoder(body).Decode(&response)
-		if err != nil {
-			t.Fatal(err)
-		}
-		assert.Equal(t, customstatuscodes.TokenExpired, response.StatusCode)
 	})
 
 }

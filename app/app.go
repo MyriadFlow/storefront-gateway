@@ -19,7 +19,7 @@ var GinApp *gin.Engine
 
 func Init() {
 	envconfig.InitEnvVars()
-	gin.SetMode(envconfig.EnvVars.GIN_MODE)
+	gin.SetMode(envconfig.EnvVars.APP_MODE)
 	auth.Init()
 	logwrapper.Init()
 	dbinit.Init()
@@ -31,7 +31,7 @@ func Init() {
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
-		AllowOrigins:     envconfig.EnvVars.ALLOWED_ORIGIN})
+		AllowOrigins:     envconfig.EnvVars.APP_ALLOWED_ORIGIN})
 	GinApp.Use(corsM)
 	api.ApplyRoutes(GinApp)
 }

@@ -8,3 +8,8 @@ type AuthenticateRequest struct {
 type AuthenticatePayload struct {
 	Token string `json:"token"`
 }
+
+type GetFlowIdPayload struct {
+	Eula   string `json:"eula,omitempty"`
+	FlowId string `json:"flowId"`
+}

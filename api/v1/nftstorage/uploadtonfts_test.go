@@ -1,4 +1,4 @@
-package uploadtoipfs
+package nftstorage
 
 import (
 	"bytes"
@@ -8,26 +8,24 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
-
-	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/MyriadFlow/storefront-gateway/util/testingcommon"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 )
 
-func Test_UploadToIpfs(t *testing.T) {
-	envconfig.InitEnvVars()
+func Test_Uploadtonftstorage(t *testing.T) {
+
+	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
-	dbinit.Init()
+
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 
-	t.Run("Should be able to upload file to ipfs", func(t *testing.T) {
+	t.Run("Should be able to upload file to nft storage", func(t *testing.T) {
 		testWallet := testingcommon.GenerateWallet()
 		header := testingcommon.PrepareAndGetAuthHeader(t, testWallet.WalletAddress)
 
-		url := "/api/v1.0/uploadtoipfs"
+		url := "/api/v1.0/nftstorage"
 
 		rr := httptest.NewRecorder()
 
@@ -58,8 +56,7 @@ func Test_UploadToIpfs(t *testing.T) {
 		req.Header.Add("Content-Type", mw.FormDataContentType())
 		c, _ := gin.CreateTestContext(rr)
 		c.Request = req
-		uploadtoipfs(c)
+		uploadtonftstorage(c)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
-
 }

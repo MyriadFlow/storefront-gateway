@@ -1,4 +1,4 @@
-package delegateartifactcreation
+package delegateassetcreation
 
 import (
 	"net/http"
@@ -15,15 +15,15 @@ import (
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/delegateArtifactCreation")
+	g := r.Group("/delegateAssetCreation")
 	{
 		g.Use(paseto.PASETO)
-		g.POST("", deletegateArtifactCreation)
+		g.POST("", deletegateAssetCreation)
 	}
 }
 
-func deletegateArtifactCreation(c *gin.Context) {
-	var request DelegateArtifactCreationRequest
+func deletegateAssetCreation(c *gin.Context) {
+	var request DelegateAssetCreationRequest
 	walletAddressGin := c.GetString("walletAddress")
 	err := c.BindJSON(&request)
 	if err != nil {
@@ -37,16 +37,16 @@ func deletegateArtifactCreation(c *gin.Context) {
 	creatorAddr := common.HexToAddress(request.CreatorAddress)
 	abiS := storefront.StorefrontABI
 
-	tx, err := rawtransaction.SendRawTransaction(abiS, "delegateArtifactCreation", creatorAddr, request.MetaDataHash)
+	tx, err := rawtransaction.SendRawTransaction(abiS, "delegateAssetCreation", creatorAddr, request.MetaDataHash, request.RoyaltyPercentBasisPoint)
 
 	if err != nil {
-		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateArtifactCreation", "StoreFront", err.Error())
+		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateAssetCreation", "StoreFront", err.Error())
 		return
 	}
 	transactionHash := tx.Hash().String()
-	payload := DelegateArtifactCreationPayload{
+	payload := DelegateAssetCreationPayload{
 		TransactionHash: transactionHash,
 	}
 	logwrapper.Infof("trasaction hash is %v", transactionHash)
-	httphelper.SuccessResponse(c, "request successfully send, artififact will be delegated soon", payload)
+	httphelper.SuccessResponse(c, "request successfully send, asset will be delegated soon", payload)
 }

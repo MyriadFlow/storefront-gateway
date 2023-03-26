@@ -1,4 +1,4 @@
-package uploadtonfts
+package nftstorage
 
 import (
 	"context"
@@ -15,14 +15,14 @@ import (
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/uploadtonfts")
+	g := r.Group("/nftstorage")
 	{
 		g.Use(paseto.PASETO)
-		g.POST("", uploadtonfts)
+		g.POST("/upload", uploadtonftstorage)
 	}
 }
 
-func uploadtonfts(c *gin.Context) {
+func uploadtonftstorage(c *gin.Context) {
 
 	token := envconfig.EnvVars.NFT_STORAGE_API_KEY
 	configuration := client.NewConfiguration()
@@ -35,7 +35,7 @@ func uploadtonfts(c *gin.Context) {
 		return
 	}
 
-	responsePayload := make([]UploadToNftsPayload, 0)
+	responsePayload := make([]NftStorageUploadResponse, 0)
 	files := form.File["file"]
 
 	for _, file := range files {
@@ -70,9 +70,9 @@ func uploadtonfts(c *gin.Context) {
 		cid = cid[1:]
 		cid = cid[:len(cid)-2]
 
-		responsePayload = append(responsePayload, UploadToNftsPayload{file.Filename, string(cid)})
+		responsePayload = append(responsePayload, NftStorageUploadResponse{file.Filename, string(cid)})
 
 	}
-	logrus.Info("\n responsePayload :", responsePayload)
+
 	httphelper.SuccessResponse(c, "file successfully uploaded to nft storage", responsePayload)
 }
