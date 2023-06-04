@@ -1,27 +1,22 @@
 package storefront
 
 import (
-	"errors"
-
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/generated/smartcontract/storefront"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 var instance *storefront.Storefront
 
 var (
-	errEnvVariableNotDefined = errors.New("environment variable STOREFRONT_CONTRACT_ADDRESS is required")
+// errEnvVariableNotDefined = errors.New("environment variable STOREFRONT_CONTRACT_ADDRESS is required")
 )
 
 func GetInstance(client *ethclient.Client) (*storefront.Storefront, error) {
 	if instance != nil {
 		return instance, nil
 	}
-	envContractAddress := envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS
-	if envContractAddress == "" {
+	// envContractAddress := envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS
+	/* if envContractAddress == "" {
 		logwrapper.Errorf("environment variable %v is required", "STOREFRONT_CONTRACT_ADDRESS")
 		return nil, errEnvVariableNotDefined
 	}
@@ -31,6 +26,6 @@ func GetInstance(client *ethclient.Client) (*storefront.Storefront, error) {
 	if err != nil {
 		logwrapper.Errorf("failed to load storefront contract at address %v, error: %v", envContractAddress, err.Error())
 		return nil, err
-	}
+	} */
 	return instance, nil
 }

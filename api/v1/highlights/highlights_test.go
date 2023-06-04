@@ -78,9 +78,9 @@ func Test_PostHighlightsItemId(t *testing.T) {
 		testTokenId := "11111"
 		url := "/api/v1.0/highlights"
 		requestBody := models.Highlights{
-			NFT_Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-			TokenId:              testTokenId,
-			MetaDataURI:          "hjhjgh",
+			Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			TokenId:          testTokenId,
+			Metadata:         "hjhjgh",
 		}
 		jsonData, err := json.Marshal(requestBody)
 		if err != nil {

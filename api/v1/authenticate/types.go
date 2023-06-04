@@ -13,3 +13,9 @@ type GetFlowIdPayload struct {
 	Eula   string `json:"eula,omitempty"`
 	FlowId string `json:"flowId"`
 }
+
+type web2AuthRequest struct {
+	Token     string `json:"token"`
+	Provider  string `json:"providers"`
+	User_Type string `json:"userType"`
+}

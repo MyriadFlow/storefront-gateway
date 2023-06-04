@@ -10,7 +10,6 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/ethwallet"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/consensus/misc"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -40,9 +39,9 @@ func SendRawTransaction(abiS string, method string, args ...interface{}) (*types
 		logwrapper.Warnf("failed to get nonce")
 		return nil, err
 	}
-	envContractAddress := envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS
+	// envContractAddress := envconfig.EnvVars.STOREFRONT_CONTRACT_ADDRESS
 
-	toAddress := common.HexToAddress(envContractAddress)
+	// toAddress := common.HexToAddress(envContractAddress)
 
 	chainID, err := client.NetworkID(context.Background())
 	if err != nil {
@@ -80,8 +79,8 @@ func SendRawTransaction(abiS string, method string, args ...interface{}) (*types
 		GasFeeCap: maxFeePerGas,
 		GasTipCap: maxPriorityFeePerGas,
 		Gas:       310000,
-		To:        &toAddress,
-		Data:      bytesData,
+		// To:        ,
+		Data: bytesData,
 	})
 	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), privateKey)
 	if err != nil {

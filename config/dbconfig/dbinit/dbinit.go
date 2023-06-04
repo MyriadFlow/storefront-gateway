@@ -14,7 +14,6 @@ func Init() error {
 	if err != nil {
 		log.Fatal(err)
 		return err
-
 	}
 
 	//Create flow id
@@ -26,6 +25,8 @@ func Init() error {
 	EXCEPTION
     	WHEN duplicate_object THEN null;
 	END $$;`)
+
+	db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 
 	return nil
 }
