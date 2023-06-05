@@ -79,7 +79,7 @@ func GenerateTokenPasetoWeb2User(claim claims.CustomClaimsWeb2User) (string, err
 	if pasetoExpirationInHours != "" {
 		ok = true
 	}
-	fmt.Println("ok value walletaddress", ok)
+	fmt.Println("ok value token", ok)
 	pasetoExpirationInHoursInt := time.Duration(24)
 
 	if ok {

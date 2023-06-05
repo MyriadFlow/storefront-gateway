@@ -127,13 +127,18 @@ func Web2Auth(c *gin.Context) {
 	} else {
 
 		var userID, email string
+		var supabaseErr error
 
 		req.User_Type = "web2"
 
 		if req.Provider == "supabase" {
 
-			userID, email = auth.FromJWTSupabaseTokenGetData(c, req.Token)
-			log.Println("&&*********************", userID, email)
+			userID, email, supabaseErr = auth.FromJWTSupabaseTokenGetData(c, req.Token)
+
+			if supabaseErr != nil && userID == "" && email == "" {
+				httphelper.ErrResponse(c, http.StatusForbidden, supabaseErr.Error())
+				logwrapper.Info(userID, email, supabaseErr)
+			}
 
 			newUser := models.User{
 				Email:    email,
@@ -143,7 +148,7 @@ func Web2Auth(c *gin.Context) {
 			var count int64
 			result := db.Model(&models.User{}).Where("email = ?", email).Count(&count)
 			if result.Error != nil {
-				logwrapper.Errorf("failed to get userId, error %v", err)
+				logwrapper.Errorf("failed to get user details >> Web2Auth, error %v", err)
 				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to count user")
 				return
 			}
@@ -172,7 +177,7 @@ func Web2Auth(c *gin.Context) {
 				result := db.Create(&newUser)
 				if result.Error != nil {
 					logwrapper.Errorf("failed to create new user, error %v", err)
-					httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to create new user for email : "+email)
+					httphelper.ErrResponse(c, http.StatusBadGateway, "Web2Auth failed to create new user for email : "+email)
 					return
 				} else {
 					payload := models.User{

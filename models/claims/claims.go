@@ -70,7 +70,7 @@ func NewUser(Email string) CustomClaimsWeb2User {
 		ok = true
 	}
 	pasetoExpirationInHoursInt := time.Duration(24)
-	fmt.Println("ok value walletaddress", ok)
+	fmt.Println("ok value token", ok)
 	if ok {
 		res, err := strconv.Atoi(pasetoExpirationInHours)
 		if err != nil {

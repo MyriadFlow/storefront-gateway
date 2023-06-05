@@ -19,15 +19,15 @@ func supabaseinit() {
 var supabaseClient *supabase.Client
 
 // marshal and unmarshal
-func FromJWTSupabaseTokenGetData(c *gin.Context, user_token string) (string, string) {
+func FromJWTSupabaseTokenGetData(c *gin.Context, user_token string) (string, string,error) {
 	ctx := context.Background()
 	supabaseUser, err := supabaseClient.Auth.User(ctx, user_token)
 	if err != nil {
 		log.Println("Unable to Authenticate Token", err.Error())
 		c.JSON(http.StatusInternalServerError, "unable to authenticate ")
-		return "", ""
+		return "", "",err
 	}
-	return supabaseUser.ID, supabaseUser.Email
+	return supabaseUser.ID, supabaseUser.Email,nil
 }
 
 func SupabaseAthentication(email, password string) (bool, error) {

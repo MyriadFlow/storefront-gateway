@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"testing"
 
-	"os"
-
 	"github.com/MyriadFlow/storefront-gateway/api/types"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -113,20 +111,16 @@ func ExtractPayload(response *types.ApiResponse, out interface{}) {
 }
 
 func InitializeEnvVars() {
-	hostname, err := os.Hostname()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+
 	envconfig.EnvVars.APP_NAME = "storefront-gateway"
 	envconfig.EnvVars.APP_PORT = 8000
 	envconfig.EnvVars.APP_MODE = "debug"
 	envconfig.EnvVars.APP_ALLOWED_ORIGIN = []string{"*"}
 
-	envconfig.EnvVars.DB_HOST = hostname
+	envconfig.EnvVars.DB_HOST = "localhost"
 	envconfig.EnvVars.DB_USERNAME = "postgres"
-	envconfig.EnvVars.DB_PASSWORD = "root"
-	envconfig.EnvVars.DB_NAME = "lazarus"
+	envconfig.EnvVars.DB_PASSWORD = "postgres"
+	envconfig.EnvVars.DB_NAME = "gateway"
 	envconfig.EnvVars.DB_PORT = 5432
 
 	envconfig.EnvVars.AUTH_EULA = "I Accept the MyriadFlow Terms of Service https://myriadflow.com/terms.html for accessing the application. Challenge ID: "
