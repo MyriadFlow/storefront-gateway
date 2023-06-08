@@ -180,12 +180,16 @@ func Web2Auth(c *gin.Context) {
 					httphelper.ErrResponse(c, http.StatusBadGateway, "Web2Auth failed to create new user for email : "+email)
 					return
 				} else {
-					payload := models.User{
-						UserID:   newUser.UserID,
-						Email:    newUser.Email,
-						UserType: newUser.UserType,
+					customClaims := claims.NewUser(newUser.Email)
+					pasetoToken, err := auth.GenerateTokenPasetoWeb2User(customClaims)
+					if err != nil {
+						httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
+						return
 					}
-					httphelper.SuccessResponse(c, "New User Created successfully", payload)
+					payload := AuthenticatePayload{
+						Token: pasetoToken,
+					}
+					httphelper.SuccessResponse(c, "Token generated successfully", payload)
 				}
 			} else if email == "" {
 				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to Authenticate jwt Token: "+email)
