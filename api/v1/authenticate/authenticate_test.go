@@ -19,13 +19,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type ErrorResponse struct {
+	Message string `json:"message"`
+}
+
 func Test_GetFlowId(t *testing.T) {
 	testingcommon.InitializeEnvVars()
 	logwrapper.Init()
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 	testWalletAddress := testingcommon.GenerateWallet().WalletAddress
-	u, err := url.Parse("/api/v1.0/authenticate")
+	u, err := url.Parse("/api/v1.0/auth/web3")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -72,7 +76,7 @@ func Test_PostAuthenticate(t *testing.T) {
 	t.Cleanup(testingcommon.DeleteCreatedEntities())
 	gin.SetMode(gin.TestMode)
 
-	url := "/api/v1.0/authenticate"
+	url := "/api/v1.0/auth/web3"
 
 	t.Run("Should return 403 with different wallet address", func(t *testing.T) {
 		testWallet := testingcommon.GenerateWallet()
@@ -129,7 +133,7 @@ func Test_PostAuthenticate(t *testing.T) {
 
 func callFlowIdApi(walletAddress string, t *testing.T) (eula string, flowidString string) {
 	// Call flowid api
-	u, err := url.Parse("/api/v1.0/authenticate")
+	u, err := url.Parse("/api/v1.0/auth/web3")
 	q := url.Values{}
 	q.Set("walletAddress", walletAddress)
 	u.RawQuery = q.Encode()
@@ -178,3 +182,248 @@ func getSignature(eula string, flowId string, hexPrivateKey string) string {
 
 	return signature
 }
+
+// func Test_Web2Auth(t *testing.T) {
+// 	gin.SetMode(gin.TestMode)
+
+// 	t.Run("Should return 403 with invalid payload", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			// Provide an invalid payload here
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusForbidden, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "payload is invalid",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	t.Run("Should return 403 with Supabase error", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			Provider: "supabase",
+// 			Token:    "invalid_token",
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusForbidden, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "Supabase error message",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	t.Run("Should return 404 when user is not found", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			Provider: "supabase",
+// 			Token:    "valid_token",
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusNotFound, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "Web2Auth failed to count user",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	// Add more test cases as needed for different scenarios
+
+// }
+
+// func Test_Web2Auth(t *testing.T) {
+// 	testingcommon.InitializeEnvVars()
+// 	logwrapper.Init()
+// 	t.Cleanup(testingcommon.DeleteCreatedEntities())
+// 	gin.SetMode(gin.TestMode)
+
+// 	t.Run("Should return 403 with invalid payload", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			// Provide an invalid payload here
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusForbidden, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "payload is invalid",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	t.Run("Should return 403 with Supabase error", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			Token:     "invalid_token",
+// 			Provider:  "supabase",
+// 			User_Type: "web2",
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusForbidden, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "Supabase error message",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	t.Run("Should return 404 when user is not found", func(t *testing.T) {
+// 		// Prepare the request payload
+// 		payload := web2AuthRequest{
+// 			Token:     "valid_token",
+// 			Provider:  "supabase",
+// 			User_Type: "web2",
+// 		}
+// 		jsonBody, err := json.Marshal(payload)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		rr := httptest.NewRecorder()
+
+// 		// Create a test request
+// 		req, err := http.NewRequest("POST", "/api/v1.0/auth/web2", bytes.NewBuffer(jsonBody))
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+
+// 		// Create a Gin context with the test request
+// 		c, _ := gin.CreateTestContext(rr)
+// 		c.Request = req
+
+// 		// Call the Web2Auth handler function
+// 		Web2Auth(c)
+
+// 		// Assert the response status code and body
+// 		assert.Equal(t, http.StatusNotFound, rr.Code, "Unexpected response status code")
+// 		expectedResponse := ErrorResponse{
+// 			Message: "Web2Auth failed to count user",
+// 		}
+// 		expectedResponseBody, err := json.Marshal(expectedResponse)
+// 		if err != nil {
+// 			t.Fatal(err)
+// 		}
+// 		assert.Equal(t, string(expectedResponseBody), rr.Body.String(), "Unexpected response body")
+// 	})
+
+// 	// Add more test cases as needed for different scenarios
+
+// }

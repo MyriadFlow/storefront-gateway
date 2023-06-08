@@ -1,14 +1,21 @@
 package models
 
+import "github.com/google/uuid"
+
 type User struct {
-	Name              string   `json:"name,omitempty"`
-	WalletAddress     string   `gorm:"primary_key" json:"walletAddress"`
-	FlowIds           []FlowId `gorm:"foreignkey:WalletAddress" json:"-"`
-	ProfilePictureUrl string   `json:"profilePictureUrl,omitempty"`
-	Country           string   `json:"country,omitempty"`
-	FacebookId           string   `json:"facebook_id,omitempty"`
-	InstagramId           string   `json:"instagram_id,omitempty"`
-	TwitterId           string   `json:"twitter_id,omitempty"`
-	DiscordId           string   `json:"discord_id,omitempty"`
-	TelegramId           string   `json:"telegram_id,omitempty"`
+	UserID         uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
+	Email          string    `json:"email,omitempty"`
+	Name           string    `json:"name"`
+	WalletAddress  string    ` json:"wallet_address"`
+	FlowIds        []FlowId  `gorm:"foreignkey:WalletAddress" json:"-"`
+	ProfilePicture string    `json:"profilePictureUrl"`
+	Country        string    `json:"country"`
+	FacebookId     string    `json:"facebook_id"`
+	InstagramId    string    `json:"instagram_id"`
+	TwitterId      string    `json:"twitter_id"`
+	DiscordId      string    `json:"discord_id"`
+	TelegramId     string    `json:"telegram_id"`
+	UserType       string    `json:"user_type,omitempty"`
 }
+
+// gorm:"type:varchar(20);column:id;next:uuid

@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"testing"
 
-	"os"
-
 	"github.com/MyriadFlow/storefront-gateway/api/types"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -41,10 +39,10 @@ func PrepareAndGetAuthHeader(t *testing.T, testWalletAddress string) string {
 func CreateTestUser(t *testing.T, walletAddress string) {
 	db := dbconfig.GetDb()
 	user := models.User{
-		Name:              "Jack",
-		ProfilePictureUrl: "https://testdomain.com/",
-		WalletAddress:     walletAddress,
-		Country:           "India",
+		Name:           "Jack",
+		ProfilePicture: "https://testdomain.com/",
+		WalletAddress:  walletAddress,
+		Country:        "India",
 	}
 	err := db.Model(&models.User{}).Create(&user).Error
 	if err != nil {
@@ -55,9 +53,9 @@ func CreateTestUser(t *testing.T, walletAddress string) {
 func CreateTestHighlights(t *testing.T) string {
 	db := dbconfig.GetDb()
 	highlights := models.Highlights{
-		NFT_Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		TokenId:              "1234",
-		MetaDataURI:          "hjhjgh",
+		Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		TokenId:          "1234",
+		Metadata:         "hjhjgh",
 	}
 	err := db.Model(&models.Highlights{}).Create(&highlights).Error
 	if err != nil {
@@ -65,7 +63,7 @@ func CreateTestHighlights(t *testing.T) string {
 	}
 
 	var itemId int
-	err = db.Model(&models.Highlights{}).Select("item_id").Where("nft_contract_address = ? AND token_id = ? AND meta_data_uri = ? ", highlights.NFT_Contract_Address, highlights.TokenId, highlights.MetaDataURI).First(&itemId).Error
+	err = db.Model(&models.Highlights{}).Select("item_id").Where("nft_contract_address = ? AND token_id = ? AND meta_data_uri = ? ", highlights.Contract_Address, highlights.TokenId, highlights.Metadata).First(&itemId).Error
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -113,20 +111,16 @@ func ExtractPayload(response *types.ApiResponse, out interface{}) {
 }
 
 func InitializeEnvVars() {
-	hostname, err := os.Hostname()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+
 	envconfig.EnvVars.APP_NAME = "storefront-gateway"
 	envconfig.EnvVars.APP_PORT = 8000
 	envconfig.EnvVars.APP_MODE = "debug"
 	envconfig.EnvVars.APP_ALLOWED_ORIGIN = []string{"*"}
 
-	envconfig.EnvVars.DB_HOST = hostname
+	envconfig.EnvVars.DB_HOST = "localhost"
 	envconfig.EnvVars.DB_USERNAME = "postgres"
-	envconfig.EnvVars.DB_PASSWORD = "root"
-	envconfig.EnvVars.DB_NAME = "lazarus"
+	envconfig.EnvVars.DB_PASSWORD = "postgres"
+	envconfig.EnvVars.DB_NAME = "gateway"
 	envconfig.EnvVars.DB_PORT = 5432
 
 	envconfig.EnvVars.AUTH_EULA = "I Accept the MyriadFlow Terms of Service https://myriadflow.com/terms.html for accessing the application. Challenge ID: "

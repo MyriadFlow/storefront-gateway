@@ -19,10 +19,9 @@ func (fit FlowIdType) Value() (driver.Value, error) {
 	return string(fit), nil
 }
 
-// TODO: Make relations for field `relatedRoleId`
 type FlowId struct {
+	FlowId        string     `gorm:"primary_key"`
 	FlowIdType    FlowIdType `sql:"flow_id_type"`
 	WalletAddress string
-	FlowId        string `gorm:"primary_key"`
-	RelatedRoleId string
 }
+

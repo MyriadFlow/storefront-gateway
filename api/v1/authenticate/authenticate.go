@@ -21,10 +21,11 @@ import (
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/authenticate")
+	g := r.Group("/auth")
 	{
-		g.GET("", getFlowId)
-		g.POST("", authenticate)
+		g.GET("/web3", getFlowId)
+		g.POST("/web3", authenticate)
+		g.POST("/web2", Web2Auth)
 	}
 }
 
@@ -113,4 +114,88 @@ func getFlowId(c *gin.Context) {
 		Eula:   userAuthEULA,
 	}
 	httphelper.SuccessResponse(c, "Flowid successfully generated", payload)
+}
+
+func Web2Auth(c *gin.Context) {
+
+	db := dbconfig.GetDb()
+	var req = web2AuthRequest{}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
+		return
+	} else {
+
+		var userID, email string
+		var supabaseErr error
+
+		req.User_Type = "web2"
+
+		if req.Provider == "supabase" {
+
+			userID, email, supabaseErr = auth.FromJWTSupabaseTokenGetData(c, req.Token)
+
+			if supabaseErr != nil && userID == "" && email == "" {
+				httphelper.ErrResponse(c, http.StatusForbidden, supabaseErr.Error())
+				logwrapper.Info(userID, email, supabaseErr)
+			}
+
+			newUser := models.User{
+				Email:    email,
+				UserType: req.User_Type,
+			}
+
+			var count int64
+			result := db.Model(&models.User{}).Where("email = ?", email).Count(&count)
+			if result.Error != nil {
+				logwrapper.Errorf("failed to get user details >> Web2Auth, error %v", err)
+				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to count user")
+				return
+			}
+
+			if count == 1 && email != "" {
+				result := db.Where("email = ?", newUser.Email).First(&models.User{})
+				if result.Error != nil {
+					logwrapper.Errorf("failed to create new user, error %v", err)
+					httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to create new user for email : "+email)
+					return
+				}
+
+				customClaims := claims.NewUser(newUser.Email)
+				pasetoToken, err := auth.GenerateTokenPasetoWeb2User(customClaims)
+				if err != nil {
+					httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
+					return
+				}
+
+				payload := AuthenticatePayload{
+					Token: pasetoToken,
+				}
+				httphelper.SuccessResponse(c, "Token generated successfully", payload)
+
+			} else if count == 0 && email != "" {
+				result := db.Create(&newUser)
+				if result.Error != nil {
+					logwrapper.Errorf("failed to create new user, error %v", err)
+					httphelper.ErrResponse(c, http.StatusBadGateway, "Web2Auth failed to create new user for email : "+email)
+					return
+				} else {
+					customClaims := claims.NewUser(newUser.Email)
+					pasetoToken, err := auth.GenerateTokenPasetoWeb2User(customClaims)
+					if err != nil {
+						httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
+						return
+					}
+					payload := AuthenticatePayload{
+						Token: pasetoToken,
+					}
+					httphelper.SuccessResponse(c, "Token generated successfully", payload)
+				}
+			} else if email == "" {
+				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to Authenticate jwt Token: "+email)
+				return
+			}
+		}
+
+	}
 }

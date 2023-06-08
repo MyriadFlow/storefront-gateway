@@ -1,8 +1,8 @@
 package models
 
 type Highlights struct {
-	ItemId              int   `gorm:"primary_key" json:"itemId"`
-	NFT_Contract_Address     string   `json:"nft-contract-address"`
-	TokenId            string   `json:"tokenId,omitempty"`
-	MetaDataURI string   `json:"metaDataURI,omitempty"`
+	ItemId           int    `gorm:"primary_key" json:"itemId"`
+	Contract_Address string `json:"contractAddress"`
+	TokenId          string `json:"tokenId,omitempty"`
+	Metadata         string `json:"metadata,omitempty"`
 }

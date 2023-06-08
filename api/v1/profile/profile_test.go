@@ -86,7 +86,7 @@ func Test_GetProfile(t *testing.T) {
 		}
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 		assert.Equal(t, "Jack", user.Name)
-		assert.Equal(t, "https://revoticengineering.com/", user.ProfilePictureUrl)
+		assert.Equal(t, "https://revoticengineering.com/", user.ProfilePicture)
 		assert.Equal(t, "India", user.Country)
 		logrus.Debug(user)
 	})
