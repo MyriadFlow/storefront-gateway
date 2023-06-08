@@ -11,6 +11,7 @@ import (
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/storefront"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,7 +24,7 @@ func Init() {
 	logwrapper.Init()
 	dbinit.Init()
 	global.InitGlobal()
-	// storefront.InitRolesId()
+	storefront.InitRolesId()
 	GinApp = gin.Default()
 
 	corsM := cors.New(cors.Config{AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},

@@ -21,7 +21,7 @@ type config struct {
 
 	AUTH_EULA                    string `env:"AUTH_EULA,required"`
 	MARKETPLACE_CONTRACT_ADDRESS string `env:"MARKETPLACE_CONTRACT_ADDRESS,required"`
-	// STOREFRONT_CONTRACT_ADDRESS  string `env:"STOREFRONT_CONTRACT_ADDRESS"`
+	STOREFRONT_CONTRACT_ADDRESS  string `env:"STOREFRONT_CONTRACT_ADDRESS"`
 	POLYGON_RPC                  string `env:"POLYGON_RPC,required"`
 	MNEMONIC                     string `env:"MNEMONIC,required"`
 	NFT_STORAGE_API_KEY          string `env:"NFT_STORAGE_API_KEY,required" `
