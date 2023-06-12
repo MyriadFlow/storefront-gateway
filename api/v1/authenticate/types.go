@@ -16,6 +16,6 @@ type GetFlowIdPayload struct {
 
 type web2AuthRequest struct {
 	Token     string `json:"token"`
-	Provider  string `json:"providers"`
+	Provider  string `json:"provider"`
 	User_Type string `json:"type"`
 }
