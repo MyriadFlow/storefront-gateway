@@ -195,8 +195,14 @@ func Web2Auth(c *gin.Context) {
 					httphelper.SuccessResponse(c, "Token generated successfully", payload)
 					return
 				}
+			} else if count > 1 {
+				httphelper.ErrResponse(c, http.StatusNotFound, "user is more than one: "+email)
+				return
 			} else if email == "" {
 				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to Authenticate jwt Token: "+email)
+				return
+			} else {
+				httphelper.ErrResponse(c, http.StatusNotFound, "Something went wrong other than Clauses: "+email)
 				return
 			}
 		}

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/MyriadFlow/storefront-gateway/api"
@@ -32,10 +31,8 @@ func Init() {
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
-		// AllowOrigins:     envconfig.EnvVars.APP_ALLOWED_ORIGIN
-		AllowAllOrigins: true})
+		AllowAllOrigins:  true})
 
-	fmt.Println("********CORSM*********", envconfig.EnvVars.APP_ALLOWED_ORIGIN)
 	GinApp.Use(corsM)
 	api.ApplyRoutes(GinApp)
 }
