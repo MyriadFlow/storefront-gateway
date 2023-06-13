@@ -4,9 +4,9 @@ import "github.com/google/uuid"
 
 type User struct {
 	UserID         uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
-	Email          string    `json:"email,omitempty"`
+	Email          string    `gorm:"unique" json:"email,omitempty"`
 	Name           string    `json:"name"`
-	WalletAddress  string    ` json:"wallet_address"`
+	WalletAddress  string    `json:"wallet_address"`
 	FlowIds        []FlowId  `gorm:"foreignkey:WalletAddress" json:"-"`
 	ProfilePicture string    `json:"profilePictureUrl"`
 	Country        string    `json:"country"`
