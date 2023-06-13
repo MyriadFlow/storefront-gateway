@@ -79,4 +79,4 @@ jobs:
             podman stop gateway && podman rm gateway && podman image rm gateway
             echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
             podman pull ghcr.io/myriadflow/gateway:main
-            podman run --name="gateway" --env-file=.env --net=bridge -d ghcr.io/myriadflow/gateway:main
+            podman run --name="gateway" --env-file=.env -p 9080:9080 --net=bridge -d ghcr.io/myriadflow/gateway:main
