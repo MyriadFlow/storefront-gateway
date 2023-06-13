@@ -3,9 +3,9 @@ package auth
 import (
 	"context"
 	"log"
-	"net/http"
 	"os"
 
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/gin-gonic/gin"
 	"github.com/nedpals/supabase-go"
 )
@@ -19,15 +19,14 @@ func supabaseinit() {
 var supabaseClient *supabase.Client
 
 // marshal and unmarshal
-func FromJWTSupabaseTokenGetData(c *gin.Context, user_token string) (string, string,error) {
+func FromJWTSupabaseTokenGetData(c *gin.Context, user_token string) (string, string, error) {
 	ctx := context.Background()
 	supabaseUser, err := supabaseClient.Auth.User(ctx, user_token)
 	if err != nil {
-		log.Println("Unable to Authenticate Token", err.Error())
-		c.JSON(http.StatusInternalServerError, "unable to authenticate ")
-		return "", "",err
+		logwrapper.Log.Warnf("Unable to Authenticate Token : %v", err.Error())
+		return "", "", err
 	}
-	return supabaseUser.ID, supabaseUser.Email,nil
+	return supabaseUser.ID, supabaseUser.Email, nil
 }
 
 func SupabaseAthentication(email, password string) (bool, error) {
