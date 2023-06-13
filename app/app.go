@@ -8,6 +8,7 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
@@ -36,6 +37,11 @@ func Init() {
 		AllowOrigins:     []string{"*"},
 	})
 
+	// serve static files
+	GinApp.Use(static.Serve("/", static.LocalFile("./web", false)))
+	GinApp.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
+	})
 	GinApp.Use(corsM)
 	api.ApplyRoutes(GinApp)
 }
