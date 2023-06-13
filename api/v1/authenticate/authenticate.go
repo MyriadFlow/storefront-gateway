@@ -137,7 +137,7 @@ func Web2Auth(c *gin.Context) {
 
 			if supabaseErr != nil || userID == "" || email == "" {
 				logwrapper.Infof("userId : %v email : %v", userID, email)
-				httphelper.ErrResponse(c, http.StatusForbidden, supabaseErr.Error())
+				httphelper.ErrResponse(c, http.StatusForbidden, "failed to authenticate token")
 				return
 			}
 
@@ -165,6 +165,7 @@ func Web2Auth(c *gin.Context) {
 				customClaims := claims.NewUser(newUser.Email)
 				pasetoToken, err := auth.GenerateTokenPasetoWeb2User(customClaims)
 				if err != nil {
+					logwrapper.Errorf("failed to generate paseto %v", err)
 					httphelper.NewInternalServerError(c, "failed to generate token, error %v", err.Error())
 					return
 				}
@@ -173,6 +174,7 @@ func Web2Auth(c *gin.Context) {
 					Token: pasetoToken,
 				}
 				httphelper.SuccessResponse(c, "Token generated successfully", payload)
+				return
 
 			} else if count == 0 && email != "" {
 				result := db.Create(&newUser)
@@ -191,6 +193,7 @@ func Web2Auth(c *gin.Context) {
 						Token: pasetoToken,
 					}
 					httphelper.SuccessResponse(c, "Token generated successfully", payload)
+					return
 				}
 			} else if email == "" {
 				httphelper.ErrResponse(c, http.StatusNotFound, "Web2Auth failed to Authenticate jwt Token: "+email)
