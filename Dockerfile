@@ -5,9 +5,9 @@ COPY go.sum .
 RUN apk add build-base
 RUN go mod download
 COPY . .
-RUN apk add --no-cache git && go build -o storefront-gateway . && apk del git
+RUN apk add --no-cache git && go build -o gateway . && apk del git
 
 FROM alpine
 WORKDIR /app
-COPY --from=builder /app/storefront-gateway .
-CMD [ "./storefront-gateway" ]
+COPY --from=builder /app/gateway .
+CMD [ "./gateway" ]
