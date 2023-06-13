@@ -27,11 +27,14 @@ func Init() {
 	storefront.InitRolesId()
 	GinApp = gin.Default()
 
-	corsM := cors.New(cors.Config{AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+	corsM := cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
-		AllowAllOrigins:  true})
+		ExposeHeaders:    []string{"*"},
+		AllowOrigins:     []string{"*"},
+	})
 
 	GinApp.Use(corsM)
 	api.ApplyRoutes(GinApp)
