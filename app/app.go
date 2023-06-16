@@ -27,21 +27,20 @@ func Init() {
 	global.InitGlobal()
 	storefront.InitRolesId()
 	GinApp = gin.Default()
-
-	corsM := cors.New(cors.Config{
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
-		AllowHeaders:     []string{"*"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-		ExposeHeaders:    []string{"*"},
-		AllowOrigins:     []string{"*"},
-	})
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = []string{"Authorization", "Content-Type"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
+	config.AllowCredentials = true
+	config.MaxAge = 12 * time.Hour
+	config.ExposeHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
 
 	// serve static files
 	GinApp.Use(static.Serve("/", static.LocalFile("./web", false)))
 	GinApp.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
 	})
-	GinApp.Use(corsM)
+	GinApp.Use(cors.New(config))
 	api.ApplyRoutes(GinApp)
 }
