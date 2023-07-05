@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"strings"
 
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/gin-gonic/gin"
 )
 
@@ -63,24 +65,24 @@ func Deploy(c *gin.Context, link string) {
 }
 
 func DeployAccessMaster(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/AccessMaster")
+	Deploy(c, fmt.Sprintf("%s/AccessMaster", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
 
 func DeployTradeHub(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/TradeHub")
+	Deploy(c, fmt.Sprintf("%s/TradeHub", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
 
 func DeployFusionSeries(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/FusionSeries")
+	Deploy(c, fmt.Sprintf("%s/FusionSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
 func DeploySignatureSeries(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/SignatureSeries")
+	Deploy(c, fmt.Sprintf("%s/SignatureSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
 
 func DeployInstaGen(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/InstaGen")
+	Deploy(c, fmt.Sprintf("%s/InstaGen", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
 
 func DeployEternumPass(c *gin.Context) {
-	Deploy(c, "http://0.0.0.0:8080/InstaGen")
+	Deploy(c, fmt.Sprintf("%s/EternumPass", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
