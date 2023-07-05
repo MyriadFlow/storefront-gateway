@@ -31,6 +31,7 @@ type config struct {
 	PASETO_EXPIRATION_IN_HOURS string `env:"PASETO_EXPIRATION_IN_HOURS,required"`
 
 	ALLOWED_WALLET_ADDRESS []string `env:"ALLOWED_WALLET_ADDRESS,required" envSeparator:","`
+	SMARTCONTRACT_API_URL  string   `env:"SMARTCONTRACT_API_URL,required"`
 }
 
 var EnvVars config = config{}
