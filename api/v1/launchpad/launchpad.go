@@ -63,24 +63,24 @@ func Deploy(c *gin.Context, link string) {
 }
 
 func DeployAccessMaster(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/AccessMaster")
+	Deploy(c, "http://0.0.0.0:8080/AccessMaster")
 }
 
 func DeployTradeHub(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/TradeHub")
+	Deploy(c, "http://0.0.0.0:8080/TradeHub")
 }
 
 func DeployFusionSeries(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/FusionSeries")
+	Deploy(c, "http://0.0.0.0:8080/FusionSeries")
 }
 func DeploySignatureSeries(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/SignatureSeries")
+	Deploy(c, "http://0.0.0.0:8080/SignatureSeries")
 }
 
 func DeployInstaGen(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/InstaGen")
+	Deploy(c, "http://0.0.0.0:8080/InstaGen")
 }
 
 func DeployEternumPass(c *gin.Context) {
-	Deploy(c, "http://localhost:8080/InstaGen")
+	Deploy(c, "http://0.0.0.0:8080/InstaGen")
 }
