@@ -36,16 +36,19 @@ type res struct {
 func Deploy(c *gin.Context, link string) {
 	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	req, err := http.NewRequest(http.MethodPost, link, bytes.NewReader(jsonData))
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
@@ -59,7 +62,8 @@ func Deploy(c *gin.Context, link string) {
 	//fmt.Println(arr[len(arr)-3])
 	response := new(res)
 	if err := json.Unmarshal([]byte(arr[len(arr)-3]), response); err != nil {
-		log.Fatal("error unmarshaling")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 	c.JSON(http.StatusOK, response)
 }
