@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
@@ -51,16 +50,20 @@ func Deploy(c *gin.Context, link string) {
 		return
 	}
 	defer resp.Body.Close()
+
 	body, _ := io.ReadAll(resp.Body)
 	strn := string(body)
 	strn = string(body)[1 : len(strn)-1]
 	data, err := base64.StdEncoding.DecodeString(strn)
 	if err != nil {
-		log.Fatal("error:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
+
 	arr := strings.Split(string(data), "\n")
 	//fmt.Println(arr[len(arr)-3])
 	response := new(res)
+
 	if err := json.Unmarshal([]byte(arr[len(arr)-3]), response); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
