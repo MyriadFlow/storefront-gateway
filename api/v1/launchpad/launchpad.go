@@ -14,11 +14,9 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.POST("/SignatureSeries", DeploySignatureSeries)
 		g.POST("/InstaGen", DeployInstaGen)
 		g.POST("/EternumPass", DeployEternumPass)
+		g.GET("/contracts", GetContracts)
 	}
 }
+func GetContracts(c *gin.Context) {
 
-type res struct {
-	ChainId         int    `json:"chainId"`
-	ContractAddress string `json:"contractAddress"`
-	Verified        bool   `json:"verified"`
 }

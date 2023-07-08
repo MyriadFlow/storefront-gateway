@@ -9,7 +9,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +21,9 @@ type res struct {
 	Verified        bool   `json:"verified"`
 }
 
-func Deploy(c *gin.Context, link string) {
+func Deploy(c *gin.Context, link string, contractName string) {
+	db := dbconfig.GetDb()
+
 	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -55,28 +59,39 @@ func Deploy(c *gin.Context, link string) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
+	contract := models.Contract{
+		ContractName:    contractName,
+		ContractAddress: response.ContractAddress,
+		ChainId:         response.ChainId,
+		Verified:        response.Verified,
+	}
+	result := db.Create(&contract)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
 	c.JSON(http.StatusOK, response)
 }
 
 func DeployAccessMaster(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/AccessMaster", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/AccessMaster", envconfig.EnvVars.SMARTCONTRACT_API_URL), "AccessMaster")
 }
 
 func DeployTradeHub(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/TradeHub", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/TradeHub", envconfig.EnvVars.SMARTCONTRACT_API_URL), "TradeHub")
 }
 
 func DeployFusionSeries(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/FusionSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/FusionSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL), "FusionSeries")
 }
 func DeploySignatureSeries(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/SignatureSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/SignatureSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL), "SignatureSeries")
 }
 
 func DeployInstaGen(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/InstaGen", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/InstaGen", envconfig.EnvVars.SMARTCONTRACT_API_URL), "InstaGen")
 }
 
 func DeployEternumPass(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/EternumPass", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/EternumPass", envconfig.EnvVars.SMARTCONTRACT_API_URL), "EternumPass")
 }
