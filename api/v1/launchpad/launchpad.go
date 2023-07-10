@@ -12,13 +12,8 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/launchpad")
 	{
-		g.POST("/AccessMaster", DeployAccessMaster)
-		g.POST("/TradeHub", DeployTradeHub)
-		g.POST("/FusionSeries", DeployFusionSeries)
-		g.POST("/SignatureSeries", DeploySignatureSeries)
-		g.POST("/InstaGen", DeployInstaGen)
-		g.POST("/EternumPass", DeployEternumPass)
 		g.GET("/contracts", GetContracts)
+		g.POST("/contract", DeployContract)
 		g.GET("/contracts/:contractName", GetContractsByName)
 	}
 }

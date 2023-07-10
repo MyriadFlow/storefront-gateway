@@ -15,27 +15,53 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type res struct {
+type reqBody struct {
+	ContractName      string         `json:"contractName"`
+	ConstructorParams map[string]any `json:"constructorParams"`
+	Network           string         `json:"network"`
+	SubscriptionId    string         `json:"subscriptionId"`
+}
+type resBody struct {
 	ChainId         int    `json:"chainId"`
 	ContractAddress string `json:"contractAddress"`
 	Verified        bool   `json:"verified"`
 }
+type data struct {
+	ContractName      string         `json:"contractName"`
+	ConstructorParams map[string]any `json:"constructorParams"`
+}
+type contractReqBody struct {
+	Data    data   `json:"data"`
+	Network string `json:"network"`
+}
 
-func Deploy(c *gin.Context, link string, contractName string) {
+func Deploy(c *gin.Context, link string) {
 	db := dbconfig.GetDb()
-
-	jsonData, err := io.ReadAll(c.Request.Body)
+	var req reqBody
+	err := c.BindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	req, err := http.NewRequest(http.MethodPost, link, bytes.NewReader(jsonData))
+	contractReqBody := contractReqBody{
+		Data: data{
+			ContractName:      req.ContractName,
+			ConstructorParams: req.ConstructorParams,
+		},
+		Network: req.Network,
+	}
+	contractReqBodyBytes, err := json.Marshal(contractReqBody)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	contractReq, err := http.NewRequest(http.MethodPost, link, bytes.NewReader(contractReqBodyBytes))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := client.Do(contractReq)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -52,18 +78,18 @@ func Deploy(c *gin.Context, link string, contractName string) {
 	}
 
 	arr := strings.Split(string(data), "\n")
-	//fmt.Println(arr[len(arr)-3])
-	response := new(res)
+	response := new(resBody)
 
 	if err := json.Unmarshal([]byte(arr[len(arr)-3]), response); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 	contract := models.Contract{
-		ContractName:    contractName,
+		ContractName:    req.ContractName,
 		ContractAddress: response.ContractAddress,
 		ChainId:         response.ChainId,
 		Verified:        response.Verified,
+		SubscriptionId:  req.SubscriptionId,
 	}
 	result := db.Create(&contract)
 	if result.Error != nil {
@@ -73,25 +99,6 @@ func Deploy(c *gin.Context, link string, contractName string) {
 	c.JSON(http.StatusOK, response)
 }
 
-func DeployAccessMaster(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/AccessMaster", envconfig.EnvVars.SMARTCONTRACT_API_URL), "AccessMaster")
-}
-
-func DeployTradeHub(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/TradeHub", envconfig.EnvVars.SMARTCONTRACT_API_URL), "TradeHub")
-}
-
-func DeployFusionSeries(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/FusionSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL), "FusionSeries")
-}
-func DeploySignatureSeries(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/SignatureSeries", envconfig.EnvVars.SMARTCONTRACT_API_URL), "SignatureSeries")
-}
-
-func DeployInstaGen(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/InstaGen", envconfig.EnvVars.SMARTCONTRACT_API_URL), "InstaGen")
-}
-
-func DeployEternumPass(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/EternumPass", envconfig.EnvVars.SMARTCONTRACT_API_URL), "EternumPass")
+func DeployContract(c *gin.Context) {
+	Deploy(c, fmt.Sprintf("%s/Contract", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
