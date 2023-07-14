@@ -14,6 +14,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/subscription")
 	{
 		g.POST("/new", Subscribe)
+		g.PUT("/update", Update)
 	}
 }
 
@@ -44,4 +45,30 @@ func Subscribe(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Subscription created successfully"})
+}
+
+func Update(c *gin.Context) {
+	db := dbconfig.GetDb()
+	var updateRequest UpdateSubscriptionRequest
+	if err := c.BindJSON(&updateRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	var subscription models.Subscription
+	result := db.Where("id = ?", updateRequest.Id).First(&subscription)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	subscription.Status = updateRequest.Status
+	subscription.Validity = time.Now().AddDate(1, 0, 0)
+	subscription.UpdatedBy = updateRequest.UpdatedBy
+	subscription.UpdatedAt = time.Now()
+	result = db.Save(&subscription)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Subscription updated successfully"})
 }

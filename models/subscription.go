@@ -7,7 +7,7 @@ import (
 )
 
 type Subscription struct {
-	Id        uuid.UUID `json:"id"`
+	Id        uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
 	Name      string    `json:"string"`
 	Owner     string    `json:"owner"`
 	Plan      string    `json:"plan"`
