@@ -15,6 +15,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		g.POST("/new", Subscribe)
 		g.PUT("/update", Update)
+		g.GET("/", GetSubscriptions)
 	}
 }
 
@@ -71,4 +72,15 @@ func Update(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Subscription updated successfully"})
+}
+
+func GetSubscriptions(c *gin.Context) {
+	db := dbconfig.GetDb()
+	var subscriptions []models.Subscription
+	result := db.Find(&subscriptions)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, subscriptions)
 }
