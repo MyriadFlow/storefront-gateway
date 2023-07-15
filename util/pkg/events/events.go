@@ -6,6 +6,8 @@ import (
 
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	flow "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/subscription"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/subscription"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
@@ -30,6 +32,10 @@ func ListenEvent() {
 	}
 
 	for e := range subscriptionIssuedChannel {
-		fmt.Println(e.Owner)
+		err := subscription.CreateSubscription("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String())
+		if err != nil {
+			logwrapper.Error("Error creating subscription. Error: ", err)
+			return
+		}
 	}
 }
