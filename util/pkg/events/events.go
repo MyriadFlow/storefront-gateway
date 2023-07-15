@@ -25,6 +25,8 @@ func ListenEvent() {
 	_, err = instance.WatchSubscriptionIssued(nil, subscriptionIssuedChannel, []common.Address{})
 	if err != nil {
 		log.Fatal("failed to watch subscriptionIssued, error: ", err.Error())
+	} else {
+		fmt.Println("watching subscriptionIssued event")
 	}
 
 	for e := range subscriptionIssuedChannel {

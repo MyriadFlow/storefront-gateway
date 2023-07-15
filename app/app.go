@@ -6,6 +6,7 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/api"
 	"github.com/MyriadFlow/storefront-gateway/global"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/auth"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/events"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
@@ -26,6 +27,8 @@ func Init() {
 	dbinit.Init()
 	global.InitGlobal()
 	storefront.InitRolesId()
+	go events.ListenEvent()
+
 	GinApp = gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
