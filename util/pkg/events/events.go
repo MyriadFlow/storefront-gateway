@@ -1,14 +1,12 @@
 package events
 
 import (
-	"context"
 	"fmt"
 	"log"
 
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
-	"github.com/ethereum/go-ethereum"
+	flow "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/subscription"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
@@ -18,21 +16,18 @@ func ListenEvent() {
 		log.Fatal(err)
 	}
 	contractAddress := common.HexToAddress(envconfig.EnvVars.SUBSCRIPTION_CONTRACT_ADDRESS)
-	query := ethereum.FilterQuery{
-		Addresses: []common.Address{contractAddress},
-	}
-	logs := make(chan types.Log)
 
-	sub, err := client.SubscribeFilterLogs(context.Background(), query, logs)
+	instance, err := flow.NewFlowSubscription(contractAddress, client)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for {
-		select {
-		case err := <-sub.Err():
-			log.Fatal(err)
-		case vLog := <-logs:
-			fmt.Println(vLog)
-		}
+	subscriptionIssuedChannel := make(chan *flow.FlowSubscriptionSubscriptionIssued)
+	_, err = instance.WatchSubscriptionIssued(nil, subscriptionIssuedChannel, []common.Address{})
+	if err != nil {
+		log.Fatal("failed to watch subscriptionIssued, error: ", err.Error())
+	}
+
+	for e := range subscriptionIssuedChannel {
+		fmt.Println(e.Owner)
 	}
 }
