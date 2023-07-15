@@ -13,8 +13,8 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/subscription")
 	{
-		g.POST("/new", Subscribe)
-		g.PUT("/update", Update)
+		g.POST("/", Subscribe)
+		g.PUT("/", Update)
 		g.GET("/", GetSubscriptions)
 	}
 }
@@ -63,7 +63,7 @@ func Update(c *gin.Context) {
 		return
 	}
 	subscription.Status = updateRequest.Status
-	subscription.Validity = time.Now().AddDate(1, 0, 0)
+	subscription.Validity = updateRequest.Validity
 	subscription.UpdatedBy = updateRequest.UpdatedBy
 	subscription.UpdatedAt = time.Now()
 	result = db.Save(&subscription)
