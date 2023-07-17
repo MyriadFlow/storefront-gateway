@@ -22,7 +22,7 @@ type config struct {
 	AUTH_EULA                    string `env:"AUTH_EULA,required"`
 	MARKETPLACE_CONTRACT_ADDRESS string `env:"MARKETPLACE_CONTRACT_ADDRESS,required"`
 	STOREFRONT_CONTRACT_ADDRESS  string `env:"STOREFRONT_CONTRACT_ADDRESS"`
-	POLYGON_RPC                  string `env:"POLYGON_RPC,required"`
+	POLYGON_RPC_HTTP             string `env:"POLYGON_RPC_HTTP,required"`
 	MNEMONIC                     string `env:"MNEMONIC,required"`
 	NFT_STORAGE_API_KEY          string `env:"NFT_STORAGE_API_KEY,required" `
 
@@ -33,7 +33,7 @@ type config struct {
 	ALLOWED_WALLET_ADDRESS        []string `env:"ALLOWED_WALLET_ADDRESS,required" envSeparator:","`
 	SMARTCONTRACT_API_URL         string   `env:"SMARTCONTRACT_API_URL,required"`
 	SUBSCRIPTION_CONTRACT_ADDRESS string   `env:"SUBSCRIPTION_CONTRACT_ADDRESS,required"`
-	ALCHEMY_POLYGON_RPC           string   `env:"ALCHEMY_POLYGON_RPC,required"`
+	POLYGON_RPC_WSS               string   `env:"POLYGON_RPC_WSSw,required"`
 }
 
 var EnvVars config = config{}

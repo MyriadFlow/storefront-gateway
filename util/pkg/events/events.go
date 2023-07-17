@@ -13,7 +13,7 @@ import (
 )
 
 func ListenEvent() {
-	client, err := ethclient.Dial(envconfig.EnvVars.ALCHEMY_POLYGON_RPC)
+	client, err := ethclient.Dial(envconfig.EnvVars.POLYGON_RPC_WSS)
 	if err != nil {
 		log.Fatal(err)
 	}
