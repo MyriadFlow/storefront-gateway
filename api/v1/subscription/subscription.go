@@ -47,8 +47,13 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
+	date, err := time.Parse("2006-01-02", updateRequest.Validity)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
 	subscription.Status = updateRequest.Status
-	subscription.Validity = updateRequest.Validity
+	subscription.Validity = date
 	subscription.UpdatedBy = updateRequest.UpdatedBy
 	subscription.UpdatedAt = time.Now()
 	result = db.Save(&subscription)

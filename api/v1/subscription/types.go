@@ -1,8 +1,6 @@
 package subscription
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -19,6 +17,6 @@ type subscriptionRequest struct {
 type UpdateSubscriptionRequest struct {
 	Id        uuid.UUID `json:"id"`
 	Status    string    `json:"status"`
-	Validity  time.Time `json:"validity"`
+	Validity  string    `json:"validity"`
 	UpdatedBy string    `json:"updatedBy"`
 }
