@@ -7,7 +7,7 @@ import (
 )
 
 type subscriptionRequest struct {
-	Name      string `json:"string"`
+	Name      string `json:"name"`
 	Owner     string `json:"owner"`
 	Plan      string `json:"plan"`
 	Cost      int    `json:"cost"`
