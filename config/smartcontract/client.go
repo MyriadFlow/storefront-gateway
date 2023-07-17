@@ -12,7 +12,7 @@ func GetClient() (*ethclient.Client, error) {
 	if client != nil {
 		return client, nil
 	}
-	nodeUrl := envconfig.EnvVars.POLYGON_RPC
+	nodeUrl := envconfig.EnvVars.POLYGON_RPC_HTTP
 	var err error
 	client, err = ethclient.Dial(nodeUrl)
 	if err != nil {
