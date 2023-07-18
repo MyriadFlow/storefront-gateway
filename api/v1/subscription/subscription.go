@@ -13,9 +13,9 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/subscription")
 	{
-		g.POST("/", Subscribe)
-		g.PUT("/", Update)
-		g.GET("/", GetSubscriptions)
+		g.POST("", Subscribe)
+		g.PUT("", Update)
+		g.GET("", GetSubscriptions)
 	}
 }
 

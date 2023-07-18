@@ -33,7 +33,7 @@ type config struct {
 	ALLOWED_WALLET_ADDRESS        []string `env:"ALLOWED_WALLET_ADDRESS,required" envSeparator:","`
 	SMARTCONTRACT_API_URL         string   `env:"SMARTCONTRACT_API_URL,required"`
 	SUBSCRIPTION_CONTRACT_ADDRESS string   `env:"SUBSCRIPTION_CONTRACT_ADDRESS,required"`
-	POLYGON_RPC_WSS               string   `env:"POLYGON_RPC_WSSw,required"`
+	POLYGON_RPC_WSS               string   `env:"POLYGON_RPC_WSS,required"`
 }
 
 var EnvVars config = config{}
