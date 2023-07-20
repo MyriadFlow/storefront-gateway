@@ -32,7 +32,7 @@ func ListenEvent() {
 	}
 
 	for e := range subscriptionIssuedChannel {
-		err := subscription.CreateSubscription("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String())
+		err := subscription.CreateSubscription("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), "https://cloudflare-ipfs.com/ipfs/bafybeigyw25q6g6qetggruuocduhbxf6a7vrppl6lskve2th2lin37thnm")
 		if err != nil {
 			logwrapper.Error("Error creating subscription. Error: ", err)
 			return
