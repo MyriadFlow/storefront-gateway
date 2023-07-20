@@ -64,19 +64,19 @@ jobs:
           echo "Pushing Image to GitHub Container Registry"
           docker push $GITHUB_REF_IMAGE
           docker push $GITHUB_BRANCH_IMAGE
-  
+
       - name: Deploy on Dev Server
-        if: github.ref == 'refs/heads/main' 
+        if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v0.1.7
-        with:         
+        with:
           host: ${{ secrets.DEV_REMOTE_SERVER_ADDRESS }}
           username: ${{ secrets.DEV_SERVER_USERNAME }}
-          key:  ${{ secrets.DEV_REMOTE_SERVER_KEY }}
+          key: ${{ secrets.DEV_REMOTE_SERVER_KEY }}
           port: ${{ secrets.DEV_SSH_PORT }}
           script: |
             pwd
             cd gateway
             podman stop gateway && podman rm gateway && podman image rm gateway
             echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
-            podman pull ghcr.io/myriadflow/gateway:main
-            podman run --name="gateway" --env-file=.env -p 9080:9080 --net=bridge -d ghcr.io/myriadflow/gateway:main
+            sudo podman pull ghcr.io/myriadflow/gateway:main
+            sudo podman run --name="gateway" --env-file=.env -p 9080:9080 --net=gateway -d ghcr.io/myriadflow/gateway:main
