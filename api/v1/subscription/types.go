@@ -12,6 +12,7 @@ type subscriptionRequest struct {
 	Currency  string `json:"currency"`
 	CreatedBy string `json:"createdBy"`
 	UpdatedBy string `json:"updatedBy"`
+	Image     string `json:"image"`
 }
 
 type UpdateSubscriptionRequest struct {
