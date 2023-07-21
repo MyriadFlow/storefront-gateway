@@ -76,7 +76,7 @@ jobs:
           script: |
             pwd
             cd gateway
-            podman stop gateway && podman rm gateway && podman image rm gateway
+            sudo podman stop gateway && sudo podman rm gateway && sudo podman image rm gateway
             echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
             sudo podman pull ghcr.io/myriadflow/gateway:main
             sudo podman run --name="gateway" --env-file=.env -p 9080:9080 --net=gateway -d ghcr.io/myriadflow/gateway:main
