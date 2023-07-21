@@ -34,6 +34,7 @@ type config struct {
 	SMARTCONTRACT_API_URL         string   `env:"SMARTCONTRACT_API_URL,required"`
 	SUBSCRIPTION_CONTRACT_ADDRESS string   `env:"SUBSCRIPTION_CONTRACT_ADDRESS,required"`
 	POLYGON_RPC_WSS               string   `env:"POLYGON_RPC_WSS,required"`
+	DEFAULT_SUBSCRIPTION_IMAGE    string   `env:"DEFAULT_SUBSCRIPTION_IMAGE,required"`
 }
 
 var EnvVars config = config{}
