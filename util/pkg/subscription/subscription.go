@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateSubscription(name string, owner string, plan string, cost int, currency string, createdBy string, updatedBy string) error {
+func CreateSubscription(name string, owner string, plan string, cost int, currency string, createdBy string, updatedBy string, image string) error {
 	db := dbconfig.GetDb()
 	subscription := models.Subscription{
 		Id:        uuid.New(),
@@ -23,6 +23,7 @@ func CreateSubscription(name string, owner string, plan string, cost int, curren
 		UpdatedAt: time.Now(),
 		CreatedBy: createdBy,
 		UpdatedBy: updatedBy,
+		Image:     image,
 	}
 	result := db.Create(&subscription)
 	if result.Error != nil {

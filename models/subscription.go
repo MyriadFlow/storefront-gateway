@@ -19,4 +19,5 @@ type Subscription struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	CreatedBy string    `json:"createdBy"`
 	UpdatedBy string    `json:"updatedBy"`
+	Image     string    `json:"image"`
 }
