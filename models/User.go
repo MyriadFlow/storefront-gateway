@@ -9,13 +9,14 @@ type User struct {
 	WalletAddress  string    `json:"wallet_address"`
 	FlowIds        []FlowId  `gorm:"foreignkey:WalletAddress" json:"-"`
 	ProfilePicture string    `json:"profilePictureUrl"`
-	Country        string    `json:"country"`
+	Location       string    `json:"location"`
 	FacebookId     string    `json:"facebook_id"`
 	InstagramId    string    `json:"instagram_id"`
 	TwitterId      string    `json:"twitter_id"`
 	DiscordId      string    `json:"discord_id"`
 	TelegramId     string    `json:"telegram_id"`
 	UserType       string    `json:"user_type,omitempty"`
+	Bio            string    `json:"bio,omitempty"`
 }
 
 // gorm:"type:varchar(20);column:id;next:uuid
