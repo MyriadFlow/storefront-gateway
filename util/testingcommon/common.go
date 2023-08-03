@@ -42,7 +42,7 @@ func CreateTestUser(t *testing.T, walletAddress string) {
 		Name:           "Jack",
 		ProfilePicture: "https://testdomain.com/",
 		WalletAddress:  walletAddress,
-		Country:        "India",
+		Location:       "India",
 	}
 	err := db.Model(&models.User{}).Create(&user).Error
 	if err != nil {
