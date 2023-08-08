@@ -21,7 +21,6 @@ func (fit FlowIdType) Value() (driver.Value, error) {
 
 type FlowId struct {
 	FlowId        string     `gorm:"primary_key"`
-	FlowIdType    FlowIdType `sql:"flow_id_type"`
-	WalletAddress string
+	FlowIdType    FlowIdType `json:"flow_id_type"`
+	WalletAddress string     `gorm:"foreignKey:FlowId"`
 }
-

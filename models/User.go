@@ -7,7 +7,7 @@ type User struct {
 	Email          string    `gorm:"unique" json:"email,omitempty"`
 	Name           string    `json:"name"`
 	WalletAddress  string    `json:"wallet_address"`
-	FlowIds        []FlowId  `gorm:"foreignkey:WalletAddress" json:"-"`
+	FlowIds        []FlowId  `gorm:"foreignkey:WalletAddress" json:"flow_ids"`
 	ProfilePicture string    `json:"profilePictureUrl"`
 	Location       string    `json:"location"`
 	FacebookId     string    `json:"facebook_id"`
