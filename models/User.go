@@ -4,7 +4,7 @@ import "github.com/google/uuid"
 
 type User struct {
 	UserID         uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
-	Email          string    `gorm:"unique" json:"email,omitempty"`
+	Email          string    `json:"email,omitempty"`
 	Name           string    `json:"name"`
 	WalletAddress  string    `json:"wallet_address"`
 	ProfilePicture string    `json:"profilePictureUrl"`
