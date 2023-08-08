@@ -5,7 +5,6 @@ import (
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
-	"gorm.io/gorm"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -31,18 +30,31 @@ func GenerateFlowId(walletAddress string, flowIdType models.FlowIdType, relatedR
 	}
 	if update {
 		// User exist so update
-		findResult.Update("flow_ids", gorm.Expr("array_cat(tags, ?)", &models.FlowId{FlowIdType: flowIdType, FlowId: flowId, WalletAddress: walletAddress}))
+		newFlowId := &models.FlowId{
+			FlowId:        flowId,
+			FlowIdType:    flowIdType,
+			WalletAddress: walletAddress,
+		}
+		if err := db.Create(newFlowId).Error; err != nil {
+			return "", err
+		}
+
 	} else {
 		// User doesn't exist so create
 		id := uuid.New()
 		newUser := &models.User{
 			UserID:        id,
 			WalletAddress: walletAddress,
-			FlowIds: []models.FlowId{{
-				FlowIdType: flowIdType, FlowId: flowId,
-			}},
+		}
+		newFlowId := &models.FlowId{
+			FlowId:        flowId,
+			FlowIdType:    flowIdType,
+			WalletAddress: walletAddress,
 		}
 		if err := db.Create(newUser).Error; err != nil {
+			return "", err
+		}
+		if err := db.Create(newFlowId).Error; err != nil {
 			return "", err
 		}
 
