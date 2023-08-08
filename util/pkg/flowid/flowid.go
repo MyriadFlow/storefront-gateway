@@ -30,27 +30,31 @@ func GenerateFlowId(walletAddress string, flowIdType models.FlowIdType, relatedR
 	}
 	if update {
 		// User exist so update
-		association := db.Model(&models.User{
+		newFlowId := &models.FlowId{
+			FlowId:        flowId,
+			FlowIdType:    flowIdType,
 			WalletAddress: walletAddress,
-		}).Association("FlowIds")
-		if err := association.Error; err != nil {
-			logrus.Error(err)
+		}
+		if err := db.Create(newFlowId).Error; err != nil {
 			return "", err
 		}
-		err := association.Append(&models.FlowId{FlowIdType: flowIdType, WalletAddress: walletAddress, FlowId: flowId})
-		if err != nil {
-			return "", err
-		}
+
 	} else {
 		// User doesn't exist so create
-
+		id := uuid.New()
 		newUser := &models.User{
+			UserID:        id,
 			WalletAddress: walletAddress,
-			FlowIds: []models.FlowId{{
-				FlowIdType: flowIdType, WalletAddress: walletAddress, FlowId: flowId,
-			}},
+		}
+		newFlowId := &models.FlowId{
+			FlowId:        flowId,
+			FlowIdType:    flowIdType,
+			WalletAddress: walletAddress,
 		}
 		if err := db.Create(newUser).Error; err != nil {
+			return "", err
+		}
+		if err := db.Create(newFlowId).Error; err != nil {
 			return "", err
 		}
 
