@@ -17,5 +17,3 @@ type User struct {
 	UserType       string    `json:"user_type,omitempty"`
 	Bio            string    `json:"bio,omitempty"`
 }
-
-// gorm:"type:varchar(20);column:id;next:uuid
