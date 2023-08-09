@@ -19,7 +19,7 @@ type reqBody struct {
 	ContractName      string         `json:"contractName"`
 	ConstructorParams map[string]any `json:"constructorParams"`
 	Network           string         `json:"network"`
-	SubscriptionId    string         `json:"subscriptionId"`
+	StorefrontId      string         `json:"storefrontId"`
 }
 type resBody struct {
 	ChainId         int    `json:"chainId"`
@@ -89,7 +89,7 @@ func Deploy(c *gin.Context, link string) {
 		ContractAddress: response.ContractAddress,
 		ChainId:         response.ChainId,
 		Verified:        response.Verified,
-		SubscriptionId:  req.SubscriptionId,
+		StorefrontId:    req.StorefrontId,
 	}
 	result := db.Create(&contract)
 	if result.Error != nil {

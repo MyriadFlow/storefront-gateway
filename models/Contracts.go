@@ -5,6 +5,6 @@ type Contract struct {
 	ContractAddress string `json:"contractAddress"`
 	ChainId         int    `json:"chainId"`
 	Verified        bool   `json:"verified"`
-	SubscriptionId  string `json:"subscriptionId"`
+	StorefrontId    string `json:"storefrontId"`
 	ContractId      string `json:"contractId"`
 }

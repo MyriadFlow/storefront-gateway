@@ -5,7 +5,7 @@ import (
 	creatorrole "github.com/MyriadFlow/storefront-gateway/api/v1/creatorrole"
 	delegateassetcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateassetcreation"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/launchpad"
-	"github.com/MyriadFlow/storefront-gateway/api/v1/subscription"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/storefront"
 
 	"github.com/MyriadFlow/storefront-gateway/api/v1/healthcheck"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/highlights"
@@ -33,6 +33,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		likes.ApplyRoutes(v1)
 		wishlist.ApplyRoutes(v1)
 		launchpad.ApplyRoutes(v1)
-		subscription.ApplyRoutes(v1)
+		storefront.ApplyRoutes(v1)
 	}
 }
