@@ -25,7 +25,7 @@ func Subscribe(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err := subscription.CreateSubscription(subRequest.Name, subRequest.Owner, subRequest.Plan, subRequest.Cost, subRequest.Currency, subRequest.CreatedBy, subRequest.UpdatedBy, subRequest.Image)
+	err := subscription.CreateSubscription(subRequest.Name, subRequest.Owner, subRequest.Plan, subRequest.Cost, subRequest.Currency, subRequest.CreatedBy, subRequest.UpdatedBy, subRequest.Image, subRequest.Headline, subRequest.Description, subRequest.Blockchain)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return

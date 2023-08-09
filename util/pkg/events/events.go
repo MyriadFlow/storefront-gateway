@@ -32,7 +32,7 @@ func ListenEvent() {
 	}
 
 	for e := range subscriptionIssuedChannel {
-		err := subscription.CreateSubscription("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), envconfig.EnvVars.DEFAULT_SUBSCRIPTION_IMAGE)
+		err := subscription.CreateSubscription("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), envconfig.EnvVars.DEFAULT_SUBSCRIPTION_IMAGE, "", "", "")
 		if err != nil {
 			logwrapper.Error("Error creating subscription. Error: ", err)
 			return
