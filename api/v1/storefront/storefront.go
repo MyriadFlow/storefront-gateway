@@ -1,4 +1,4 @@
-package subscription
+package storefront
 
 import (
 	"net/http"
@@ -6,26 +6,26 @@ import (
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/subscription"
+	storefrontUtil "github.com/MyriadFlow/storefront-gateway/util/pkg/storefront"
 	"github.com/gin-gonic/gin"
 )
 
 func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/subscription")
+	g := r.Group("/storefront")
 	{
-		g.POST("", Subscribe)
-		g.PUT("", Update)
-		g.GET("", GetSubscriptions)
+		g.POST("", NewStorefront)
+		g.PUT("", UpdateStorefront)
+		g.GET("", GetStorefronts)
 	}
 }
 
-func Subscribe(c *gin.Context) {
-	var subRequest subscriptionRequest
-	if err := c.BindJSON(&subRequest); err != nil {
+func NewStorefront(c *gin.Context) {
+	var StorefrontRequest StorefrontRequest
+	if err := c.BindJSON(&StorefrontRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err := subscription.CreateSubscription(subRequest.Name, subRequest.Owner, subRequest.Plan, subRequest.Cost, subRequest.Currency, subRequest.CreatedBy, subRequest.UpdatedBy, subRequest.Image, subRequest.Headline, subRequest.Description, subRequest.Blockchain)
+	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, StorefrontRequest.Plan, StorefrontRequest.Cost, StorefrontRequest.Currency, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -33,16 +33,16 @@ func Subscribe(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Subscription created successfully"})
 }
 
-func Update(c *gin.Context) {
+func UpdateStorefront(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var updateRequest UpdateSubscriptionRequest
+	var updateRequest UpdateStorefrontRequest
 	if err := c.BindJSON(&updateRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
 
-	var subscription models.Subscription
-	result := db.Where("id = ?", updateRequest.Id).First(&subscription)
+	var storefront models.Storefront
+	result := db.Where("id = ?", updateRequest.Id).First(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
@@ -52,11 +52,11 @@ func Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	subscription.Status = updateRequest.Status
-	subscription.Validity = date
-	subscription.UpdatedBy = updateRequest.UpdatedBy
-	subscription.UpdatedAt = time.Now()
-	result = db.Save(&subscription)
+	storefront.Status = updateRequest.Status
+	storefront.Validity = date
+	storefront.UpdatedBy = updateRequest.UpdatedBy
+	storefront.UpdatedAt = time.Now()
+	result = db.Save(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
@@ -64,9 +64,9 @@ func Update(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Subscription updated successfully"})
 }
 
-func GetSubscriptions(c *gin.Context) {
+func GetStorefronts(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var subscriptions []models.Subscription
+	var subscriptions []models.Storefront
 	result := db.Find(&subscriptions)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})

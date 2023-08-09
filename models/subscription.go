@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type Subscription struct {
+type Storefront struct {
 	Id          uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
 	Name        string    `json:"string"`
 	Owner       string    `json:"owner"`

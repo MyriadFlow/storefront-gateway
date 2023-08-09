@@ -1,4 +1,4 @@
-package subscription
+package storefrontUtil
 
 import (
 	"time"
@@ -8,9 +8,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateSubscription(name string, owner string, plan string, cost int, currency string, createdBy string, updatedBy string, image string, headline string, description string) error {
+func CreateStorefront(name string, owner string, plan string, cost int, currency string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) error {
 	db := dbconfig.GetDb()
-	subscription := models.Subscription{
+	subscription := models.Storefront{
 		Id:          uuid.New(),
 		Name:        name,
 		Owner:       owner,
@@ -26,6 +26,7 @@ func CreateSubscription(name string, owner string, plan string, cost int, curren
 		Image:       image,
 		Headline:    headline,
 		Description: description,
+		Blockchain:  blockchain,
 	}
 	result := db.Create(&subscription)
 	if result.Error != nil {

@@ -1,10 +1,10 @@
-package subscription
+package storefront
 
 import (
 	"github.com/google/uuid"
 )
 
-type subscriptionRequest struct {
+type StorefrontRequest struct {
 	Name        string `json:"name"`
 	Owner       string `json:"owner"`
 	Plan        string `json:"plan"`
@@ -18,7 +18,7 @@ type subscriptionRequest struct {
 	Blockchain  string `json:"blockchain"`
 }
 
-type UpdateSubscriptionRequest struct {
+type UpdateStorefrontRequest struct {
 	Id          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
 	Status      string    `json:"status"`
