@@ -10,7 +10,7 @@ import (
 
 func CreateStorefront(name string, owner string, plan string, cost int, currency string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) error {
 	db := dbconfig.GetDb()
-	subscription := models.Storefront{
+	storefront := models.Storefront{
 		Id:          uuid.New(),
 		Name:        name,
 		Owner:       owner,
@@ -28,7 +28,7 @@ func CreateStorefront(name string, owner string, plan string, cost int, currency
 		Description: description,
 		Blockchain:  blockchain,
 	}
-	result := db.Create(&subscription)
+	result := db.Create(&storefront)
 	if result.Error != nil {
 		return result.Error
 	}

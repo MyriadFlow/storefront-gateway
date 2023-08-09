@@ -30,7 +30,7 @@ func NewStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Subscription created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully"})
 }
 
 func UpdateStorefront(c *gin.Context) {
@@ -61,16 +61,16 @@ func UpdateStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Subscription updated successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Storefront updated successfully"})
 }
 
 func GetStorefronts(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var subscriptions []models.Storefront
-	result := db.Find(&subscriptions)
+	var storefronts []models.Storefront
+	result := db.Find(&storefronts)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
-	c.JSON(http.StatusOK, subscriptions)
+	c.JSON(http.StatusOK, storefronts)
 }
