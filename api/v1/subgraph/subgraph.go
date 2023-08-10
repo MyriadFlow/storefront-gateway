@@ -54,11 +54,13 @@ func DeploySubgraph(c *gin.Context) {
 		return
 	}
 	arr := strings.Split(string(data), "\n")
-	subgraphId := strings.Split(arr[3], " ")[2]
-	subgraphUrl := strings.Split(arr[5], " ")[2]
+	subgraphIdArr := strings.Split(arr[3], " ")
+	subgraphUrlArr := strings.Split(arr[5], " ")
+	subgraphUrl := subgraphUrlArr[2]
+	subgraphId := subgraphIdArr[2]
 	res := SubgraphResponse{
 		SubgraphUrl: subgraphUrl,
 		SubgraphId:  subgraphId,
 	}
-	c.JSON(http.StatusOK, gin.H{"data": res})
+	c.JSON(http.StatusOK, res)
 }
