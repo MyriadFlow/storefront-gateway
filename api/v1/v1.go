@@ -6,6 +6,7 @@ import (
 	delegateassetcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateassetcreation"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/launchpad"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/storefront"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/subgraph"
 
 	"github.com/MyriadFlow/storefront-gateway/api/v1/healthcheck"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/highlights"
@@ -34,5 +35,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		wishlist.ApplyRoutes(v1)
 		launchpad.ApplyRoutes(v1)
 		storefront.ApplyRoutes(v1)
+		subgraph.ApplyRoutes(v1)
 	}
 }
