@@ -8,6 +8,7 @@ type User struct {
 	Name           string    `json:"name"`
 	WalletAddress  string    `json:"wallet_address"`
 	ProfilePicture string    `json:"profilePictureUrl"`
+	CoverPicture   string    `json:"coverPictureUrl"`
 	Location       string    `json:"location"`
 	FacebookId     string    `json:"facebook_id"`
 	InstagramId    string    `json:"instagram_id"`

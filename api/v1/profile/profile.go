@@ -62,7 +62,7 @@ func getProfile(c *gin.Context) {
 	}
 
 	payload := GetProfilePayload{
-		user.Name, user.WalletAddress, user.ProfilePicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio,
+		user.Name, user.WalletAddress, user.ProfilePicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.CoverPicture,
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
 }

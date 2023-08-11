@@ -4,6 +4,7 @@ type GetProfilePayload struct {
 	Name              string `json:"name,omitempty"`
 	WalletAddress     string `json:"walletAddress"`
 	ProfilePictureUrl string `json:"profilePictureUrl,omitempty"`
+	CoverPictureUrl   string `json:"coverPictureUrl,omitempty"`
 	Location          string `json:"location,omitempty"`
 	FacebookId        string `json:"facebook_id,omitempty"`
 	InstagramId       string `json:"instagram_id,omitempty"`
