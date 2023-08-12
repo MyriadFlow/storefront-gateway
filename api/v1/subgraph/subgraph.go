@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
+	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
 )
@@ -45,6 +47,8 @@ func DeploySubgraph(c *gin.Context) {
 	}
 	defer resp.Body.Close()
 
+	db := dbconfig.GetDb()
+	var subgraph models.Subgraph
 	body, _ := io.ReadAll(resp.Body)
 	strn := string(body)
 	strn = string(body)[1 : len(strn)-1]
@@ -58,9 +62,25 @@ func DeploySubgraph(c *gin.Context) {
 	subgraphUrlArr := strings.Split(arr[5], " ")
 	subgraphUrl := subgraphUrlArr[2]
 	subgraphId := subgraphIdArr[2]
+	subgraph = models.Subgraph{
+		SubgraphId:      subgraphId,
+		Name:            req.Name,
+		Folder:          req.Folder,
+		NodeUrl:         req.NodeUrl,
+		IpfsUrl:         req.IpfsUrl,
+		ContractName:    req.ContractName,
+		ContractAddress: req.ContractAddress,
+		Network:         req.Network,
+		Protocol:        req.Protocol,
+		Tag:             req.Tag,
+		SubgraphUrl:     subgraphUrl,
+	}
+
+	db.Create(&subgraph)
+
 	res := SubgraphResponse{
-		SubgraphUrl: subgraphUrl,
-		SubgraphId:  subgraphId,
+		SubgraphUrl: subgraph.SubgraphUrl,
+		SubgraphId:  subgraph.SubgraphId,
 	}
 	c.JSON(http.StatusOK, res)
 }
