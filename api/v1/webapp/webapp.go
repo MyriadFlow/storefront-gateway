@@ -1,6 +1,10 @@
 package webapp
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/webapp")
@@ -9,5 +13,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	}
 }
 func DeployWebapp(c *gin.Context) {
+	storefrontId := c.Request.Header["storefrontId"]
 
+	c.JSON(http.StatusOK, gin.H{})
 }
