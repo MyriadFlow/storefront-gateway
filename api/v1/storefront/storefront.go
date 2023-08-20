@@ -6,8 +6,10 @@ import (
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	storefrontUtil "github.com/MyriadFlow/storefront-gateway/util/pkg/storefront"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func ApplyRoutes(r *gin.RouterGroup) {
@@ -16,6 +18,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.POST("", NewStorefront)
 		g.PUT("", UpdateStorefront)
 		g.GET("", GetStorefronts)
+		g.GET("/myStorefronts", GetStorefrontsByAddress)
 	}
 }
 
@@ -73,4 +76,17 @@ func GetStorefronts(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, storefronts)
+}
+
+func GetStorefrontsByAddress(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var storefronts []models.Storefront
+	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&storefronts)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
 }

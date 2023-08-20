@@ -13,12 +13,14 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/subgraph")
 	{
 		g.POST("", DeploySubgraph)
+		g.GET("", GetSubgraphsByAddress)
 	}
 }
 
@@ -83,4 +85,17 @@ func DeploySubgraph(c *gin.Context) {
 		SubgraphId:  subgraph.SubgraphId,
 	}
 	c.JSON(http.StatusOK, res)
+}
+
+func GetSubgraphsByAddress(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var subgraphs []models.Subgraph
+	err := db.Model(&models.Subgraph{}).Where("wallet_address = ?", walletAddress).Find(&subgraphs)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "Profile fetched successfully", subgraphs)
 }
