@@ -32,7 +32,7 @@ func ListenEvent() {
 	}
 
 	for e := range subscriptionIssuedChannel {
-		err := storefrontUtil.CreateStorefront("name", e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), envconfig.EnvVars.DEFAULT_SUBSCRIPTION_IMAGE, "", "", "")
+		err := storefrontUtil.CreateStorefront("name", e.Owner.String(), e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), envconfig.EnvVars.DEFAULT_SUBSCRIPTION_IMAGE, "", "", "")
 		if err != nil {
 			logwrapper.Error("Error creating subscription. Error: ", err)
 			return
