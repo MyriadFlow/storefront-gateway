@@ -29,6 +29,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func DeploySubgraph(c *gin.Context) {
 	var req SubgraphPayload
 	walletAddress := c.GetString("walletAddress")
+	storefrontId := c.GetHeader("StorefrontId")
 	if err := c.BindJSON(&req); err != nil {
 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
 		return
@@ -79,6 +80,7 @@ func DeploySubgraph(c *gin.Context) {
 		Tag:             req.Tag,
 		SubgraphUrl:     subgraphUrl,
 		WalletAddress:   walletAddress,
+		StorefrontId:    storefrontId,
 	}
 
 	db.Create(&subgraph)
