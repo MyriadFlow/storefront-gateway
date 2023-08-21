@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -19,6 +20,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/subgraph")
 	{
+		g.Use(paseto.PASETO)
 		g.POST("", DeploySubgraph)
 		g.GET("", GetSubgraphsByAddress)
 	}
@@ -26,6 +28,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func DeploySubgraph(c *gin.Context) {
 	var req SubgraphPayload
+	walletAddress := c.GetString("walletAddress")
 	if err := c.BindJSON(&req); err != nil {
 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
 		return
@@ -75,6 +78,7 @@ func DeploySubgraph(c *gin.Context) {
 		Protocol:        req.Protocol,
 		Tag:             req.Tag,
 		SubgraphUrl:     subgraphUrl,
+		WalletAddress:   walletAddress,
 	}
 
 	db.Create(&subgraph)

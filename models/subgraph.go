@@ -11,4 +11,5 @@ type Subgraph struct {
 	Protocol        string `json:"protocol,omitempty"`
 	Tag             string `json:"tag,omitempty"`
 	SubgraphUrl     string `json:"subgraphUrl,omitempty"`
+	WalletAddress   string `json:"walletAddress,omitempty"`
 }
