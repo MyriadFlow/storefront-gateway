@@ -19,6 +19,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.Use(paseto.PASETO)
 		g.PATCH("", patchProfile)
 		g.GET("", getProfile)
+		g.PATCH("/verify", verifySocial)
 	}
 }
 
@@ -62,7 +63,21 @@ func getProfile(c *gin.Context) {
 	}
 
 	payload := GetProfilePayload{
-		user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio,
+		user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.InstagramVerified, user.FacebookVerified, user.TwitterVerified, user.DiscordVerified, user.TelegramVerified,
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
+}
+
+func verifySocial(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var req verifySocialPayload
+	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Update(req.SocialName+"_verified", true)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+
+		return
+	}
+	httphelper.SuccessResponse(c, "verification for "+req.SocialName+" updated", nil)
 }

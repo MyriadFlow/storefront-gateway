@@ -7,6 +7,7 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/api/v1/launchpad"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/storefront"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/subgraph"
+	"github.com/MyriadFlow/storefront-gateway/api/v1/webapp"
 
 	"github.com/MyriadFlow/storefront-gateway/api/v1/healthcheck"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/highlights"
@@ -36,5 +37,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		launchpad.ApplyRoutes(v1)
 		storefront.ApplyRoutes(v1)
 		subgraph.ApplyRoutes(v1)
+		webapp.ApplyRoutes(v1)
 	}
 }

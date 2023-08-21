@@ -18,6 +18,7 @@ import (
 type reqBody struct {
 	ContractName      string         `json:"contractName"`
 	ConstructorParams map[string]any `json:"constructorParams"`
+	WalletAdress      string         `json:"walletAdress"`
 	Network           string         `json:"network"`
 	StorefrontId      string         `json:"storefrontId"`
 }
@@ -87,6 +88,7 @@ func Deploy(c *gin.Context, link string) {
 	contract := models.Contract{
 		ContractName:    req.ContractName,
 		ContractAddress: response.ContractAddress,
+		WalletAdress:    req.WalletAdress,
 		ChainId:         response.ChainId,
 		Verified:        response.Verified,
 		StorefrontId:    req.StorefrontId,

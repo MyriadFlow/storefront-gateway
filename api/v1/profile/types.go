@@ -13,4 +13,13 @@ type GetProfilePayload struct {
 	TelegramId        string `json:"telegram_id,omitempty"`
 	Email             string `json:"email,omitempty"`
 	Bio               string `json:"bio,omitempty"`
+	InstagramVerified bool   `json:"instagramVerified,omitempty"`
+	FacebookVerified  bool   `json:"facebookVerified,omitempty"`
+	TwitterVerified   bool   `json:"twitterVerified,omitempty"`
+	DiscordVerified   bool   `json:"discordVerified,omitempty"`
+	TelegramVerified  bool   `json:"telegramVerified,omitempty"`
+}
+
+type verifySocialPayload struct {
+	SocialName string `json:"socialName"`
 }
