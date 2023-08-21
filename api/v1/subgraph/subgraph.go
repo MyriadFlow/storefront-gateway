@@ -70,7 +70,6 @@ func DeploySubgraph(c *gin.Context) {
 		Folder:          req.Folder,
 		NodeUrl:         req.NodeUrl,
 		IpfsUrl:         req.IpfsUrl,
-		ContractName:    req.ContractName,
 		ContractAddress: req.ContractAddress,
 		Network:         req.Network,
 		Protocol:        req.Protocol,

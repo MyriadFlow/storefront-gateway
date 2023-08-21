@@ -17,7 +17,6 @@ type SubgraphResponse struct {
 	Folder          string `json:"folder,omitempty"`
 	NodeUrl         string `json:"nodeUrl,omitempty"`
 	IpfsUrl         string `json:"ipfsUrl,omitempty"`
-	ContractName    string `json:"contractName,omitempty"`
 	ContractAddress string `json:"contractAddress,omitempty"`
 	Network         string `json:"network,omitempty"`
 	Protocol        string `json:"protocol,omitempty"`
