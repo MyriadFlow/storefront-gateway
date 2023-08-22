@@ -3,7 +3,6 @@ package webapp
 import (
 	"net/http"
 
-	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
@@ -14,7 +13,6 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/webapp")
 	{
-		g.Use(paseto.PASETO)
 		g.POST("", DeployWebapp)
 	}
 }
