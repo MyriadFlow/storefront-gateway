@@ -26,11 +26,12 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func NewStorefront(c *gin.Context) {
 	var StorefrontRequest StorefrontRequest
+	walletAddress := c.GetString("walletAddress")
 	if err := c.BindJSON(&StorefrontRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, StorefrontRequest.WalletAdress, StorefrontRequest.Plan, StorefrontRequest.Cost, StorefrontRequest.Currency, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
+	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.Plan, StorefrontRequest.Cost, StorefrontRequest.Currency, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return

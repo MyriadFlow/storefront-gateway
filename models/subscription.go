@@ -10,7 +10,7 @@ type Storefront struct {
 	Id           uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
 	Name         string    `json:"string"`
 	Owner        string    `json:"owner"`
-	WalletAdress string    `json:"walletAdress"`
+	WalletAdress string    `json:"walletAddress"`
 	Plan         string    `json:"plan"`
 	Cost         int       `json:"cost"`
 	Currency     string    `json:"currency"`
