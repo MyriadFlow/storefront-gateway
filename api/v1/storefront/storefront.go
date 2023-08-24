@@ -1,11 +1,18 @@
 package storefront
 
 import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
+	"io"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	storefrontUtil "github.com/MyriadFlow/storefront-gateway/util/pkg/storefront"
@@ -21,6 +28,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.PUT("", UpdateStorefront)
 		g.GET("", GetStorefronts)
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
+		g.POST("/deploy", DeployStorefront)
 	}
 }
 
@@ -92,4 +100,125 @@ func GetStorefrontsByAddress(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
+}
+
+func DeployStorefront(c *gin.Context) {
+	var req DeployStorefrontRequest
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	db := dbconfig.GetDb()
+
+	walletAddress := c.GetString("walletAddress")
+	var contracts []models.Contract
+	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.StorefrontId).Find(&contracts).Error
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+
+	var reqContracts []Contract
+	for i, contract := range contracts {
+		reqContracts = append(reqContracts, Contract{
+			Name:    contract.ContractName + strconv.Itoa(i),
+			Address: contract.ContractAddress,
+		})
+	}
+
+	graphReqBody := GraphRequest{
+		Name:      req.Name,
+		Folder:    req.StorefrontId,
+		NodeURL:   req.NodeUrl + ":8020",
+		IpfsURL:   req.NodeUrl + ":5001",
+		Contracts: reqContracts,
+		Network:   req.Network,
+		Protocol:  req.Protocol,
+		Tag:       req.Tag,
+	}
+
+	graphReqBytes, err := json.Marshal(graphReqBody)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+
+	graphReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Subgraph", bytes.NewReader(graphReqBytes))
+	if err != nil {
+		logrus.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(graphReq)
+	if err != nil {
+		logrus.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	defer resp.Body.Close()
+
+	var subgraph models.Subgraph
+	body, _ := io.ReadAll(resp.Body)
+	strn := string(body)
+	strn = string(body)[1 : len(strn)-1]
+	data, err := base64.StdEncoding.DecodeString(strn)
+	if err != nil {
+		logrus.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	arr := strings.Split(string(data), "\n")
+	subgraphIdArr := strings.Split(arr[3], " ")
+	subgraphUrlArr := strings.Split(arr[5], " ")
+	subgraphUrl := subgraphUrlArr[2]
+	subgraphId := subgraphIdArr[2]
+	subgraph = models.Subgraph{
+		SubgraphId:    subgraphId,
+		Name:          req.Name,
+		Network:       req.Network,
+		Protocol:      req.Protocol,
+		Tag:           req.Tag,
+		SubgraphUrl:   subgraphUrl,
+		WalletAddress: walletAddress,
+		StorefrontId:  req.StorefrontId,
+	}
+
+	db.Create(&subgraph)
+
+	nodectlReqBody := NodectlRequest{}
+
+	nodectlReqBytes, err := json.Marshal(nodectlReqBody)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+
+	nodectlReq, err := http.NewRequest(http.MethodPost, req.NodectlUrl+"/marketplace", bytes.NewReader(nodectlReqBytes))
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+
+	nodectlResp, err := client.Do(nodectlReq)
+	if err != nil {
+		logrus.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	defer nodectlResp.Body.Close()
+
+	nodectlBody, _ := io.ReadAll(resp.Body)
+	var nodectlRespBody NodectlResponse
+	if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "succesfully deployed storefront", nil)
 }
