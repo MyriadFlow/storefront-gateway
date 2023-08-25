@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -190,7 +191,9 @@ func DeployStorefront(c *gin.Context) {
 
 	db.Create(&subgraph)
 
-	nodectlReqBody := NodectlRequest{}
+	nodectlReqBody := NodectlRequest{
+		StorefrontName: req.Name,
+	}
 
 	nodectlReqBytes, err := json.Marshal(nodectlReqBody)
 	if err != nil {
@@ -206,7 +209,7 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 
-	nodectlResp, err := client.Do(nodectlReq)
+	nodectlResp, err := http.DefaultClient.Do(nodectlReq)
 	if err != nil {
 		logrus.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -214,11 +217,18 @@ func DeployStorefront(c *gin.Context) {
 	}
 	defer nodectlResp.Body.Close()
 
-	nodectlBody, _ := io.ReadAll(resp.Body)
-	var nodectlRespBody NodectlResponse
-	if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+	nodectlBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("client: could not read response body: %s\n", err)
 		return
 	}
+	fmt.Println(string(nodectlBody))
+	// var nodectlRespBody NodectlResponse
+	// if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
+	// 	logrus.Error(err)
+	// 	httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+	// 	return
+	// }
+	fmt.Printf("client: response body: %s\n", nodectlBody)
 	httphelper.SuccessResponse(c, "succesfully deployed storefront", nil)
 }
