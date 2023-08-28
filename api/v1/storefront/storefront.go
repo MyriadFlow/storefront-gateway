@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -40,7 +39,7 @@ func NewStorefront(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.Plan, StorefrontRequest.Cost, StorefrontRequest.Currency, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
+	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -111,8 +110,30 @@ func DeployStorefront(c *gin.Context) {
 	}
 
 	db := dbconfig.GetDb()
-
 	walletAddress := c.GetString("walletAddress")
+
+	var storefront models.Storefront
+	result := db.Where("id = ?", req.StorefrontId).First(&storefront)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+
+	storefront.Name = req.StorefrontName
+	storefront.Headline = req.Headline
+	storefront.Description = req.Description
+	storefront.ProfileImage = req.ProfileImage
+	storefront.CoverImage = req.CoverImage
+	storefront.AssetName = req.AssetName
+	storefront.AssetDescription = req.AssetDescription
+	storefront.PersonalInformation = req.PersonalInformation
+	storefront.PersonalDescription = req.PersonalDescription
+	storefront.RelevantImage = req.RelevantImage
+	storefront.MailId = req.MailId
+	storefront.Twitter = req.Twitter
+	storefront.Discord = req.Discord
+	storefront.Instagram = req.Instagram
+
 	var contracts []models.Contract
 	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.StorefrontId).Find(&contracts).Error
 	if err != nil {
@@ -193,6 +214,7 @@ func DeployStorefront(c *gin.Context) {
 
 	nodectlReqBody := NodectlRequest{
 		StorefrontName: req.Name,
+		StorefrontId:   req.StorefrontId,
 	}
 
 	nodectlReqBytes, err := json.Marshal(nodectlReqBody)
@@ -217,18 +239,28 @@ func DeployStorefront(c *gin.Context) {
 	}
 	defer nodectlResp.Body.Close()
 
-	nodectlBody, err := io.ReadAll(resp.Body)
+	nodectlBody, err := io.ReadAll(nodectlResp.Body)
 	if err != nil {
-		fmt.Printf("client: could not read response body: %s\n", err)
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-	fmt.Println(string(nodectlBody))
-	// var nodectlRespBody NodectlResponse
-	// if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
-	// 	logrus.Error(err)
-	// 	httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-	// 	return
-	// }
-	fmt.Printf("client: response body: %s\n", nodectlBody)
-	httphelper.SuccessResponse(c, "succesfully deployed storefront", nil)
+	var nodectlRespBody NodectlResponse
+	if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	storefront.WebappUrl = nodectlRespBody.StorefrontUrl
+
+	result = db.Save(&storefront)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+
+	httphelper.SuccessResponse(c, "succesfully deployed storefront", gin.H{
+		"graphUrl":      subgraph.SubgraphUrl,
+		"storefrontUrl": storefront.WebappUrl,
+	})
 }

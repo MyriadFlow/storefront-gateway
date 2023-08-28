@@ -7,9 +7,6 @@ import (
 type StorefrontRequest struct {
 	Name        string `json:"name"`
 	Owner       string `json:"owner"`
-	Plan        string `json:"plan"`
-	Cost        int    `json:"cost"`
-	Currency    string `json:"currency"`
 	CreatedBy   string `json:"createdBy"`
 	UpdatedBy   string `json:"updatedBy"`
 	Image       string `json:"image"`
@@ -30,13 +27,27 @@ type UpdateStorefrontRequest struct {
 }
 
 type DeployStorefrontRequest struct {
-	Name         string `json:"name"`
-	NodeUrl      string `json:"nodeUrl"`
-	StorefrontId string `json:"storefrontId"`
-	Network      string `json:"network"`
-	Protocol     string `json:"protocol"`
-	Tag          string `json:"tag"`
-	NodectlUrl   string `json:"nodectlUrl"`
+	Name                string `json:"name,omitempty"`
+	NodeUrl             string `json:"nodeUrl,omitempty"`
+	StorefrontId        string `json:"storefrontId,omitempty"`
+	Network             string `json:"network,omitempty"`
+	Protocol            string `json:"protocol,omitempty"`
+	Tag                 string `json:"tag,omitempty"`
+	NodectlUrl          string `json:"nodectlUrl,omitempty"`
+	StorefrontName      string `json:"storefrontName,omitempty"`
+	Headline            string `json:"headline,omitempty"`
+	Description         string `json:"description,omitempty"`
+	ProfileImage        string `json:"Profileimage,omitempty"`
+	CoverImage          string `json:"coverImage,omitempty"`
+	AssetName           string `json:"assetName,omitempty"`
+	AssetDescription    string `json:"assetDescription,omitempty"`
+	PersonalInformation string `json:"personalTagline,omitempty"`
+	PersonalDescription string `json:"personalDescription,omitempty"`
+	RelevantImage       string `json:"relevantImage,omitempty"`
+	MailId              string `json:"mailId,omitempty"`
+	Twitter             string `json:"twitter,omitempty"`
+	Discord             string `json:"discord,omitempty"`
+	Instagram           string `json:"instagram,omitempty"`
 }
 
 type GraphRequest struct {
@@ -57,6 +68,7 @@ type Contract struct {
 
 type NodectlRequest struct {
 	StorefrontName string `json:"storefrontName"`
+	StorefrontId   string `json:"storefrontId"`
 }
 type NodectlResponse struct {
 	StorefrontUrl string `json:"storefrontUrl"`

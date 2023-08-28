@@ -7,21 +7,30 @@ import (
 )
 
 type Storefront struct {
-	Id           uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
-	Name         string    `json:"string"`
-	Owner        string    `json:"owner"`
-	WalletAdress string    `json:"walletAddress"`
-	Plan         string    `json:"plan"`
-	Cost         int       `json:"cost"`
-	Currency     string    `json:"currency"`
-	Status       string    `json:"status"`
-	Validity     time.Time `json:"validity"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
-	CreatedBy    string    `json:"createdBy"`
-	UpdatedBy    string    `json:"updatedBy"`
-	Image        string    `json:"image"`
-	Headline     string    `json:"headline"`
-	Description  string    `json:"description"`
-	Blockchain   string    `json:"blockchain"`
+	Id                  uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
+	Name                string    `json:"string"`
+	Owner               string    `json:"owner"`
+	WalletAdress        string    `json:"walletAddress"`
+	Status              string    `json:"status"`
+	Validity            time.Time `json:"validity"`
+	CreatedAt           time.Time `json:"createdAt"`
+	UpdatedAt           time.Time `json:"updatedAt"`
+	CreatedBy           string    `json:"createdBy"`
+	UpdatedBy           string    `json:"updatedBy"`
+	Image               string    `json:"image"`
+	Headline            string    `json:"headline"`
+	Description         string    `json:"description"`
+	Blockchain          string    `json:"blockchain"`
+	ProfileImage        string    `json:"Profileimage,omitempty"`
+	CoverImage          string    `json:"coverImage,omitempty"`
+	AssetName           string    `json:"assetName,omitempty"`
+	AssetDescription    string    `json:"assetDescription,omitempty"`
+	PersonalInformation string    `json:"personalTagline,omitempty"`
+	PersonalDescription string    `json:"personalDescription,omitempty"`
+	RelevantImage       string    `json:"relevantImage,omitempty"`
+	MailId              string    `json:"mailId,omitempty"`
+	Twitter             string    `json:"twitter,omitempty"`
+	Discord             string    `json:"discord,omitempty"`
+	Instagram           string    `json:"instagram,omitempty"`
+	WebappUrl           string    `json:"webappUrl,omitempty"`
 }

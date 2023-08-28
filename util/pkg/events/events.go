@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	flow "github.com/MyriadFlow/storefront-gateway/generated/smartcontract/subscription"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
-	storefrontUtil "github.com/MyriadFlow/storefront-gateway/util/pkg/storefront"
+	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/sirupsen/logrus"
 )
 
 func ListenEvent() {
@@ -32,9 +33,10 @@ func ListenEvent() {
 	}
 
 	for e := range subscriptionIssuedChannel {
-		err := storefrontUtil.CreateStorefront("name", e.Owner.String(), e.Owner.String(), "pro", 100, "USD", e.Owner.String(), e.Owner.String(), envconfig.EnvVars.DEFAULT_SUBSCRIPTION_IMAGE, "", "", "")
+		db := dbconfig.GetDb()
+		err := db.Model(&models.User{}).Where("wallet_address = ?", e.Owner.String()).Update("plan", "pro")
 		if err != nil {
-			logwrapper.Error("Error creating subscription. Error: ", err)
+			logrus.Error("Unable to subscribe. Error: ")
 			return
 		}
 	}
