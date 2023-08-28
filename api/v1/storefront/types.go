@@ -7,9 +7,6 @@ import (
 type StorefrontRequest struct {
 	Name        string `json:"name"`
 	Owner       string `json:"owner"`
-	Plan        string `json:"plan"`
-	Cost        int    `json:"cost"`
-	Currency    string `json:"currency"`
 	CreatedBy   string `json:"createdBy"`
 	UpdatedBy   string `json:"updatedBy"`
 	Image       string `json:"image"`

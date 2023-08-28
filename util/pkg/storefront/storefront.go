@@ -8,16 +8,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateStorefront(name string, owner string, walletAdress string, plan string, cost int, currency string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) error {
+func CreateStorefront(name string, owner string, walletAdress string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) error {
 	db := dbconfig.GetDb()
 	storefront := models.Storefront{
 		Id:           uuid.New(),
 		Name:         name,
 		Owner:        owner,
 		WalletAdress: walletAdress,
-		Plan:         plan,
-		Cost:         cost,
-		Currency:     currency,
 		Status:       "active",
 		Validity:     time.Now().AddDate(1, 0, 0),
 		CreatedAt:    time.Now(),

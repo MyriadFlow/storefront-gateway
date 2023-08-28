@@ -11,9 +11,6 @@ type Storefront struct {
 	Name         string    `json:"string"`
 	Owner        string    `json:"owner"`
 	WalletAdress string    `json:"walletAddress"`
-	Plan         string    `json:"plan"`
-	Cost         int       `json:"cost"`
-	Currency     string    `json:"currency"`
 	Status       string    `json:"status"`
 	Validity     time.Time `json:"validity"`
 	CreatedAt    time.Time `json:"createdAt"`
