@@ -110,8 +110,30 @@ func DeployStorefront(c *gin.Context) {
 	}
 
 	db := dbconfig.GetDb()
-
 	walletAddress := c.GetString("walletAddress")
+
+	var storefront models.Storefront
+	result := db.Where("id = ?", req.StorefrontId).First(&storefront)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+
+	storefront.Name = req.StorefrontName
+	storefront.Headline = req.Headline
+	storefront.Description = req.Description
+	storefront.ProfileImage = req.ProfileImage
+	storefront.CoverImage = req.CoverImage
+	storefront.AssetName = req.AssetName
+	storefront.AssetDescription = req.AssetDescription
+	storefront.PersonalInformation = req.PersonalInformation
+	storefront.PersonalDescription = req.PersonalDescription
+	storefront.RelevantImage = req.RelevantImage
+	storefront.MailId = req.MailId
+	storefront.Twitter = req.Twitter
+	storefront.Discord = req.Discord
+	storefront.Instagram = req.Instagram
+
 	var contracts []models.Contract
 	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.StorefrontId).Find(&contracts).Error
 	if err != nil {
@@ -217,17 +239,28 @@ func DeployStorefront(c *gin.Context) {
 	}
 	defer nodectlResp.Body.Close()
 
-	// nodectlBody, err := io.ReadAll(nodectlResp.Body)
-	// if err != nil {
-	// 	fmt.Printf("client: could not read response body: %s\n", err)
-	// 	return
-	// }
-	// fmt.Println(string(nodectlBody))
-	// var nodectlRespBody NodectlResponse
-	// if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
-	// 	logrus.Error(err)
-	// 	httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-	// 	return
-	// }
-	httphelper.SuccessResponse(c, "succesfully deployed storefront", nil)
+	nodectlBody, err := io.ReadAll(nodectlResp.Body)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	var nodectlRespBody NodectlResponse
+	if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	storefront.WebappUrl = nodectlRespBody.StorefrontUrl
+
+	result = db.Save(&storefront)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+
+	httphelper.SuccessResponse(c, "succesfully deployed storefront", gin.H{
+		"graphUrl":      subgraph.SubgraphUrl,
+		"storefrontUrl": storefront.WebappUrl,
+	})
 }
