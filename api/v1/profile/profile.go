@@ -81,3 +81,15 @@ func verifySocial(c *gin.Context) {
 	}
 	httphelper.SuccessResponse(c, "verification for "+req.SocialName+" updated", nil)
 }
+
+func BasicSubscription(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Update("plan", "basic")
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "Basic Plan Subscribed", nil)
+}

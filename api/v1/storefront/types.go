@@ -57,6 +57,7 @@ type Contract struct {
 
 type NodectlRequest struct {
 	StorefrontName string `json:"storefrontName"`
+	StorefrontId   string `json:"storefrontId"`
 }
 type NodectlResponse struct {
 	StorefrontUrl string `json:"storefrontUrl"`

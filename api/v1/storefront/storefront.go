@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -193,6 +192,7 @@ func DeployStorefront(c *gin.Context) {
 
 	nodectlReqBody := NodectlRequest{
 		StorefrontName: req.Name,
+		StorefrontId:   req.StorefrontId,
 	}
 
 	nodectlReqBytes, err := json.Marshal(nodectlReqBody)
@@ -217,18 +217,17 @@ func DeployStorefront(c *gin.Context) {
 	}
 	defer nodectlResp.Body.Close()
 
-	nodectlBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("client: could not read response body: %s\n", err)
-		return
-	}
-	fmt.Println(string(nodectlBody))
+	// nodectlBody, err := io.ReadAll(nodectlResp.Body)
+	// if err != nil {
+	// 	fmt.Printf("client: could not read response body: %s\n", err)
+	// 	return
+	// }
+	// fmt.Println(string(nodectlBody))
 	// var nodectlRespBody NodectlResponse
 	// if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
 	// 	logrus.Error(err)
 	// 	httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 	// 	return
 	// }
-	fmt.Printf("client: response body: %s\n", nodectlBody)
 	httphelper.SuccessResponse(c, "succesfully deployed storefront", nil)
 }
