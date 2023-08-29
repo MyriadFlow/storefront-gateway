@@ -182,6 +182,10 @@ func DeployStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
+	if resp.StatusCode != 200 {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
+		return
+	}
 	defer resp.Body.Close()
 
 	var subgraph models.Subgraph
@@ -235,6 +239,10 @@ func DeployStorefront(c *gin.Context) {
 	if err != nil {
 		logrus.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	if resp.StatusCode != 200 {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
 		return
 	}
 	defer nodectlResp.Body.Close()
