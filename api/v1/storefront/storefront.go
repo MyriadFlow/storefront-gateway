@@ -205,7 +205,7 @@ func DeployStorefront(c *gin.Context) {
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
-		Name:          req.StorefrontName,
+		Name:          req.Name,
 		Network:       req.Network,
 		Protocol:      req.Protocol,
 		Tag:           req.Tag,
@@ -217,7 +217,7 @@ func DeployStorefront(c *gin.Context) {
 	db.Create(&subgraph)
 
 	nodectlReqBody := NodectlRequest{
-		StorefrontName: req.Name,
+		StorefrontName: req.StorefrontName,
 		StorefrontId:   req.StorefrontId,
 	}
 
