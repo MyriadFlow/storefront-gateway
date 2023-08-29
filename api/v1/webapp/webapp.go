@@ -13,12 +13,12 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/webapp")
 	{
-		g.POST("", DeployWebapp)
+		g.GET("/:id", DeployWebapp)
 	}
 }
 func DeployWebapp(c *gin.Context) {
 	db := dbconfig.GetDb()
-	storefrontId := c.GetHeader("StorefrontId")
+	storefrontId := c.Param("id")
 	var subgraph models.Subgraph
 	err := db.Where("storefront_id = ?", storefrontId).First(&subgraph).Error
 	if err != nil {
