@@ -205,7 +205,7 @@ func DeployStorefront(c *gin.Context) {
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
-		Name:          req.Name,
+		Name:          req.StorefrontName,
 		Network:       req.Network,
 		Protocol:      req.Protocol,
 		Tag:           req.Tag,
@@ -241,7 +241,7 @@ func DeployStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	if resp.StatusCode != 200 {
+	if nodectlResp.StatusCode != 200 {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
 		return
 	}
