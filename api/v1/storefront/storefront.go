@@ -30,7 +30,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", GetStorefronts)
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
-		g.POST("/get_storefront_by_id", GetStorefrontsById)
+		g.GET("/get_storefront_by_id", GetStorefrontsById)
 	}
 }
 
@@ -278,7 +278,7 @@ func DeployStorefront(c *gin.Context) {
 func GetStorefrontsById(c *gin.Context) {
 
 	db := dbconfig.GetDb()
-	id, _ := c.Params.Get("id")
+	id := c.Query("id")
 	if id == "" {
 		logrus.Error(fmt.Errorf("%s : Failed to get the id ", "GetStorefrontsById"))
 	}
