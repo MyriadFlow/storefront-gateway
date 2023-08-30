@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -29,6 +30,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", GetStorefronts)
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
+		g.POST("/get_storefront_by_id", GetStorefrontsById)
 	}
 }
 
@@ -271,4 +273,21 @@ func DeployStorefront(c *gin.Context) {
 		"graphUrl":      subgraph.SubgraphUrl,
 		"storefrontUrl": storefront.WebappUrl,
 	})
+}
+
+func GetStorefrontsById(c *gin.Context) {
+
+	db := dbconfig.GetDb()
+	id, _ := c.Params.Get("id")
+	if id == "" {
+		logrus.Error(fmt.Errorf("%s : Failed to get the id ", "GetStorefrontsById"))
+	}
+	var storefronts []models.Storefront
+	err := db.Model(&models.Storefront{}).Where("id = ?", id).Find(&storefronts)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "GetStorefrontsById : Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
 }
