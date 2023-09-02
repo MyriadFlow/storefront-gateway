@@ -285,14 +285,14 @@ func DeployStorefront(c *gin.Context) {
 }
 
 func GetStorefrontById(c *gin.Context) {
-
 	db := dbconfig.GetDb()
 	id := c.Query("id")
+	fmt.Println(id)
 	if id == "" {
 		logrus.Error(fmt.Errorf("%s : Failed to get the id ", "GetStorefrontsById"))
 	}
 	var storefront models.Storefront
-	err := db.Model(&models.Storefront{}).Where("id = ?", id).Find(&storefront)
+	err := db.Model(&models.Storefront{}).Where("id = ?", id).Find(&storefront).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "GetStorefrontsById : Failed to get storefront")
