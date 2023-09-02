@@ -88,7 +88,7 @@ func Deploy(c *gin.Context, link string) {
 	contract := models.Contract{
 		ContractName:    req.ContractName,
 		ContractAddress: response.ContractAddress,
-		WalletAdress:    walletAddress,
+		WalletAddress:   walletAddress,
 		ChainId:         response.ChainId,
 		Verified:        response.Verified,
 		StorefrontId:    req.StorefrontId,
