@@ -16,14 +16,23 @@ type StorefrontRequest struct {
 }
 
 type UpdateStorefrontRequest struct {
-	Id          uuid.UUID `json:"id"`
-	Name        string    `json:"name"`
-	Status      string    `json:"status"`
-	Validity    string    `json:"validity"`
-	UpdatedBy   string    `json:"updatedBy"`
-	Headline    string    `json:"headline"`
-	Description string    `json:"description"`
-	Image       string    `json:"image"`
+	Id                  uuid.UUID `json:"id"`
+	Name                string    `json:"name"`
+	UpdatedBy           string    `json:"updatedBy"`
+	Headline            string    `json:"headline"`
+	Description         string    `json:"description"`
+	Image               string    `json:"image"`
+	ProfileImage        string    `json:"profileImage,omitempty"`
+	CoverImage          string    `json:"coverImage,omitempty"`
+	AssetName           string    `json:"assetName,omitempty"`
+	AssetDescription    string    `json:"assetDescription,omitempty"`
+	PersonalInformation string    `json:"personalTagline,omitempty"`
+	PersonalDescription string    `json:"personalDescription,omitempty"`
+	RelevantImage       string    `json:"relevantImage,omitempty"`
+	MailId              string    `json:"mailId,omitempty"`
+	Twitter             string    `json:"twitter,omitempty"`
+	Discord             string    `json:"discord,omitempty"`
+	Instagram           string    `json:"instagram,omitempty"`
 }
 
 type DeployStorefrontRequest struct {

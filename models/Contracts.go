@@ -3,7 +3,7 @@ package models
 type Contract struct {
 	ContractName    string `json:"contractName"`
 	ContractAddress string `json:"contractAddress"`
-	WalletAdress    string `json:"walletAdress"`
+	WalletAddress   string `json:"walletAddress"`
 	ChainId         int    `json:"chainId"`
 	Verified        bool   `json:"verified"`
 	StorefrontId    string `json:"storefrontId"`
