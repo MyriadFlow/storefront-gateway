@@ -30,7 +30,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", GetStorefronts)
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
-		g.GET("/get_storefront_by_id", GetStorefrontsById)
+		g.GET("/get_storefront_by_id", GetStorefrontById)
 	}
 }
 
@@ -262,6 +262,7 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 	storefront.WebappUrl = nodectlRespBody.StorefrontUrl
+	storefront.SubgraphUrl = subgraphUrl
 
 	result = db.Save(&storefront)
 	if result.Error != nil {
@@ -275,19 +276,19 @@ func DeployStorefront(c *gin.Context) {
 	})
 }
 
-func GetStorefrontsById(c *gin.Context) {
+func GetStorefrontById(c *gin.Context) {
 
 	db := dbconfig.GetDb()
 	id := c.Query("id")
 	if id == "" {
 		logrus.Error(fmt.Errorf("%s : Failed to get the id ", "GetStorefrontsById"))
 	}
-	var storefronts []models.Storefront
-	err := db.Model(&models.Storefront{}).Where("id = ?", id).Find(&storefronts)
+	var storefront models.Storefront
+	err := db.Model(&models.Storefront{}).Where("id = ?", id).Find(&storefront)
 	if err != nil {
 		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "GetStorefrontsById : Unexpected error occured")
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "GetStorefrontsById : Failed to get storefront")
 		return
 	}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
+	httphelper.SuccessResponse(c, "Profile fetched successfully", storefront)
 }

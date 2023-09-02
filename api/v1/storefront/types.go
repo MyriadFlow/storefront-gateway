@@ -37,7 +37,7 @@ type DeployStorefrontRequest struct {
 	StorefrontName      string `json:"storefrontName,omitempty"`
 	Headline            string `json:"headline,omitempty"`
 	Description         string `json:"description,omitempty"`
-	ProfileImage        string `json:"Profileimage,omitempty"`
+	ProfileImage        string `json:"profileImage,omitempty"`
 	CoverImage          string `json:"coverImage,omitempty"`
 	AssetName           string `json:"assetName,omitempty"`
 	AssetDescription    string `json:"assetDescription,omitempty"`

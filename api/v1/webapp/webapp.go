@@ -19,15 +19,13 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func DeployWebapp(c *gin.Context) {
 	db := dbconfig.GetDb()
 	storefrontId := c.Param("id")
-	var subgraph models.Subgraph
-	err := db.Where("storefront_id = ?", storefrontId).First(&subgraph).Error
+	var storefront models.Storefront
+	err := db.Model(&models.Storefront{}).Where("id = ?", storefrontId).First(&storefront).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-	res := WebappResponse{
-		SubgraphUrl: subgraph.SubgraphUrl,
-	}
-	c.JSON(http.StatusOK, res)
+
+	c.JSON(http.StatusOK, storefront)
 }

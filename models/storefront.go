@@ -33,4 +33,5 @@ type Storefront struct {
 	Discord             string    `json:"discord,omitempty"`
 	Instagram           string    `json:"instagram,omitempty"`
 	WebappUrl           string    `json:"webappUrl,omitempty"`
+	SubgraphUrl         string    `json:"subgraphUrl,omitempty"`
 }
