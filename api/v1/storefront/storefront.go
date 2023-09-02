@@ -41,12 +41,12 @@ func NewStorefront(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
+	id, err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully", "storefrontId": id})
 }
 
 func UpdateStorefront(c *gin.Context) {

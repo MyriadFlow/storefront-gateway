@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateStorefront(name string, owner string, walletAdress string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) error {
+func CreateStorefront(name string, owner string, walletAdress string, createdBy string, updatedBy string, image string, headline string, description string, blockchain string) (string, error) {
 	db := dbconfig.GetDb()
 	storefront := models.Storefront{
 		Id:           uuid.New(),
@@ -28,7 +28,7 @@ func CreateStorefront(name string, owner string, walletAdress string, createdBy 
 	}
 	result := db.Create(&storefront)
 	if result.Error != nil {
-		return result.Error
+		return "", result.Error
 	}
-	return nil
+	return storefront.Id.String(), nil
 }
