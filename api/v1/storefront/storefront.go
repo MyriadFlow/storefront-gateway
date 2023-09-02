@@ -63,13 +63,21 @@ func UpdateStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
-	date, err := time.Parse("2006-01-02", updateRequest.Validity)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
-		return
-	}
-	storefront.Status = updateRequest.Status
-	storefront.Validity = date
+	storefront.Name = updateRequest.Name
+	storefront.Headline = updateRequest.Headline
+	storefront.Description = updateRequest.Description
+	storefront.Image = updateRequest.Image
+	storefront.ProfileImage = updateRequest.ProfileImage
+	storefront.CoverImage = updateRequest.CoverImage
+	storefront.AssetName = updateRequest.AssetName
+	storefront.AssetDescription = updateRequest.AssetDescription
+	storefront.PersonalInformation = updateRequest.PersonalInformation
+	storefront.PersonalDescription = updateRequest.PersonalDescription
+	storefront.RelevantImage = updateRequest.RelevantImage
+	storefront.MailId = updateRequest.MailId
+	storefront.Twitter = updateRequest.Twitter
+	storefront.Discord = updateRequest.Discord
+	storefront.Instagram = updateRequest.Instagram
 	storefront.UpdatedBy = updateRequest.UpdatedBy
 	storefront.UpdatedAt = time.Now()
 	result = db.Save(&storefront)
