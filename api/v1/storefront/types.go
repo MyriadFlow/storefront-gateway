@@ -71,8 +71,9 @@ type GraphRequest struct {
 }
 
 type Contract struct {
-	Name    string `json:"name"`
-	Address string `json:"address"`
+	Name        string `json:"name"`
+	Address     string `json:"address"`
+	BlockNumber int    `json:"blockNumber"`
 }
 
 type NodectlRequest struct {

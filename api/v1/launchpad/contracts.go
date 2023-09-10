@@ -25,6 +25,7 @@ type resBody struct {
 	ChainId         int    `json:"chainId"`
 	ContractAddress string `json:"contractAddress"`
 	Verified        bool   `json:"verified"`
+	BlockNumber     int    `json:"blockNumber"`
 }
 type data struct {
 	ContractName      string         `json:"contractName"`
@@ -92,6 +93,7 @@ func Deploy(c *gin.Context, link string) {
 		ChainId:         response.ChainId,
 		Verified:        response.Verified,
 		StorefrontId:    req.StorefrontId,
+		BlockNumber:     response.BlockNumber,
 	}
 	result := db.Create(&contract)
 	if result.Error != nil {

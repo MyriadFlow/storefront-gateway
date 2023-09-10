@@ -155,8 +155,9 @@ func DeployStorefront(c *gin.Context) {
 	var reqContracts []Contract
 	for i, contract := range contracts {
 		reqContracts = append(reqContracts, Contract{
-			Name:    contract.ContractName + strconv.Itoa(i),
-			Address: contract.ContractAddress,
+			Name:        contract.ContractName + strconv.Itoa(i),
+			Address:     contract.ContractAddress,
+			BlockNumber: contract.BlockNumber,
 		})
 	}
 

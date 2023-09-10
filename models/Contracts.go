@@ -8,4 +8,5 @@ type Contract struct {
 	Verified        bool   `json:"verified"`
 	StorefrontId    string `json:"storefrontId"`
 	ContractId      string `json:"contractId"`
+	BlockNumber     int    `json:"blockNumber"`
 }
