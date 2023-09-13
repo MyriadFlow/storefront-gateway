@@ -49,6 +49,11 @@ func NewStorefront(c *gin.Context) {
 		return
 	}
 	db := dbconfig.GetDb()
+	var storefront models.Storefront
+	if err := db.Model(models.Storefront{}).Where("name = ?", StorefrontRequest.Name).First(&storefront).Error; err == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Storefront with given name already exists"})
+		return
+	}
 
 	id, err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
 	if err != nil {

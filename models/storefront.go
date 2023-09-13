@@ -8,7 +8,7 @@ import (
 
 type Storefront struct {
 	Id                  uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
-	Name                string    `json:"string"`
+	Name                string    `json:"name"`
 	Owner               string    `json:"owner"`
 	WalletAddress       string    `json:"walletAddress"`
 	Status              string    `json:"status"`
