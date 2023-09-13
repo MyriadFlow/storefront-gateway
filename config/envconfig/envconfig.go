@@ -35,6 +35,9 @@ type config struct {
 	SUBSCRIPTION_CONTRACT_ADDRESS string   `env:"SUBSCRIPTION_CONTRACT_ADDRESS,required"`
 	POLYGON_RPC_WSS               string   `env:"POLYGON_RPC_WSS,required"`
 	DEFAULT_SUBSCRIPTION_IMAGE    string   `env:"DEFAULT_SUBSCRIPTION_IMAGE,required"`
+	SUBGRAPH_SERVER_URL           string   `env:"SUBGRAPH_SERVER_URL,required"`
+	NODECTL_SERVER_URL            string   `env:"NODECTL_SERVER_URL,required"`
+	NODECTL_SERVER_PORT           string   `env:"NODECTL_SERVER_PORT,required"`
 }
 
 var EnvVars config = config{}

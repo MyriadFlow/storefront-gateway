@@ -164,8 +164,8 @@ func DeployStorefront(c *gin.Context) {
 	graphReqBody := GraphRequest{
 		Name:      req.Name,
 		Folder:    req.StorefrontId,
-		NodeURL:   req.NodeUrl + ":8020",
-		IpfsURL:   req.NodeUrl + ":5001",
+		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":8020",
+		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":5001",
 		Contracts: reqContracts,
 		Network:   req.Network,
 		Protocol:  req.Protocol,
@@ -239,7 +239,7 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 
-	nodectlReq, err := http.NewRequest(http.MethodPost, req.NodectlUrl+"/marketplace", bytes.NewReader(nodectlReqBytes))
+	nodectlReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.NODECTL_SERVER_URL+":"+envconfig.EnvVars.NODECTL_SERVER_URL+"/marketplace", bytes.NewReader(nodectlReqBytes))
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
