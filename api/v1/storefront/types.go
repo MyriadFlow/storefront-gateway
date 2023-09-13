@@ -37,12 +37,10 @@ type UpdateStorefrontRequest struct {
 
 type DeployStorefrontRequest struct {
 	Name                string `json:"name,omitempty"`
-	NodeUrl             string `json:"nodeUrl,omitempty"`
 	StorefrontId        string `json:"storefrontId,omitempty"`
 	Network             string `json:"network,omitempty"`
 	Protocol            string `json:"protocol,omitempty"`
 	Tag                 string `json:"tag,omitempty"`
-	NodectlUrl          string `json:"nodectlUrl,omitempty"`
 	StorefrontName      string `json:"storefrontName,omitempty"`
 	Headline            string `json:"headline,omitempty"`
 	Description         string `json:"description,omitempty"`
