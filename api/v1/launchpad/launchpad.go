@@ -15,8 +15,9 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		g.Use(paseto.PASETO)
 		g.GET("/contracts", GetContracts)
+		g.GET("/contracts/:storefrontId", GetContractsById)
 		g.POST("/contract", DeployContract)
-		g.GET("/contracts/:contractName", GetContractsByName)
+		g.GET("/contracts/:storefrontId/:contractName", GetContractsByName)
 	}
 }
 func GetContracts(c *gin.Context) {
@@ -29,11 +30,25 @@ func GetContracts(c *gin.Context) {
 	c.JSON(http.StatusOK, contracts)
 }
 
-func GetContractsByName(c *gin.Context) {
-	contractName := c.Param("contractName")
+func GetContractsById(c *gin.Context) {
+	storefrontId := c.Param("storefrontId")
+	walletAddress := c.GetString("walletAddress")
 	db := dbconfig.GetDb()
 	var contracts []models.Contract
-	if result := db.Where("contract_name = ?", contractName).Find(&contracts); result.Error != nil {
+	if result := db.Model(models.Contract{}).Where("storefront_id = ? AND wallet_address = ?", storefrontId, walletAddress).Find(&contracts); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, contracts)
+}
+
+func GetContractsByName(c *gin.Context) {
+	contractName := c.Param("contractName")
+	storefrontId := c.Param("storefrontId")
+	walletAddress := c.GetString("walletAddress")
+	db := dbconfig.GetDb()
+	var contracts []models.Contract
+	if result := db.Model(models.Contract{}).Where("contract_name = ? AND storefront_id = ? AND wallet_address = ?", contractName, storefrontId, walletAddress).Find(&contracts); result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
