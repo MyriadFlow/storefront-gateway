@@ -24,6 +24,7 @@ require (
 )
 
 require (
+	github.com/ChinW/go-ethereum v0.0.0-20230323092920-8ccdfdff1afe // indirect
 	github.com/DataDog/zstd v1.5.2 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
