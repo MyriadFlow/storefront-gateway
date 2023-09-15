@@ -58,18 +58,16 @@ func NewStorefront(c *gin.Context) {
 
 	contractReqBody := `
 	{
-		"contractName" : "AccessMaster",
-		"constructorParams":{
+		"data": {
+			"contractName" : "AccessMaster",
+    		"constructorParams":{
+    		}
 		},
 		"network" : "maticmum"
 	}
 	`
-	contractReqBodyBytes, err := json.Marshal(contractReqBody)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	contractReq, err := http.NewRequest(http.MethodPost, link, bytes.NewReader(contractReqBodyBytes))
+
+	contractReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Contract", strings.NewReader(contractReqBody))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -84,7 +82,8 @@ func NewStorefront(c *gin.Context) {
 
 	body, _ := io.ReadAll(resp.Body)
 	strn := string(body)
-	strn = string(body)[1 : len(strn)-1]
+	strn = string(body)[1 : len(
+		strn)-1]
 	data, err := base64.StdEncoding.DecodeString(strn)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -113,7 +112,7 @@ func NewStorefront(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully", "storefrontId": id})
+	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully", "storefrontId": id, "accessMasterAddress": response.ContractAddress})
 }
 
 func UpdateStorefront(c *gin.Context) {
