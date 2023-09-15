@@ -1,16 +1,11 @@
 package launchpad
 
 import (
-	"context"
-	"log"
 	"net/http"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
-	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,8 +18,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("/contracts/:storefrontId", GetContractsById)
 		g.POST("/contract", DeployContract)
 		g.GET("/contracts/:storefrontId/:contractName", GetContractsByName)
-		g.GET("/address", GetAddressFromHash)
-
 	}
 }
 func GetContracts(c *gin.Context) {
@@ -60,29 +53,4 @@ func GetContractsByName(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, contracts)
-}
-
-type AddressReq struct {
-	TransactionHash string `json:"transactionHash"`
-}
-
-func GetAddressFromHash(c *gin.Context) {
-	var req AddressReq
-
-	ethereumURL := envconfig.EnvVars.POLYGON_RPC_HTTP
-	tx := req.TransactionHash
-
-	ethereumClient, err := ethclient.Dial(ethereumURL)
-	if err != nil {
-		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
-	}
-	ctx := context.Background()
-	transactionHash := common.HexToHash(tx)
-
-	transaction, _, err := ethereumClient.TransactionByHash(ctx, transactionHash)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	c.JSON(http.StatusOK, transaction.To())
 }
