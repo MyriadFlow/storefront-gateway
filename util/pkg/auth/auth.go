@@ -43,7 +43,6 @@ func GenerateTokenPaseto(claim claims.CustomClaims) (string, error) {
 	if pasetoExpirationInHours != "" {
 		ok = true
 	}
-	fmt.Println("ok value walletaddress", ok)
 	pasetoExpirationInHoursInt := time.Duration(24)
 
 	if ok {

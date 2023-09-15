@@ -44,7 +44,6 @@ func New(walletAddress string) CustomClaims {
 		ok = true
 	}
 	pasetoExpirationInHoursInt := time.Duration(24)
-	fmt.Println("ok value walletaddress", ok)
 	if ok {
 		res, err := strconv.Atoi(pasetoExpirationInHours)
 		if err != nil {

@@ -49,8 +49,6 @@ func PASETO(c *gin.Context) {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
-	exp, _ := parsedToken.GetExpiration()
-	fmt.Println("parsed exp time set : ", exp)
 	jsonvalue := parsedToken.ClaimsJSON()
 	ClaimsValue := claims.CustomClaims{}
 	err = json.Unmarshal(jsonvalue, &ClaimsValue)
