@@ -9,4 +9,5 @@ type Contract struct {
 	StorefrontId    string `json:"storefrontId"`
 	ContractId      string `json:"contractId"`
 	BlockNumber     int    `json:"blockNumber"`
+	CollectionName  string `json:"collectionName"`
 }
