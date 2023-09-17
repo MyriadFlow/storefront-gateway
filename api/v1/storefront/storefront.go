@@ -305,7 +305,7 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 
-	nodectlReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.NODECTL_SERVER_URL+":"+envconfig.EnvVars.NODECTL_SERVER_URL+"/marketplace", bytes.NewReader(nodectlReqBytes))
+	nodectlReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.NODECTL_SERVER_URL+":"+envconfig.EnvVars.NODECTL_SERVER_PORT+"/marketplace", bytes.NewReader(nodectlReqBytes))
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
