@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
+	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,25 @@ func DeployWebapp(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-	c.JSON(http.StatusOK, storefront)
+	var tradehub Contract
+	if result := db.Model(models.Contract{}).Where("storefront_id = ? AND contract_name = ?", storefrontId, "TradeHub").Find(&tradehub); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	var accessMaster Contract
+	if result := db.Model(models.Contract{}).Where("storefront_id = ? AND contract_name = ?", storefrontId, "AccessMaster").Find(&accessMaster); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+
+	res := WebappResponse{
+		Storefront:          storefront,
+		TradehubAddress:     tradehub.ContractAddress,
+		AccessMasterAddress: accessMaster.ContractAddress,
+		BaseUrlGateway:      envconfig.EnvVars.BASE_URL_GATEWAY,
+		IpfsGateway:         envconfig.EnvVars.IPFS_GATEWAY,
+	}
+	c.JSON(http.StatusOK, res)
 }
 
 func GetContractAddresses(c *gin.Context) {

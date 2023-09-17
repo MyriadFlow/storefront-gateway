@@ -38,6 +38,8 @@ type config struct {
 	SUBGRAPH_SERVER_URL           string   `env:"SUBGRAPH_SERVER_URL,required"`
 	NODECTL_SERVER_URL            string   `env:"NODECTL_SERVER_URL,required"`
 	NODECTL_SERVER_PORT           string   `env:"NODECTL_SERVER_PORT,required"`
+	BASE_URL_GATEWAY              string   `env:"BASE_URL_GATEWAY,required"`
+	IPFS_GATEWAY                  string   `env:"IPFS_GATEWAY,required"`
 }
 
 var EnvVars config = config{}
