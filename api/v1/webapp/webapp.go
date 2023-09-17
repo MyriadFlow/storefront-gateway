@@ -31,7 +31,7 @@ func DeployWebapp(c *gin.Context) {
 }
 
 func GetContractAddresses(c *gin.Context) {
-	storefrontId := c.Param("storefrontId")
+	storefrontId := c.Param("id")
 	db := dbconfig.GetDb()
 	var contracts []Contract
 	if result := db.Model(models.Contract{}).Where("storefront_id = ?", storefrontId).Find(&contracts); result.Error != nil {
