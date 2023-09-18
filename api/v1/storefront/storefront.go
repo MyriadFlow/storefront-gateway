@@ -244,7 +244,7 @@ func DeployStorefront(c *gin.Context) {
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-
+	fmt.Println(string(graphReqBytes))
 	graphReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Subgraph", bytes.NewReader(graphReqBytes))
 	if err != nil {
 		logrus.Error(err)
