@@ -32,10 +32,9 @@ func GetContracts(c *gin.Context) {
 
 func GetContractsById(c *gin.Context) {
 	storefrontId := c.Param("storefrontId")
-	walletAddress := c.GetString("walletAddress")
 	db := dbconfig.GetDb()
 	var contracts []models.Contract
-	if result := db.Model(models.Contract{}).Where("storefront_id = ? AND wallet_address = ?", storefrontId, walletAddress).Find(&contracts); result.Error != nil {
+	if result := db.Model(models.Contract{}).Where("storefront_id = ?", storefrontId).Find(&contracts); result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
