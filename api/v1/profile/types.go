@@ -18,6 +18,7 @@ type GetProfilePayload struct {
 	TwitterVerified   bool   `json:"twitterVerified,omitempty"`
 	DiscordVerified   bool   `json:"discordVerified,omitempty"`
 	TelegramVerified  bool   `json:"telegramVerified,omitempty"`
+	Plan              string `json:"plan,omitempty"`
 }
 
 type verifySocialPayload struct {

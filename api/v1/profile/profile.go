@@ -59,12 +59,11 @@ func getProfile(c *gin.Context) {
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-
 		return
 	}
 
 	payload := GetProfilePayload{
-		user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.InstagramVerified, user.FacebookVerified, user.TwitterVerified, user.DiscordVerified, user.TelegramVerified,
+		user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.InstagramVerified, user.FacebookVerified, user.TwitterVerified, user.DiscordVerified, user.TelegramVerified, user.Plan,
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
 }
@@ -86,9 +85,9 @@ func verifySocial(c *gin.Context) {
 func BasicSubscription(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
-	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Update("plan", "basic")
+	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Update("plan", "basic").Error
 	if err != nil {
-		logrus.Error(err)
+		logrus.Error(err.Error())
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
