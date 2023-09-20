@@ -18,10 +18,49 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		g.Use(paseto.PASETO)
 		g.PATCH("", patchProfile)
+		g.POST("", createProfile)
 		g.GET("", getProfile)
 		g.PATCH("/verify", verifySocial)
 		g.POST("/subscribe", BasicSubscription)
 	}
+}
+
+func createProfile(c *gin.Context) {
+	db := dbconfig.GetDb()
+	var req createProfilePayload
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
+		return
+	}
+	walletAddress := c.GetString("walletAddress")
+	user := models.User{
+		Name:           req.Name,
+		Email:          req.Email,
+		Bio:            req.Bio,
+		Location:       req.Location,
+		ProfilePicture: req.ProfilePictureUrl,
+		CoverPicture:   req.CoverPictureUrl,
+		InstagramId:    req.InstagramId,
+		TwitterId:      req.TwitterId,
+		DiscordId:      req.DiscordId,
+		WalletAddress:  walletAddress,
+	}
+	result := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Updates(user)
+
+	if result.Error != nil {
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+
+		return
+	}
+
+	if result.RowsAffected == 0 {
+		httphelper.ErrResponse(c, http.StatusNotFound, "Wallet Address not in db")
+
+		return
+	}
+	httphelper.SuccessResponse(c, "Profile successfully updated", nil)
+
 }
 
 func patchProfile(c *gin.Context) {

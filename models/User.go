@@ -4,7 +4,7 @@ import "github.com/google/uuid"
 
 type User struct {
 	UserID            uuid.UUID `gorm:"type:uuid;primaryKey;default:gen_random_uuid()"`
-	Email             string    `json:"email,omitempty"`
+	Email             string    `json:"email"`
 	Name              string    `json:"name"`
 	WalletAddress     string    `json:"wallet_address"`
 	ProfilePicture    string    `json:"profilePictureUrl"`
@@ -15,12 +15,13 @@ type User struct {
 	TwitterId         string    `json:"twitter_id"`
 	DiscordId         string    `json:"discord_id"`
 	TelegramId        string    `json:"telegram_id"`
-	UserType          string    `json:"user_type,omitempty"`
-	Bio               string    `json:"bio,omitempty"`
-	InstagramVerified bool      `json:"instagramVerified,omitempty"`
-	FacebookVerified  bool      `json:"facebookVerified,omitempty"`
-	TwitterVerified   bool      `json:"twitterVerified,omitempty"`
-	DiscordVerified   bool      `json:"discordVerified,omitempty"`
-	TelegramVerified  bool      `json:"telegramVerified,omitempty"`
-	Plan              string    `json:"plan,omitempty"`
+	UserType          string    `json:"user_type"`
+	Bio               string    `json:"bio"`
+	InstagramVerified bool      `json:"instagramVerified"`
+	FacebookVerified  bool      `json:"facebookVerified"`
+	TwitterVerified   bool      `json:"twitterVerified"`
+	DiscordVerified   bool      `json:"discordVerified"`
+	TelegramVerified  bool      `json:"telegramVerified"`
+	Plan              string    `json:"plan"`
+	ProfileCreated    bool      `json:"profileCreated"`
 }
