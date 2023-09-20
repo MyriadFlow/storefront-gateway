@@ -101,10 +101,10 @@ func getProfile(c *gin.Context) {
 		return
 	}
 
-	payload := GetProfilePayload{
-		user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.InstagramVerified, user.FacebookVerified, user.TwitterVerified, user.DiscordVerified, user.TelegramVerified, user.Plan,
-	}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", payload)
+	// payload := GetProfilePayload{
+	// 	user.Name, user.WalletAddress, user.ProfilePicture, user.CoverPicture, user.Location, user.FacebookId, user.InstagramId, user.TwitterId, user.DiscordId, user.TelegramId, user.Email, user.Bio, user.InstagramVerified, user.FacebookVerified, user.TwitterVerified, user.DiscordVerified, user.TelegramVerified, user.Plan,
+	// }
+	httphelper.SuccessResponse(c, "Profile fetched successfully", user)
 }
 
 func verifySocial(c *gin.Context) {
