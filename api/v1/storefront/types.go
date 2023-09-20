@@ -6,13 +6,11 @@ import (
 
 type StorefrontRequest struct {
 	Name        string `json:"name"`
-	Owner       string `json:"owner"`
-	CreatedBy   string `json:"createdBy"`
-	UpdatedBy   string `json:"updatedBy"`
-	Image       string `json:"image"`
+	Blockchain  string `json:"blockchain"`
 	Headline    string `json:"headline"`
 	Description string `json:"description"`
-	Blockchain  string `json:"blockchain"`
+	Image       string `json:"image"`
+	Network     string `json:"network"`
 }
 
 type UpdateStorefrontRequest struct {

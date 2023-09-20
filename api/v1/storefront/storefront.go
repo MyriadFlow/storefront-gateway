@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,9 +17,10 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
-	storefrontUtil "github.com/MyriadFlow/storefront-gateway/util/pkg/storefront"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 )
 
 func ApplyRoutes(r *gin.RouterGroup) {
@@ -49,14 +51,33 @@ func NewStorefront(c *gin.Context) {
 		return
 	}
 	db := dbconfig.GetDb()
-
-	id, err := storefrontUtil.CreateStorefront(StorefrontRequest.Name, StorefrontRequest.Owner, walletAddress, StorefrontRequest.CreatedBy, StorefrontRequest.UpdatedBy, StorefrontRequest.Image, StorefrontRequest.Headline, StorefrontRequest.Description, StorefrontRequest.Blockchain)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	err := db.Model(&models.Storefront{}).Where("name = ?", StorefrontRequest.Name).Error
+	if !(errors.Is(err, gorm.ErrRecordNotFound)) {
+		//storefront name exists
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Storefront with the name already exists"})
 		return
-	}
+	} else {
+		//storefront name doesnt exist
+		id := uuid.New()
+		storefront := models.Storefront{
+			Id:            id,
+			Name:          StorefrontRequest.Name,
+			WalletAddress: walletAddress,
+			CreatedAt:     time.Now(),
+			UpdatedAt:     time.Now(),
+			Image:         StorefrontRequest.Image,
+			Headline:      StorefrontRequest.Headline,
+			Description:   StorefrontRequest.Description,
+			Blockchain:    StorefrontRequest.Blockchain,
+			Network:       StorefrontRequest.Network,
+		}
+		result := db.Create(&storefront)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			return
+		}
 
-	contractReqBody := `
+		contractReqBody := `
 	{
 		"data": {
 			"contractName" : "AccessMaster",
@@ -67,51 +88,51 @@ func NewStorefront(c *gin.Context) {
 	}
 	`
 
-	contractReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Contract", strings.NewReader(contractReqBody))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	client := &http.Client{}
-	resp, err := client.Do(contractReq)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	defer resp.Body.Close()
+		contractReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Contract", strings.NewReader(contractReqBody))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		client := &http.Client{}
+		resp, err := client.Do(contractReq)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		defer resp.Body.Close()
 
-	body, _ := io.ReadAll(resp.Body)
-	strn := string(body)
-	strn = string(body)[1 : len(
-		strn)-1]
-	data, err := base64.StdEncoding.DecodeString(strn)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
+		body, _ := io.ReadAll(resp.Body)
+		strn := string(body)
+		strn = string(body)[1 : len(
+			strn)-1]
+		data, err := base64.StdEncoding.DecodeString(strn)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
 
-	arr := strings.Split(string(data), "\n")
-	response := new(resBody)
+		arr := strings.Split(string(data), "\n")
+		response := new(resBody)
 
-	if err := json.Unmarshal([]byte(arr[len(arr)-3]), response); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
+		if err := json.Unmarshal([]byte(arr[len(arr)-3]), response); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		contract := models.Contract{
+			ContractName:    "AccessMaster",
+			ContractAddress: response.ContractAddress,
+			WalletAddress:   walletAddress,
+			ChainId:         response.ChainId,
+			Verified:        response.Verified,
+			StorefrontId:    id.String(),
+			BlockNumber:     response.BlockNumber,
+		}
+		result = db.Create(&contract)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
 	}
-	contract := models.Contract{
-		ContractName:    "AccessMaster",
-		ContractAddress: response.ContractAddress,
-		WalletAddress:   walletAddress,
-		ChainId:         response.ChainId,
-		Verified:        response.Verified,
-		StorefrontId:    id,
-		BlockNumber:     response.BlockNumber,
-	}
-	result := db.Create(&contract)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-
 	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully", "storefrontId": id, "accessMasterAddress": response.ContractAddress})
 }
 
