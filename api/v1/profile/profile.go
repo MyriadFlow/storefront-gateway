@@ -45,6 +45,7 @@ func createProfile(c *gin.Context) {
 		TwitterId:      req.TwitterId,
 		DiscordId:      req.DiscordId,
 		WalletAddress:  walletAddress,
+		ProfileCreated: true,
 	}
 	result := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Updates(user)
 
