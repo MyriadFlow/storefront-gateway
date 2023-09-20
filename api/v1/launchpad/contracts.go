@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type reqBody struct {
@@ -45,6 +47,16 @@ func Deploy(c *gin.Context, link string) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
+	}
+
+	//check for invalid actions
+	if req.ContractName == "TradeHub" {
+		err := db.Model(&models.Contract{}).Where("contract_name = ? AND storefront_id = ?", req.ContractName, req.StorefrontId).Find(&models.Contract{}).Error
+		if !(errors.Is(err, gorm.ErrRecordNotFound)) {
+			//storefront name exists
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Tradehub already deployed"})
+			return
+		}
 	}
 	contractReqBody := contractReqBody{
 		Data: data{
