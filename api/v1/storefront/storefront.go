@@ -150,25 +150,21 @@ func UpdateStorefront(c *gin.Context) {
 		return
 	}
 	storefront.Name = updateRequest.Name
-	storefront.Headline = updateRequest.Headline
-	storefront.Description = updateRequest.Description
-	storefront.Image = updateRequest.Image
+	storefront.StorefrontHeadline = updateRequest.Headline
+	storefront.StorefrontDescription = updateRequest.Description
 	storefront.ProfileImage = updateRequest.ProfileImage
-	storefront.CoverImage = updateRequest.CoverImage
-	storefront.AssetName = updateRequest.AssetName
-	storefront.AssetDescription = updateRequest.AssetDescription
-	storefront.PersonalInformation = updateRequest.PersonalInformation
+	storefront.StorefrontImage = updateRequest.StorefrontImage
+	storefront.PersonalTagline = updateRequest.PersonalTagline
 	storefront.PersonalDescription = updateRequest.PersonalDescription
 	storefront.RelevantImage = updateRequest.RelevantImage
 	storefront.MailId = updateRequest.MailId
 	storefront.Twitter = updateRequest.Twitter
 	storefront.Discord = updateRequest.Discord
 	storefront.Instagram = updateRequest.Instagram
-	storefront.UpdatedBy = updateRequest.UpdatedBy
 	storefront.UpdatedAt = time.Now()
 	result = db.Save(&storefront)
 	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error, "message": "error in updating storefront in database"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Storefront updated successfully"})
@@ -209,29 +205,28 @@ func DeployStorefront(c *gin.Context) {
 	walletAddress := c.GetString("walletAddress")
 
 	var storefront models.Storefront
-	result := db.Where("id = ?", req.StorefrontId).First(&storefront)
+	result := db.Where("id = ?", req.Id).First(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
 
-	storefront.Name = req.StorefrontName
-	storefront.Headline = req.Headline
-	storefront.Description = req.Description
+	storefront.Name = req.Name
+	storefront.StorefrontHeadline = req.Headline
+	storefront.StorefrontDescription = req.Description
 	storefront.ProfileImage = req.ProfileImage
-	storefront.CoverImage = req.CoverImage
-	storefront.AssetName = req.AssetName
-	storefront.AssetDescription = req.AssetDescription
-	storefront.PersonalInformation = req.PersonalInformation
+	storefront.StorefrontImage = req.StorefrontImage
+	storefront.PersonalTagline = req.PersonalTagline
 	storefront.PersonalDescription = req.PersonalDescription
 	storefront.RelevantImage = req.RelevantImage
 	storefront.MailId = req.MailId
 	storefront.Twitter = req.Twitter
 	storefront.Discord = req.Discord
 	storefront.Instagram = req.Instagram
+	storefront.UpdatedAt = time.Now()
 
 	var contracts []models.Contract
-	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.StorefrontId).Find(&contracts).Error
+	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.Id).Find(&contracts).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -248,8 +243,8 @@ func DeployStorefront(c *gin.Context) {
 	}
 
 	graphReqBody := GraphRequest{
-		Name:      req.Name,
-		Folder:    req.StorefrontId,
+		Name:      req.Tag + "/" + req.Name,
+		Folder:    req.Id.String(),
 		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":8020",
 		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":5001",
 		Contracts: reqContracts,
@@ -308,14 +303,14 @@ func DeployStorefront(c *gin.Context) {
 		Tag:           req.Tag,
 		SubgraphUrl:   subgraphUrl,
 		WalletAddress: walletAddress,
-		StorefrontId:  req.StorefrontId,
+		StorefrontId:  req.Id.String(),
 	}
 
 	db.Create(&subgraph)
 
 	nodectlReqBody := NodectlRequest{
-		StorefrontName: req.StorefrontName,
-		StorefrontId:   req.StorefrontId,
+		StorefrontName: req.Name,
+		StorefrontId:   req.Id.String(),
 	}
 
 	nodectlReqBytes, err := json.Marshal(nodectlReqBody)

@@ -16,43 +16,36 @@ type StorefrontRequest struct {
 type UpdateStorefrontRequest struct {
 	Id                  uuid.UUID `json:"id"`
 	Name                string    `json:"name"`
-	UpdatedBy           string    `json:"updatedBy"`
 	Headline            string    `json:"headline"`
 	Description         string    `json:"description"`
-	Image               string    `json:"image"`
-	ProfileImage        string    `json:"profileImage,omitempty"`
-	CoverImage          string    `json:"coverImage,omitempty"`
-	AssetName           string    `json:"assetName,omitempty"`
-	AssetDescription    string    `json:"assetDescription,omitempty"`
-	PersonalInformation string    `json:"personalTagline,omitempty"`
-	PersonalDescription string    `json:"personalDescription,omitempty"`
-	RelevantImage       string    `json:"relevantImage,omitempty"`
-	MailId              string    `json:"mailId,omitempty"`
-	Twitter             string    `json:"twitter,omitempty"`
-	Discord             string    `json:"discord,omitempty"`
-	Instagram           string    `json:"instagram,omitempty"`
+	ProfileImage        string    `json:"profileImage"`
+	StorefrontImage     string    `json:"storefrontImage"`
+	PersonalTagline     string    `json:"personalTagline"`
+	PersonalDescription string    `json:"personalDescription"`
+	RelevantImage       string    `json:"relevantImage"`
+	MailId              string    `json:"mailId"`
+	Twitter             string    `json:"twitter"`
+	Discord             string    `json:"discord"`
+	Instagram           string    `json:"instagram"`
 }
 
 type DeployStorefrontRequest struct {
-	Name                string `json:"name,omitempty"`
-	StorefrontId        string `json:"storefrontId,omitempty"`
-	Network             string `json:"network,omitempty"`
-	Protocol            string `json:"protocol,omitempty"`
-	Tag                 string `json:"tag,omitempty"`
-	StorefrontName      string `json:"storefrontName,omitempty"`
-	Headline            string `json:"headline,omitempty"`
-	Description         string `json:"description,omitempty"`
-	ProfileImage        string `json:"profileImage,omitempty"`
-	CoverImage          string `json:"coverImage,omitempty"`
-	AssetName           string `json:"assetName,omitempty"`
-	AssetDescription    string `json:"assetDescription,omitempty"`
-	PersonalInformation string `json:"personalTagline,omitempty"`
-	PersonalDescription string `json:"personalDescription,omitempty"`
-	RelevantImage       string `json:"relevantImage,omitempty"`
-	MailId              string `json:"mailId,omitempty"`
-	Twitter             string `json:"twitter,omitempty"`
-	Discord             string `json:"discord,omitempty"`
-	Instagram           string `json:"instagram,omitempty"`
+	Id                  uuid.UUID `json:"id"`
+	Name                string    `json:"name"`
+	Headline            string    `json:"headline"`
+	Description         string    `json:"description"`
+	ProfileImage        string    `json:"profileImage"`
+	StorefrontImage     string    `json:"storefrontImage"`
+	PersonalTagline     string    `json:"personalTagline"`
+	PersonalDescription string    `json:"personalDescription"`
+	RelevantImage       string    `json:"relevantImage"`
+	MailId              string    `json:"mailId"`
+	Twitter             string    `json:"twitter"`
+	Discord             string    `json:"discord"`
+	Instagram           string    `json:"instagram"`
+	Network             string    `json:"network,omitempty"`
+	Protocol            string    `json:"protocol,omitempty"`
+	Tag                 string    `json:"tag,omitempty"`
 }
 
 type GraphRequest struct {
