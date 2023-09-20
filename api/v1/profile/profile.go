@@ -20,7 +20,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.PATCH("", patchProfile)
 		g.GET("", getProfile)
 		g.PATCH("/verify", verifySocial)
-		g.PATCH("/subscribe", BasicSubscription)
+		g.POST("/subscribe", BasicSubscription)
 	}
 }
 
