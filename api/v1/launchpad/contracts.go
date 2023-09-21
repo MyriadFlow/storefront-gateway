@@ -34,6 +34,13 @@ func Deploy(c *gin.Context, link string) {
 		}
 	}
 
+	if req.ContractName != "Tradehub" && req.ContractName != "AccessMaster" {
+		result := db.Model(&models.Contract{}).Where("contract_name = ? AND storefront_id = ?", "TradeHub", req.StorefrontId).Find(&models.Contract{})
+		if result.RowsAffected == 0 {
+			//tradehub exists
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Tradehub not Deployed"})
+		}
+	}
 	contractReqBody := contractReqBody{
 		Data: data{
 			ContractName:      req.ContractName,
