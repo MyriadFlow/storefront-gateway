@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -20,7 +19,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
-	"gorm.io/gorm"
 )
 
 func ApplyRoutes(r *gin.RouterGroup) {
@@ -51,12 +49,12 @@ func NewStorefront(c *gin.Context) {
 		return
 	}
 	db := dbconfig.GetDb()
-	err := db.Model(&models.Storefront{}).Where("name = ?", StorefrontRequest.Name).Error
-	if !(errors.Is(err, gorm.ErrRecordNotFound)) {
-		//storefront name exists
+	result := db.Model(&models.Storefront{}).Where("name = ?", StorefrontRequest.Name).Find(&models.Storefront{})
+	if result.RowsAffected != 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Storefront with the name already exists"})
 		return
 	}
+
 	//storefront name doesnt exist
 	id := uuid.New()
 	storefront := models.Storefront{
@@ -71,7 +69,7 @@ func NewStorefront(c *gin.Context) {
 		Blockchain:    StorefrontRequest.Blockchain,
 		Network:       StorefrontRequest.Network,
 	}
-	result := db.Create(&storefront)
+	result = db.Create(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
