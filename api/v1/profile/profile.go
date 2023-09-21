@@ -60,7 +60,7 @@ func createProfile(c *gin.Context) {
 
 		return
 	}
-	httphelper.SuccessResponse(c, "Profile successfully updated", nil)
+	httphelper.SuccessResponse(c, "Profile successfully created", nil)
 
 }
 
