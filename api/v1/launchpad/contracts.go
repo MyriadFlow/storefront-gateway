@@ -15,28 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type reqBody struct {
-	ContractName      string         `json:"contractName"`
-	ConstructorParams map[string]any `json:"constructorParams"`
-	Network           string         `json:"network"`
-	StorefrontId      string         `json:"storefrontId"`
-	CollectionName    string         `json:"collectionName"`
-}
-type resBody struct {
-	ChainId         int    `json:"chainId"`
-	ContractAddress string `json:"contractAddress"`
-	Verified        bool   `json:"verified"`
-	BlockNumber     int    `json:"blockNumber"`
-}
-type data struct {
-	ContractName      string         `json:"contractName"`
-	ConstructorParams map[string]any `json:"constructorParams"`
-}
-type contractReqBody struct {
-	Data    data   `json:"data"`
-	Network string `json:"network"`
-}
-
 func Deploy(c *gin.Context, link string) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
@@ -106,6 +84,8 @@ func Deploy(c *gin.Context, link string) {
 		StorefrontId:    req.StorefrontId,
 		BlockNumber:     response.BlockNumber,
 		CollectionName:  req.CollectionName,
+		Thumbnail:       req.Thumbnail,
+		CoverImage:      req.CoverImage,
 	}
 	result := db.Create(&contract)
 	if result.Error != nil {

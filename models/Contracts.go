@@ -10,4 +10,6 @@ type Contract struct {
 	ContractId      string `json:"contractId"`
 	BlockNumber     int    `json:"blockNumber"`
 	CollectionName  string `json:"collectionName"`
+	Thumbnail       string `json:"thumbnail"`
+	CoverImage      string `json:"coverImage"`
 }
