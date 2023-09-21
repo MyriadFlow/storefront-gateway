@@ -51,7 +51,7 @@ func Test_PatchProfile(t *testing.T) {
 		c.Request = req
 		c.Set("walletAddress", testWallet.WalletAddress)
 
-		patchProfile(c)
+		updateProfile(c)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
 }

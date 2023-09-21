@@ -17,7 +17,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/profile")
 	{
 		g.Use(paseto.PASETO)
-		g.PATCH("", patchProfile)
+		g.PATCH("", updateProfile)
 		g.POST("", createProfile)
 		g.GET("", getProfile)
 		g.PATCH("/verify", verifySocial)
@@ -64,16 +64,28 @@ func createProfile(c *gin.Context) {
 
 }
 
-func patchProfile(c *gin.Context) {
+func updateProfile(c *gin.Context) {
 	db := dbconfig.GetDb()
-	var user models.User
-	err := c.BindJSON(&user)
+
+	var req updateProfilePayload
+	err := c.BindJSON(&req)
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
 		return
 	}
 	walletAddress := c.GetString("walletAddress")
-	user.WalletAddress = walletAddress
+	user := models.User{
+		WalletAddress:  walletAddress,
+		Name:           req.Name,
+		Bio:            req.Bio,
+		Email:          req.Email,
+		Location:       req.Location,
+		ProfilePicture: req.ProfilePictureUrl,
+		CoverPicture:   req.CoverPictureUrl,
+		InstagramId:    req.InstagramId,
+		TwitterId:      req.TwitterId,
+		DiscordId:      req.DiscordId,
+	}
 	result := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).Updates(user)
 
 	if result.Error != nil {

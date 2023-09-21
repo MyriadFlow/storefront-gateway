@@ -32,7 +32,19 @@ type createProfilePayload struct {
 	Location          string `json:"location"`
 	ProfilePictureUrl string `json:"profilePictureUrl"`
 	CoverPictureUrl   string `json:"coverPictureUrl"`
-	InstagramId       string `json:"instagram_id"`
-	TwitterId         string `json:"twitter_id"`
-	DiscordId         string `json:"discord_id"`
+	InstagramId       string `json:"instagram_id,omitempty"`
+	TwitterId         string `json:"twitter_id,omitempty"`
+	DiscordId         string `json:"discord_id,omitempty"`
+}
+
+type updateProfilePayload struct {
+	Name              string `json:"name"`
+	Bio               string `json:"bio"`
+	Email             string `json:"email"`
+	Location          string `json:"location"`
+	ProfilePictureUrl string `json:"profilePictureUrl"`
+	CoverPictureUrl   string `json:"coverPictureUrl"`
+	InstagramId       string `json:"instagram_id,omitempty"`
+	TwitterId         string `json:"twitter_id,omitempty"`
+	DiscordId         string `json:"discord_id,omitempty"`
 }
