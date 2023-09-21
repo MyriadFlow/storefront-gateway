@@ -31,14 +31,16 @@ func Deploy(c *gin.Context, link string) {
 		if result.RowsAffected != 0 {
 			//tradehub exists
 			c.JSON(http.StatusBadRequest, gin.H{"message": "Tradehub already deployed"})
+			return
 		}
 	}
 
-	if req.ContractName != "Tradehub" && req.ContractName != "AccessMaster" {
+	if req.ContractName != "TradeHub" && req.ContractName != "AccessMaster" {
 		result := db.Model(&models.Contract{}).Where("contract_name = ? AND storefront_id = ?", "TradeHub", req.StorefrontId).Find(&models.Contract{})
 		if result.RowsAffected == 0 {
-			//tradehub exists
+			//tradehub not deployed
 			c.JSON(http.StatusBadRequest, gin.H{"message": "Tradehub not Deployed"})
+			return
 		}
 	}
 	contractReqBody := contractReqBody{
