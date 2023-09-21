@@ -38,6 +38,11 @@ func DeployWebapp(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
 	}
+	var profile models.User
+	if result := db.Model(models.User{}).Where("wallet_address", storefront.WalletAddress).Find(&profile); result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
 
 	res := WebappResponse{
 		Storefront:          storefront,
@@ -45,6 +50,7 @@ func DeployWebapp(c *gin.Context) {
 		AccessMasterAddress: accessMaster.ContractAddress,
 		BaseUrlGateway:      envconfig.EnvVars.BASE_URL_GATEWAY,
 		IpfsGateway:         envconfig.EnvVars.IPFS_GATEWAY,
+		Profile:             profile,
 	}
 	c.JSON(http.StatusOK, res)
 }

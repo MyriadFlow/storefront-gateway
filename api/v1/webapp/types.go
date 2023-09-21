@@ -12,6 +12,7 @@ type WebappResponse struct {
 	AccessMasterAddress string            `json:"accessMasterAddress,omitempty"`
 	BaseUrlGateway      string            `json:"baseUrlGateway,omitempty"`
 	IpfsGateway         string            `json:"ipfsGateway,omitempty"`
+	Profile             models.User       `json:"profile,omitempty"`
 }
 
 type Contract struct {
