@@ -305,9 +305,9 @@ func DeployStorefront(c *gin.Context) {
 	}
 
 	db.Create(&subgraph)
-
+	domain := strings.ReplaceAll(req.Name, " ", "")
 	nodectlReqBody := NodectlRequest{
-		StorefrontName: req.Name,
+		StorefrontName: domain,
 		StorefrontId:   req.Id.String(),
 	}
 
