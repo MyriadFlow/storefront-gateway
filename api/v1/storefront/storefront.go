@@ -77,6 +77,7 @@ func NewStorefront(c *gin.Context) {
 		Blockchain:    StorefrontRequest.Blockchain,
 		Network:       StorefrontRequest.Network,
 	}
+	storefront.Deployed = false
 	result = db.Create(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
@@ -385,6 +386,7 @@ func DeployStorefront(c *gin.Context) {
 	}
 	storefront.WebappUrl = nodectlRespBody.StorefrontUrl
 	storefront.SubgraphUrl = subgraphUrl
+	storefront.Deployed = true
 
 	result = db.Save(&storefront)
 	if result.Error != nil {

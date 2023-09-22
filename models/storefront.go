@@ -31,4 +31,5 @@ type Storefront struct {
 	Instagram             string    `json:"instagram"`
 	WebappUrl             string    `json:"webappUrl"`
 	SubgraphUrl           string    `json:"subgraphUrl"`
+	Deployed              bool      `json:"deployed"`
 }
