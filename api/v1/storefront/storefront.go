@@ -81,7 +81,7 @@ func NewStorefront(c *gin.Context) {
 		"data": {
 			"contractName" : "AccessMaster",
     		"constructorParams":{
-				"param1" :` + walletAddress + `
+				"param1" : "` + walletAddress + `"
     		}
 		},
 		"network" : "maticmum"
