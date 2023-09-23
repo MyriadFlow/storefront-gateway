@@ -41,14 +41,6 @@ type resBody struct {
 	BlockNumber     int    `json:"blockNumber"`
 }
 
-type grantRoleReq struct {
-	Data struct {
-		ContractAddr string `json:"contractAddr"`
-		WalletAddr   string `json:"walletAddr"`
-	}
-	Network string `json:"network"`
-}
-
 func NewStorefront(c *gin.Context) {
 	var StorefrontRequest StorefrontRequest
 	walletAddress := c.GetString("walletAddress")
@@ -89,7 +81,7 @@ func NewStorefront(c *gin.Context) {
 		"data": {
 			"contractName" : "AccessMaster",
     		"constructorParams":{
-				"param1" : ` + walletAddress + `
+				"param1" :` + walletAddress + `
     		}
 		},
 		"network" : "maticmum"
