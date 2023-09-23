@@ -13,6 +13,7 @@ type WebappResponse struct {
 	BaseUrlGateway      string            `json:"baseUrlGateway,omitempty"`
 	IpfsGateway         string            `json:"ipfsGateway,omitempty"`
 	Profile             models.User       `json:"profile,omitempty"`
+	RkProjectId         string            `json:"rkProjectId,omitempty"`
 }
 
 type Contract struct {

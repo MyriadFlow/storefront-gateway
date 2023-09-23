@@ -51,6 +51,7 @@ func DeployWebapp(c *gin.Context) {
 		BaseUrlGateway:      envconfig.EnvVars.BASE_URL_GATEWAY,
 		IpfsGateway:         envconfig.EnvVars.IPFS_GATEWAY,
 		Profile:             profile,
+		RkProjectId:         envconfig.EnvVars.RAINBOWKIT_PROJECT_ID,
 	}
 	c.JSON(http.StatusOK, res)
 }

@@ -40,6 +40,7 @@ type config struct {
 	NODECTL_SERVER_PORT           string   `env:"NODECTL_SERVER_PORT,required"`
 	BASE_URL_GATEWAY              string   `env:"BASE_URL_GATEWAY,required"`
 	IPFS_GATEWAY                  string   `env:"IPFS_GATEWAY,required"`
+	RAINBOWKIT_PROJECT_ID         string   `env:"RAINBOWKIT_PROJECT_ID,required"`
 }
 
 var EnvVars config = config{}
