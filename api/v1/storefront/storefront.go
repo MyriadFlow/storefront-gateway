@@ -89,6 +89,7 @@ func NewStorefront(c *gin.Context) {
 		"data": {
 			"contractName" : "AccessMaster",
     		"constructorParams":{
+				"param1" : ` + walletAddress + `
     		}
 		},
 		"network" : "maticmum"
@@ -138,31 +139,6 @@ func NewStorefront(c *gin.Context) {
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
-	}
-
-	grantRoleReqBody := grantRoleReq{
-		Data: struct {
-			ContractAddr string "json:\"contractAddr\""
-			WalletAddr   string "json:\"walletAddr\""
-		}{ContractAddr: response.ContractAddress, WalletAddr: walletAddress},
-		Network: "maticmum",
-	}
-	grantRoleReqByte, _ := json.Marshal(grantRoleReqBody)
-	grantRoleReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/GrantRole", bytes.NewReader(grantRoleReqByte))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	grantRoleRes, err := client.Do(grantRoleReq)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	defer grantRoleRes.Body.Close()
-	if grantRoleRes.StatusCode != 200 {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error while granting role"})
-		return
-
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Storefront created successfully", "storefrontId": id, "accessMasterAddress": response.ContractAddress})
