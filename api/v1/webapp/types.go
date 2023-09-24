@@ -14,6 +14,7 @@ type WebappResponse struct {
 	IpfsGateway         string            `json:"ipfsGateway,omitempty"`
 	Profile             models.User       `json:"profile,omitempty"`
 	RkProjectId         string            `json:"rkProjectId,omitempty"`
+	AlchemyId           string            `json:"alchemyId,omitempty"`
 }
 
 type Contract struct {

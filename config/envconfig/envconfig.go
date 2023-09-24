@@ -41,6 +41,7 @@ type config struct {
 	BASE_URL_GATEWAY              string   `env:"BASE_URL_GATEWAY,required"`
 	IPFS_GATEWAY                  string   `env:"IPFS_GATEWAY,required"`
 	RAINBOWKIT_PROJECT_ID         string   `env:"RAINBOWKIT_PROJECT_ID,required"`
+	ALCHEMY_ID                    string   `env:"ALCHEMY_ID,required"`
 }
 
 var EnvVars config = config{}
