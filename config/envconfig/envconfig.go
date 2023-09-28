@@ -42,6 +42,14 @@ type config struct {
 	IPFS_GATEWAY                  string   `env:"IPFS_GATEWAY,required"`
 	RAINBOWKIT_PROJECT_ID         string   `env:"RAINBOWKIT_PROJECT_ID,required"`
 	ALCHEMY_ID                    string   `env:"ALCHEMY_ID,required"`
+	POLYGON_TESTNET_HTTP          string   `env:"POLYGON_TESTNET_HTTP,required"`
+	POLYGON_TESTNET_WSS           string   `env:"POLYGON_TESTNET_WSS,required"`
+	ETHEREUM_TESTNET_HTTP         string   `env:"ETHEREUM_TESTNET_HTTP,required"`
+	ETHEREUM_TESTNET_WSS          string   `env:"ETHEREUM_TESTNET_WSS,required"`
+	BINANCE_TESTNET_HTTP          string   `env:"BINANCE_TESTNET_HTTP,required"`
+	BINANCE_TESTNET_WSS           string   `env:"BINANCE_TESTNET_WSS,required"`
+	FEVM_TESTNET_HTTP             string   `env:"FEVM_TESTNET_HTTP,required"`
+	FEVM_TESTNET_WSS              string   `env:"FEVM_TESTNET_WSS,required"`
 }
 
 var EnvVars config = config{}
