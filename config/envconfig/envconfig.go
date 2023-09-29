@@ -44,12 +44,24 @@ type config struct {
 	ALCHEMY_ID                    string   `env:"ALCHEMY_ID,required"`
 	POLYGON_TESTNET_HTTP          string   `env:"POLYGON_TESTNET_HTTP,required"`
 	POLYGON_TESTNET_WSS           string   `env:"POLYGON_TESTNET_WSS,required"`
+	POLYGON_TESTNET_NODE_PORT     string   `env:"POLYGON_TESTNET_NODE_PORT,required"`
+	POLYGON_TESTNET_IPFS_PORT     string   `env:"POLYGON_TESTNET_IPFS_PORT,required"`
+	POLYGON_TESTNET_GRAPH_HTTPS   string   `env:"POLYGON_TESTNET_GRAPH_HTTPS,required"`
 	ETHEREUM_TESTNET_HTTP         string   `env:"ETHEREUM_TESTNET_HTTP,required"`
 	ETHEREUM_TESTNET_WSS          string   `env:"ETHEREUM_TESTNET_WSS,required"`
+	ETHEREUM_TESTNET_NODE_PORT    string   `env:"ETHEREUM_TESTNET_NODE_PORT,required"`
+	ETHEREUM_TESTNET_IPFS_PORT    string   `env:"ETHEREUM_TESTNET_IPFS_PORT,required"`
+	ETHEREUM_TESTNET_GRAPH_HTTPS  string   `env:"ETHEREUM_TESTNET_GRAPH_HTTPS,required"`
 	BINANCE_TESTNET_HTTP          string   `env:"BINANCE_TESTNET_HTTP,required"`
 	BINANCE_TESTNET_WSS           string   `env:"BINANCE_TESTNET_WSS,required"`
+	BINANCE_TESTNET_NODE_PORT     string   `env:"BINANCE_TESTNET_NODE_PORT,required"`
+	BINANCE_TESTNET_IPFS_PORT     string   `env:"BINANCE_TESTNET_IPFS_PORT,required"`
+	BINANCE_TESTNET_GRAPH_HTTPS   string   `env:"BINANCE_TESTNET_GRAPH_HTTPS,required"`
 	FEVM_TESTNET_HTTP             string   `env:"FEVM_TESTNET_HTTP,required"`
 	FEVM_TESTNET_WSS              string   `env:"FEVM_TESTNET_WSS,required"`
+	FEVM_TESTNET_NODE_PORT        string   `env:"FEVM_TESTNET_NODE_PORT,required"`
+	FEVM_TESTNET_IPFS_PORT        string   `env:"FEVM_TESTNET_IPFS_PORT,required"`
+	FEVM_TESTNET_GRAPH_HTTPS      string   `env:"FEVM_TESTNET_GRAPH_HTTPS,required"`
 }
 
 var EnvVars config = config{}

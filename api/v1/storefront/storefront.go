@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/constants/blockchains"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -246,8 +247,8 @@ func DeployStorefront(c *gin.Context) {
 	graphReqBody := GraphRequest{
 		Name:      req.Tag + "/" + req.Name,
 		Folder:    req.Id.String(),
-		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":8020",
-		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":5001",
+		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + blockchains.Testnets[storefront.Network].GraphPort,
+		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + blockchains.Testnets[storefront.Network].IpfsPort,
 		Contracts: reqContracts,
 		Network:   req.Network,
 		Protocol:  req.Protocol,
