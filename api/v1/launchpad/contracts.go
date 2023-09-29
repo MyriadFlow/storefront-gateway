@@ -105,5 +105,5 @@ func Deploy(c *gin.Context, link string) {
 }
 
 func DeployContract(c *gin.Context) {
-	Deploy(c, fmt.Sprintf("%s/Contract", envconfig.EnvVars.SMARTCONTRACT_API_URL))
+	Deploy(c, fmt.Sprintf("%s/api/Contract", envconfig.EnvVars.SMARTCONTRACT_API_URL))
 }
