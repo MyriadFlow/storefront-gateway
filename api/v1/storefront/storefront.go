@@ -242,9 +242,9 @@ func DeployStorefront(c *gin.Context) {
 			BlockNumber: contract.BlockNumber,
 		})
 	}
-
+	graphName := req.Tag + "/" + req.Name
 	graphReqBody := GraphRequest{
-		Name:      req.Tag + "/" + req.Name,
+		Name:      graphName,
 		Folder:    req.Id.String(),
 		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":8020",
 		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":5001",
@@ -293,8 +293,7 @@ func DeployStorefront(c *gin.Context) {
 	}
 	arr := strings.Split(string(data), "\n")
 	subgraphIdArr := strings.Split(arr[3], " ")
-	subgraphUrlArr := strings.Split(arr[5], " ")
-	subgraphUrl := subgraphUrlArr[2]
+	subgraphUrl := envconfig.EnvVars.POLYGON_TESTNET_GRAPH_HTTPS + "/subgraphs/name/" + graphName + "/graphql"
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
