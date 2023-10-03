@@ -68,6 +68,10 @@ func NewStorefront(c *gin.Context) {
 		Description:   StorefrontRequest.Description,
 		Blockchain:    StorefrontRequest.Blockchain,
 		Network:       StorefrontRequest.Network,
+		Region:        StorefrontRequest.Region,
+		Type:          StorefrontRequest.Type,
+		Category:      StorefrontRequest.Category,
+		Tags:          StorefrontRequest.Tags,
 	}
 	storefront.Deployed = false
 	result = db.Create(&storefront)

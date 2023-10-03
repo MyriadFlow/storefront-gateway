@@ -32,4 +32,8 @@ type Storefront struct {
 	WebappUrl             string    `json:"webappUrl"`
 	SubgraphUrl           string    `json:"subgraphUrl"`
 	Deployed              bool      `json:"deployed"`
+	Region                string    `json:"region"`
+	Type                  string    `json:"type"`
+	Category              string    `json:"category"`
+	Tags                  string    `json:"tags"`
 }
