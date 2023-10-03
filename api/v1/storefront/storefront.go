@@ -242,7 +242,8 @@ func DeployStorefront(c *gin.Context) {
 			BlockNumber: contract.BlockNumber,
 		})
 	}
-	graphName := req.Tag + "/" + req.Name
+	subgraphNameReq := strings.ReplaceAll(req.Name, " ", "")
+	graphName := req.Tag + "/" + subgraphNameReq
 	graphReqBody := GraphRequest{
 		Name:      graphName,
 		Folder:    req.Id.String(),
