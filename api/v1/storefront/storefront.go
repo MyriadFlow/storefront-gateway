@@ -194,13 +194,13 @@ func GetStorefrontsByAddress(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	var storefronts []models.Storefront
-	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&storefronts)
+	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&storefronts).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
+	httphelper.SuccessResponse(c, "Storefronts fetched successfully", storefronts)
 }
 
 func DeployStorefront(c *gin.Context) {

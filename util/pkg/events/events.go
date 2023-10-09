@@ -34,8 +34,8 @@ func ListenEvent() {
 
 	for e := range subscriptionIssuedChannel {
 		db := dbconfig.GetDb()
-		err := db.Model(&models.User{}).Where("wallet_address = ?", e.Owner.String()).Update("plan", "pro")
-		if err != nil {
+		result := db.Model(&models.User{}).Where("wallet_address = ?", e.Owner.String()).Update("plan", "pro")
+		if result.Error != nil {
 			logrus.Error("Unable to subscribe. Error: ")
 			return
 		}
