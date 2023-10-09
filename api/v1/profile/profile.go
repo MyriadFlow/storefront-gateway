@@ -22,6 +22,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", getProfile)
 		g.PATCH("/verify", verifySocial)
 		g.POST("/subscribe", BasicSubscription)
+		g.GET("/subscribe", getSubscription)
 	}
 }
 
@@ -144,4 +145,18 @@ func BasicSubscription(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "Basic Plan Subscribed", nil)
+}
+
+func getSubscription(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var user models.User
+	err := db.Model(&models.User{}).Where("wallet_address = ?", walletAddress).First(&user).Error
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+
+	httphelper.SuccessResponse(c, "Profile fetched successfully", gin.H{"plan": user.Plan})
 }
