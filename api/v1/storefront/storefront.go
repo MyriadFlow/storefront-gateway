@@ -31,6 +31,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
 		g.GET("/get_storefront_by_id", GetStorefrontById)
+		g.GET("/deployment", GetDeployment)
 	}
 }
 
@@ -391,4 +392,17 @@ func GetStorefrontById(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", storefront)
+}
+
+func GetDeployment(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var res []GetDeploymentPayload
+	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&res).Error
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "fetched data successfully", res)
 }

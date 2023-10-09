@@ -80,3 +80,8 @@ type NodectlRequest struct {
 type NodectlResponse struct {
 	StorefrontUrl string `json:"storefrontUrl"`
 }
+type GetDeploymentPayload struct {
+	Id          uuid.UUID `json:"id"`
+	WebappUrl   string    `json:"webappUrl"`
+	SubgraphUrl string    `json:"subgraphUrl"`
+}
