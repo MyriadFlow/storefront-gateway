@@ -158,5 +158,5 @@ func getSubscription(c *gin.Context) {
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Profile fetched successfully", gin.H{"plan": user.Plan})
+	httphelper.SuccessResponse(c, "Plan fetched successfully", gin.H{"plan": user.Plan})
 }
