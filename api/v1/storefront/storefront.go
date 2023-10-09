@@ -167,6 +167,10 @@ func UpdateStorefront(c *gin.Context) {
 	storefront.Discord = updateRequest.Discord
 	storefront.Instagram = updateRequest.Instagram
 	storefront.UpdatedAt = time.Now()
+	storefront.Region = updateRequest.Region
+	storefront.Type = updateRequest.Type
+	storefront.Category = updateRequest.Category
+	storefront.Tags = updateRequest.Tags
 	result = db.Save(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error, "message": "error in updating storefront in database"})

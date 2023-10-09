@@ -31,6 +31,10 @@ type UpdateStorefrontRequest struct {
 	Twitter             string    `json:"twitter"`
 	Discord             string    `json:"discord"`
 	Instagram           string    `json:"instagram"`
+	Region              string    `json:"region"`
+	Type                string    `json:"type"`
+	Category            string    `json:"category"`
+	Tags                string    `json:"tags"`
 }
 
 type DeployStorefrontRequest struct {
