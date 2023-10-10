@@ -52,16 +52,21 @@ type config struct {
 	ETHEREUM_TESTNET_NODE_PORT    string   `env:"ETHEREUM_TESTNET_NODE_PORT,required"`
 	ETHEREUM_TESTNET_IPFS_PORT    string   `env:"ETHEREUM_TESTNET_IPFS_PORT,required"`
 	ETHEREUM_TESTNET_GRAPH_HTTPS  string   `env:"ETHEREUM_TESTNET_GRAPH_HTTPS,required"`
-	BINANCE_TESTNET_HTTP          string   `env:"BINANCE_TESTNET_HTTP,required"`
-	BINANCE_TESTNET_WSS           string   `env:"BINANCE_TESTNET_WSS,required"`
-	BINANCE_TESTNET_NODE_PORT     string   `env:"BINANCE_TESTNET_NODE_PORT,required"`
-	BINANCE_TESTNET_IPFS_PORT     string   `env:"BINANCE_TESTNET_IPFS_PORT,required"`
-	BINANCE_TESTNET_GRAPH_HTTPS   string   `env:"BINANCE_TESTNET_GRAPH_HTTPS,required"`
-	FEVM_TESTNET_HTTP             string   `env:"FEVM_TESTNET_HTTP,required"`
-	FEVM_TESTNET_WSS              string   `env:"FEVM_TESTNET_WSS,required"`
-	FEVM_TESTNET_NODE_PORT        string   `env:"FEVM_TESTNET_NODE_PORT,required"`
-	FEVM_TESTNET_IPFS_PORT        string   `env:"FEVM_TESTNET_IPFS_PORT,required"`
-	FEVM_TESTNET_GRAPH_HTTPS      string   `env:"FEVM_TESTNET_GRAPH_HTTPS,required"`
+	ARBITRUM_TESTNET_HTTP         string   `env:"ARBITRUM_TESTNET_HTTP,required"`
+	ARBITRUM_TESTNET_WSS          string   `env:"ARBITRUM_TESTNET_WSS,required"`
+	ARBITRUM_TESTNET_NODE_PORT    string   `env:"ARBITRUM_TESTNET_NODE_PORT,required"`
+	ARBITRUM_TESTNET_IPFS_PORT    string   `env:"ARBITRUM_TESTNET_IPFS_PORT,required"`
+	ARBITRUM_TESTNET_GRAPH_HTTPS  string   `env:"ARBITRUM_TESTNET_GRAPH_HTTPS,required"`
+	OPTIMISM_TESTNET_HTTP         string   `env:"OPTIMISM_TESTNET_HTTP,required"`
+	OPTIMISM_TESTNET_WSS          string   `env:"OPTIMISM_TESTNET_WSS,required"`
+	OPTIMISM_TESTNET_NODE_PORT    string   `env:"OPTIMISM_TESTNET_NODE_PORT,required"`
+	OPTIMISM_TESTNET_IPFS_PORT    string   `env:"OPTIMISM_TESTNET_IPFS_PORT,required"`
+	OPTIMISM_TESTNET_GRAPH_HTTPS  string   `env:"OPTIMISM_TESTNET_GRAPH_HTTPS,required"`
+	BASE_TESTNET_HTTP             string   `env:"BASE_TESTNET_HTTP,required"`
+	BASE_TESTNET_WSS              string   `env:"BASE_TESTNET_WSS,required"`
+	BASE_TESTNET_NODE_PORT        string   `env:"BASE_TESTNET_NODE_PORT,required"`
+	BASE_TESTNET_IPFS_PORT        string   `env:"BASE_TESTNET_IPFS_PORT,required"`
+	BASE_TESTNET_GRAPH_HTTPS      string   `env:"BASE_TESTNET_GRAPH_HTTPS,required"`
 }
 
 var EnvVars config = config{}
