@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
+	"github.com/MyriadFlow/storefront-gateway/config/constants/blockchains"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -49,6 +50,8 @@ func NewStorefront(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
+	chain := blockchains.Testnets[StorefrontRequest.Blockchain]
+
 	db := dbconfig.GetDb()
 	result := db.Model(&models.Storefront{}).Where("name = ?", StorefrontRequest.Name).Find(&models.Storefront{})
 	if result.RowsAffected != 0 {
@@ -89,7 +92,7 @@ func NewStorefront(c *gin.Context) {
 				"param1" : "` + walletAddress + `"
     		}
 		},
-		"network" : "maticmum"
+		"network" : "` + chain.DeploymentName + `"
 	}
 	`
 
@@ -221,6 +224,8 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 
+	chain := blockchains.Testnets[storefront.Network]
+
 	storefront.Name = req.Name
 	storefront.StorefrontHeadline = req.Headline
 	storefront.StorefrontDescription = req.Description
@@ -256,8 +261,8 @@ func DeployStorefront(c *gin.Context) {
 	graphReqBody := GraphRequest{
 		Name:      graphName,
 		Folder:    req.Id.String(),
-		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":8020",
-		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":5001",
+		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.GraphPort,
+		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.IpfsPort,
 		Contracts: reqContracts,
 		Network:   req.Network,
 		Protocol:  req.Protocol,
@@ -271,7 +276,7 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 	fmt.Println(string(graphReqBytes))
-	graphReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/Subgraph", bytes.NewReader(graphReqBytes))
+	graphReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/api/Subgraph", bytes.NewReader(graphReqBytes))
 	if err != nil {
 		logrus.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -303,13 +308,13 @@ func DeployStorefront(c *gin.Context) {
 	}
 	arr := strings.Split(string(data), "\n")
 	subgraphIdArr := strings.Split(arr[3], " ")
-	subgraphUrl := envconfig.EnvVars.POLYGON_TESTNET_GRAPH_HTTPS + "/subgraphs/name/" + graphName + "/graphql"
+	subgraphUrl := chain.GraphHttpsUrl + "/subgraphs/name/" + graphName + "/graphql"
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
 		Name:          req.Name,
-		Network:       req.Network,
-		Protocol:      req.Protocol,
+		Network:       chain.SubgraphNetworkName,
+		Protocol:      "ethereum",
 		Tag:           req.Tag,
 		SubgraphUrl:   subgraphUrl,
 		WalletAddress: walletAddress,

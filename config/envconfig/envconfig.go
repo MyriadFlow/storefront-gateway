@@ -42,7 +42,31 @@ type config struct {
 	IPFS_GATEWAY                  string   `env:"IPFS_GATEWAY,required"`
 	RAINBOWKIT_PROJECT_ID         string   `env:"RAINBOWKIT_PROJECT_ID,required"`
 	ALCHEMY_ID                    string   `env:"ALCHEMY_ID,required"`
+	POLYGON_TESTNET_HTTP          string   `env:"POLYGON_TESTNET_HTTP,required"`
+	POLYGON_TESTNET_WSS           string   `env:"POLYGON_TESTNET_WSS,required"`
+	POLYGON_TESTNET_NODE_PORT     string   `env:"POLYGON_TESTNET_NODE_PORT,required"`
+	POLYGON_TESTNET_IPFS_PORT     string   `env:"POLYGON_TESTNET_IPFS_PORT,required"`
 	POLYGON_TESTNET_GRAPH_HTTPS   string   `env:"POLYGON_TESTNET_GRAPH_HTTPS,required"`
+	ETHEREUM_TESTNET_HTTP         string   `env:"ETHEREUM_TESTNET_HTTP,required"`
+	ETHEREUM_TESTNET_WSS          string   `env:"ETHEREUM_TESTNET_WSS,required"`
+	ETHEREUM_TESTNET_NODE_PORT    string   `env:"ETHEREUM_TESTNET_NODE_PORT,required"`
+	ETHEREUM_TESTNET_IPFS_PORT    string   `env:"ETHEREUM_TESTNET_IPFS_PORT,required"`
+	ETHEREUM_TESTNET_GRAPH_HTTPS  string   `env:"ETHEREUM_TESTNET_GRAPH_HTTPS,required"`
+	ARBITRUM_TESTNET_HTTP         string   `env:"ARBITRUM_TESTNET_HTTP,required"`
+	ARBITRUM_TESTNET_WSS          string   `env:"ARBITRUM_TESTNET_WSS,required"`
+	ARBITRUM_TESTNET_NODE_PORT    string   `env:"ARBITRUM_TESTNET_NODE_PORT,required"`
+	ARBITRUM_TESTNET_IPFS_PORT    string   `env:"ARBITRUM_TESTNET_IPFS_PORT,required"`
+	ARBITRUM_TESTNET_GRAPH_HTTPS  string   `env:"ARBITRUM_TESTNET_GRAPH_HTTPS,required"`
+	OPTIMISM_TESTNET_HTTP         string   `env:"OPTIMISM_TESTNET_HTTP,required"`
+	OPTIMISM_TESTNET_WSS          string   `env:"OPTIMISM_TESTNET_WSS,required"`
+	OPTIMISM_TESTNET_NODE_PORT    string   `env:"OPTIMISM_TESTNET_NODE_PORT,required"`
+	OPTIMISM_TESTNET_IPFS_PORT    string   `env:"OPTIMISM_TESTNET_IPFS_PORT,required"`
+	OPTIMISM_TESTNET_GRAPH_HTTPS  string   `env:"OPTIMISM_TESTNET_GRAPH_HTTPS,required"`
+	BASE_TESTNET_HTTP             string   `env:"BASE_TESTNET_HTTP,required"`
+	BASE_TESTNET_WSS              string   `env:"BASE_TESTNET_WSS,required"`
+	BASE_TESTNET_NODE_PORT        string   `env:"BASE_TESTNET_NODE_PORT,required"`
+	BASE_TESTNET_IPFS_PORT        string   `env:"BASE_TESTNET_IPFS_PORT,required"`
+	BASE_TESTNET_GRAPH_HTTPS      string   `env:"BASE_TESTNET_GRAPH_HTTPS,required"`
 }
 
 var EnvVars config = config{}
