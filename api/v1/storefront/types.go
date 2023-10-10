@@ -11,6 +11,10 @@ type StorefrontRequest struct {
 	Description string `json:"description"`
 	Image       string `json:"image"`
 	Network     string `json:"network"`
+	Region      string `json:"region"`
+	Type        string `json:"type"`
+	Category    string `json:"category"`
+	Tags        string `json:"tags"`
 }
 
 type UpdateStorefrontRequest struct {
@@ -27,6 +31,10 @@ type UpdateStorefrontRequest struct {
 	Twitter             string    `json:"twitter"`
 	Discord             string    `json:"discord"`
 	Instagram           string    `json:"instagram"`
+	Region              string    `json:"region"`
+	Type                string    `json:"type"`
+	Category            string    `json:"category"`
+	Tags                string    `json:"tags"`
 }
 
 type DeployStorefrontRequest struct {
@@ -71,4 +79,9 @@ type NodectlRequest struct {
 }
 type NodectlResponse struct {
 	StorefrontUrl string `json:"storefrontUrl"`
+}
+type GetDeploymentPayload struct {
+	Id          uuid.UUID `json:"id"`
+	WebappUrl   string    `json:"webappUrl"`
+	SubgraphUrl string    `json:"subgraphUrl"`
 }

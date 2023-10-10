@@ -23,7 +23,7 @@ func GetSubgraphsByAddress(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	var subgraphs []models.Subgraph
-	err := db.Model(&models.Subgraph{}).Where("wallet_address = ?", walletAddress).Find(&subgraphs)
+	err := db.Model(&models.Subgraph{}).Where("wallet_address = ?", walletAddress).Find(&subgraphs).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")

@@ -32,6 +32,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
 		g.GET("/get_storefront_by_id", GetStorefrontById)
+		g.GET("/deployment", GetDeployment)
 	}
 }
 
@@ -71,6 +72,10 @@ func NewStorefront(c *gin.Context) {
 		Description:   StorefrontRequest.Description,
 		Blockchain:    StorefrontRequest.Blockchain,
 		Network:       StorefrontRequest.Network,
+		Region:        StorefrontRequest.Region,
+		Type:          StorefrontRequest.Type,
+		Category:      StorefrontRequest.Category,
+		Tags:          StorefrontRequest.Tags,
 	}
 	storefront.Deployed = false
 	result = db.Create(&storefront)
@@ -166,6 +171,10 @@ func UpdateStorefront(c *gin.Context) {
 	storefront.Discord = updateRequest.Discord
 	storefront.Instagram = updateRequest.Instagram
 	storefront.UpdatedAt = time.Now()
+	storefront.Region = updateRequest.Region
+	storefront.Type = updateRequest.Type
+	storefront.Category = updateRequest.Category
+	storefront.Tags = updateRequest.Tags
 	result = db.Save(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error, "message": "error in updating storefront in database"})
@@ -189,13 +198,13 @@ func GetStorefrontsByAddress(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	var storefronts []models.Storefront
-	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&storefronts)
+	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&storefronts).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
 		return
 	}
-	httphelper.SuccessResponse(c, "Profile fetched successfully", storefronts)
+	httphelper.SuccessResponse(c, "Storefronts fetched successfully", storefronts)
 }
 
 func DeployStorefront(c *gin.Context) {
@@ -247,7 +256,8 @@ func DeployStorefront(c *gin.Context) {
 			BlockNumber: contract.BlockNumber,
 		})
 	}
-	graphName := req.Tag + "/" + req.Name
+	subgraphNameReq := strings.ReplaceAll(req.Name, " ", "")
+	graphName := req.Tag + "/" + subgraphNameReq
 	graphReqBody := GraphRequest{
 		Name:      graphName,
 		Folder:    req.Id.String(),
@@ -387,4 +397,17 @@ func GetStorefrontById(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "Profile fetched successfully", storefront)
+}
+
+func GetDeployment(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var res []GetDeploymentPayload
+	err := db.Model(&models.Storefront{}).Where("wallet_address = ?", walletAddress).Find(&res).Error
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	httphelper.SuccessResponse(c, "fetched data successfully", res)
 }
