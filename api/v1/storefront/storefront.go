@@ -257,6 +257,10 @@ func DeployStorefront(c *gin.Context) {
 	storefront.Discord = req.Discord
 	storefront.Instagram = req.Instagram
 	storefront.UpdatedAt = time.Now()
+	storefront.Region = req.Region
+	storefront.Type = req.Type
+	storefront.Category = req.Category
+	storefront.Tags = req.Tags
 
 	var contracts []models.Contract
 	err := db.Model(&models.Contract{}).Where("storefront_id = ?", req.Id).Find(&contracts).Error

@@ -11,10 +11,6 @@ type StorefrontRequest struct {
 	Description string `json:"description"`
 	Image       string `json:"image"`
 	Network     string `json:"network"`
-	Region      string `json:"region"`
-	Type        string `json:"type"`
-	Category    string `json:"category"`
-	Tags        string `json:"tags"`
 }
 
 type UpdateStorefrontRequest struct {
@@ -54,6 +50,10 @@ type DeployStorefrontRequest struct {
 	Network             string    `json:"network,omitempty"`
 	Protocol            string    `json:"protocol,omitempty"`
 	Tag                 string    `json:"tag,omitempty"`
+	Region              string    `json:"region"`
+	Type                string    `json:"type"`
+	Category            string    `json:"category"`
+	Tags                string    `json:"tags"`
 }
 
 type GraphRequest struct {
