@@ -29,6 +29,8 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.POST("", NewStorefront)
 		g.PUT("", UpdateStorefront)
 		g.GET("", GetStorefronts)
+		g.GET("/testnet", GetTestnetStorefronts)
+		g.GET("/mainnet", GetMainnetStorefronts)
 		g.GET("/myStorefronts", GetStorefrontsByAddress)
 		g.POST("/deploy", DeployStorefront)
 		g.GET("/get_storefront_by_id", GetStorefrontById)
@@ -428,4 +430,28 @@ func GetDeployment(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "fetched data successfully", res)
+}
+
+func GetTestnetStorefronts(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var storefronts []models.Storefront
+	result := db.Model(&models.Storefront{}).Where("wallet_address = ? AND network = ?", walletAddress, "testnet").Find(&storefronts)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, storefronts)
+}
+
+func GetMainnetStorefronts(c *gin.Context) {
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var storefronts []models.Storefront
+	result := db.Model(&models.Storefront{}).Where("wallet_address = ? AND network = ?", walletAddress, "mainnet").Find(&storefronts)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+		return
+	}
+	c.JSON(http.StatusOK, storefronts)
 }
