@@ -50,7 +50,16 @@ func NewStorefront(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	chain := blockchains.Testnets[StorefrontRequest.Blockchain]
+	var chain blockchains.Blockchain
+
+	if StorefrontRequest.Network == "testnet" {
+		chain = blockchains.Testnets[StorefrontRequest.Blockchain]
+	} else if StorefrontRequest.Network == "mainnet" {
+		chain = blockchains.Mainnets[StorefrontRequest.Blockchain]
+	} else {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "network invalid"})
+		return
+	}
 
 	db := dbconfig.GetDb()
 	result := db.Model(&models.Storefront{}).Where("name = ?", StorefrontRequest.Name).Find(&models.Storefront{})
@@ -224,7 +233,16 @@ func DeployStorefront(c *gin.Context) {
 		return
 	}
 
-	chain := blockchains.Testnets[storefront.Network]
+	var chain blockchains.Blockchain
+
+	if storefront.Network == "testnet" {
+		chain = blockchains.Testnets[storefront.Blockchain]
+	} else if storefront.Network == "mainnet" {
+		chain = blockchains.Mainnets[storefront.Blockchain]
+	} else {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "network invalid"})
+		return
+	}
 
 	storefront.Name = req.Name
 	storefront.StorefrontHeadline = req.Headline

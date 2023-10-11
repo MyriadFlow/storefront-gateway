@@ -52,13 +52,21 @@ func Deploy(c *gin.Context, link string) {
 			return
 		}
 	}
-
+	var network string
+	if storefront.Network == "testnet" {
+		network = blockchains.Testnets[storefront.Blockchain].DeploymentName
+	} else if storefront.Network == "mainnet" {
+		network = blockchains.Mainnets[storefront.Blockchain].DeploymentName
+	} else {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "network invalid"})
+		return
+	}
 	contractReqBody := contractReqBody{
 		Data: data{
 			ContractName:      req.ContractName,
 			ConstructorParams: req.ConstructorParams,
 		},
-		Network: blockchains.Testnets[storefront.Blockchain].DeploymentName,
+		Network: network,
 	}
 	contractReqBodyBytes, err := json.Marshal(contractReqBody)
 	if err != nil {

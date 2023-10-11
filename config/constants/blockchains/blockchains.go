@@ -15,6 +15,8 @@ type Blockchain struct {
 	SubgraphNetworkName string
 }
 
+var Mainnets map[string]Blockchain
+
 var Testnets map[string]Blockchain = map[string]Blockchain{
 	"polygon": {
 		Name:                "polygon",
