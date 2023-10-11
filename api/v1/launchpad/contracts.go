@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/MyriadFlow/storefront-gateway/config/constants/blockchains"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
@@ -20,6 +21,14 @@ func Deploy(c *gin.Context, link string) {
 	walletAddress := c.GetString("walletAddress")
 	var req reqBody
 	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	//get blockcahin from storefront
+	var storefront models.Storefront
+	err = db.Model(&models.Storefront{}).Where("storefront_id = ?", req.StorefrontId).First(&storefront).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -43,12 +52,13 @@ func Deploy(c *gin.Context, link string) {
 			return
 		}
 	}
+
 	contractReqBody := contractReqBody{
 		Data: data{
 			ContractName:      req.ContractName,
 			ConstructorParams: req.ConstructorParams,
 		},
-		Network: req.Network,
+		Network: blockchains.Testnets[storefront.Blockchain].DeploymentName,
 	}
 	contractReqBodyBytes, err := json.Marshal(contractReqBody)
 	if err != nil {
