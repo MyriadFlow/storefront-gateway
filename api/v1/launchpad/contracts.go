@@ -28,7 +28,7 @@ func Deploy(c *gin.Context, link string) {
 
 	//get blockcahin from storefront
 	var storefront models.Storefront
-	err = db.Model(&models.Storefront{}).Where("storefront_id = ?", req.StorefrontId).First(&storefront).Error
+	err = db.Model(&models.Storefront{}).Where("id = ?", req.StorefrontId).First(&storefront).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
