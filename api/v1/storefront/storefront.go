@@ -225,7 +225,7 @@ func DeployStorefront(c *gin.Context) {
 	walletAddress := c.GetString("walletAddress")
 
 	var storefront models.Storefront
-	result := db.Where("id = ?", req.Id).First(&storefront)
+	result := db.Model(&models.Storefront{}).Where("id = ?", req.Id).First(&storefront)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
 		return
@@ -241,7 +241,6 @@ func DeployStorefront(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "network invalid"})
 		return
 	}
-
 	storefront.Name = req.Name
 	storefront.StorefrontHeadline = req.Headline
 	storefront.StorefrontDescription = req.Description

@@ -11,6 +11,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 
+	"github.com/MyriadFlow/storefront-gateway/config/constants/blockchains"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig/dbinit"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/storefront"
@@ -27,6 +28,7 @@ func Init() {
 	dbinit.Init()
 	global.InitGlobal()
 	storefront.InitRolesId()
+	blockchains.InitChains()
 	go events.ListenEvent()
 
 	GinApp = gin.Default()
