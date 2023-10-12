@@ -283,8 +283,8 @@ func DeployStorefront(c *gin.Context) {
 		NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.GraphPort,
 		IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.IpfsPort,
 		Contracts: reqContracts,
-		Network:   req.Network,
-		Protocol:  req.Protocol,
+		Network:   chain.SubgraphNetworkName,
+		Protocol:  "ethereum",
 		Tag:       req.Tag,
 	}
 

@@ -47,8 +47,6 @@ type DeployStorefrontRequest struct {
 	Twitter             string    `json:"twitter"`
 	Discord             string    `json:"discord"`
 	Instagram           string    `json:"instagram"`
-	Network             string    `json:"network,omitempty"`
-	Protocol            string    `json:"protocol,omitempty"`
 	Tag                 string    `json:"tag,omitempty"`
 	Region              string    `json:"region"`
 	Type                string    `json:"type"`
