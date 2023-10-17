@@ -35,6 +35,8 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.POST("/deploy", DeployStorefront)
 		g.GET("/get_storefront_by_id", GetStorefrontById)
 		g.GET("/deployment", GetDeployment)
+		g.POST("/deployment/update/:id", UpdateStorefrontWebapp)
+		g.POST("/deployment/stop/:id", StopStorefrontWebapp)
 	}
 }
 
@@ -453,4 +455,26 @@ func GetMainnetStorefronts(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, storefronts)
+}
+
+func UpdateStorefrontWebapp(c *gin.Context) {
+	storefrontId := c.Param("id")
+	resp, err := http.Get(envconfig.EnvVars.NODECTL_SERVER_URL + ":" + envconfig.EnvVars.NODECTL_SERVER_PORT + "/marketplace/update/" + storefrontId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	defer resp.Body.Close()
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully updated marketplace"})
+}
+
+func StopStorefrontWebapp(c *gin.Context) {
+	storefrontId := c.Param("id")
+	resp, err := http.Get(envconfig.EnvVars.NODECTL_SERVER_URL + ":" + envconfig.EnvVars.NODECTL_SERVER_PORT + "/marketplace/stop/" + storefrontId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	defer resp.Body.Close()
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully stopped marketplace"})
 }
