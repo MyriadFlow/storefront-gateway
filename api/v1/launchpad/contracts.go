@@ -7,13 +7,16 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/MyriadFlow/storefront-gateway/config/constants/blockchains"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
 	"github.com/MyriadFlow/storefront-gateway/config/envconfig"
 	"github.com/MyriadFlow/storefront-gateway/models"
+	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func Deploy(c *gin.Context, link string) {
@@ -52,15 +55,16 @@ func Deploy(c *gin.Context, link string) {
 			return
 		}
 	}
-	var network string
+	var chain blockchains.Blockchain
 	if storefront.Network == "testnet" {
-		network = blockchains.Testnets[storefront.Blockchain].DeploymentName
+		chain = blockchains.Testnets[storefront.Blockchain]
 	} else if storefront.Network == "mainnet" {
-		network = blockchains.Mainnets[storefront.Blockchain].DeploymentName
+		chain = blockchains.Mainnets[storefront.Blockchain]
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "network invalid"})
 		return
 	}
+	network := chain.DeploymentName
 	contractReqBody := contractReqBody{
 		Data: data{
 			ContractName:      req.ContractName,
@@ -118,6 +122,93 @@ func Deploy(c *gin.Context, link string) {
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
+	}
+
+	//update subgraph if deployed
+	if storefront.Deployed == true {
+		var contracts []models.Contract
+		err := db.Model(&models.Contract{}).Where("storefront_id = ?", storefront.Id).Find(&contracts).Error
+		if err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
+
+		var reqContracts []Contract
+		for i, contract := range contracts {
+			reqContracts = append(reqContracts, Contract{
+				Name:        contract.ContractName + strconv.Itoa(i),
+				Address:     contract.ContractAddress,
+				BlockNumber: contract.BlockNumber,
+			})
+		}
+		subgraphNameReq := strings.ReplaceAll(req.Name, " ", "")
+		graphName := req.Tag + "/" + subgraphNameReq
+		graphReqBody := GraphRequest{
+			Name:      graphName,
+			Folder:    storefront.Id.String(),
+			NodeURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.GraphPort,
+			IpfsURL:   envconfig.EnvVars.SUBGRAPH_SERVER_URL + ":" + chain.IpfsPort,
+			Contracts: reqContracts,
+			Network:   chain.SubgraphNetworkName,
+			Protocol:  "ethereum",
+			Tag:       req.Tag,
+		}
+
+		graphReqBytes, err := json.Marshal(graphReqBody)
+		if err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
+		fmt.Println(string(graphReqBytes))
+		graphReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.SMARTCONTRACT_API_URL+"/api/Subgraph", bytes.NewReader(graphReqBytes))
+		if err != nil {
+			logrus.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+
+		client := &http.Client{}
+		resp, err := client.Do(graphReq)
+		if err != nil {
+			logrus.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		if resp.StatusCode != 200 {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
+			return
+		}
+		defer resp.Body.Close()
+
+		var subgraph models.Subgraph
+		body, _ := io.ReadAll(resp.Body)
+		strn := string(body)
+		strn = string(body)[1 : len(strn)-1]
+		data, err := base64.StdEncoding.DecodeString(strn)
+		if err != nil {
+			logrus.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		arr := strings.Split(string(data), "\n")
+		subgraphIdArr := strings.Split(arr[3], " ")
+		subgraphUrl := chain.GraphHttpsUrl + "/subgraphs/name/" + graphName + "/graphql"
+		subgraphId := subgraphIdArr[2]
+		subgraph = models.Subgraph{
+			SubgraphId:    subgraphId,
+			Name:          req.Name,
+			Network:       chain.SubgraphNetworkName,
+			Protocol:      "ethereum",
+			Tag:           req.Tag,
+			SubgraphUrl:   subgraphUrl,
+			WalletAddress: walletAddress,
+			StorefrontId:  req.Id.String(),
+		}
+
+		db.Create(&subgraph)
+
 	}
 	c.JSON(http.StatusOK, response)
 }

@@ -333,7 +333,7 @@ func DeployStorefront(c *gin.Context) {
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
-		Name:          req.Name,
+		Name:          graphName,
 		Network:       chain.SubgraphNetworkName,
 		Protocol:      "ethereum",
 		Tag:           req.Tag,
