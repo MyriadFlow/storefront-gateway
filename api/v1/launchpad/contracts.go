@@ -125,7 +125,7 @@ func Deploy(c *gin.Context, link string) {
 	}
 
 	//update subgraph if deployed
-	if storefront.Deployed == true {
+	if storefront.Deployed {
 		var contracts []models.Contract
 		err := db.Model(&models.Contract{}).Where("storefront_id = ?", storefront.Id).Find(&contracts).Error
 		if err != nil {
