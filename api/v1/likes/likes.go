@@ -2,7 +2,6 @@ package likes
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/MyriadFlow/storefront-gateway/api/middleware/auth/paseto"
 	"github.com/MyriadFlow/storefront-gateway/config/dbconfig"
@@ -26,15 +25,13 @@ func ApplyRoutes(r *gin.RouterGroup) {
 }
 
 func getAllUsersLikesCount(c *gin.Context) {
-	db := dbconfig.GetDb()
-	itemId := c.Params.ByName("itemId")
-	if itemId == "" {
-		httphelper.ErrResponse(c, http.StatusForbidden, "no itemId passed")
-		return
+	var req LikeReqeust
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 	}
-
+	db := dbconfig.GetDb()
 	var count int64
-	err := db.Model(&models.Likes{}).Where("item_id = ?", itemId).Count(&count).Error
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND contract_address = ?", req.ItemId, req.ContractAddress).Count(&count).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -45,16 +42,14 @@ func getAllUsersLikesCount(c *gin.Context) {
 }
 
 func deleteUserLike(c *gin.Context) {
-	db := dbconfig.GetDb()
-	walletAddress := c.GetString("walletAddress")
-	itemId := c.Params.ByName("itemId")
-	id, err := strconv.Atoi(itemId)
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusForbidden, "Unable to Parse item id")
+	var req LikeReqeust
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-	err = db.Where("item_id = ? AND user_wallet_address = ?", id, walletAddress).Delete(&models.Likes{}).Error
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ? AND contract_address = ?", req.ItemId, walletAddress, req.ContractAddress).Delete(&models.Likes{}).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -65,15 +60,13 @@ func deleteUserLike(c *gin.Context) {
 }
 
 func postUserLike(c *gin.Context) {
-	db := dbconfig.GetDb()
-	walletAddress := c.GetString("walletAddress")
-	itemId := c.Params.ByName("itemId")
-	id, err := strconv.Atoi(itemId)
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusForbidden, "Unable to Parse item id")
+	var req LikeReqeust
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
 	//check if item already liked
 	isLiked := checkIfAlreadyLiked(c)
 	if isLiked {
@@ -82,10 +75,11 @@ func postUserLike(c *gin.Context) {
 	}
 
 	addUserLike := models.Likes{
-		ItemId:            id,
+		ItemId:            req.ItemId,
+		ContractAddress:   req.ContractAddress,
 		UserWalletAddress: walletAddress,
 	}
-	err = db.Model(&models.Likes{}).Create(&addUserLike).Error
+	err := db.Model(&models.Likes{}).Create(&addUserLike).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured : Unable to add Like")
@@ -96,11 +90,14 @@ func postUserLike(c *gin.Context) {
 }
 
 func checkIfAlreadyLiked(c *gin.Context) bool {
+	var req LikeReqeust
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
-	itemId := c.Params.ByName("itemId")
 	var count int64
-	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ?", itemId, walletAddress).Count(&count).Error
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ? AND contract_address = ?", req.ItemId, walletAddress, req.ContractAddress).Count(&count).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
