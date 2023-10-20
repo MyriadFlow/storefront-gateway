@@ -62,7 +62,6 @@ type GraphRequest struct {
 	Contracts []Contract `json:"contracts"`
 	Network   string     `json:"network"`
 	Protocol  string     `json:"protocol"`
-	Tag       string     `json:"tag"`
 }
 
 type Contract struct {

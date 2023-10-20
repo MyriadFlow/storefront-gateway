@@ -23,3 +23,20 @@ type contractReqBody struct {
 	Data    data   `json:"data"`
 	Network string `json:"network"`
 }
+
+type Contract struct {
+	Name        string `json:"name"`
+	Address     string `json:"address"`
+	BlockNumber int    `json:"blockNumber"`
+}
+
+type GraphRequest struct {
+	Name      string     `json:"name"`
+	Folder    string     `json:"folder"`
+	NodeURL   string     `json:"nodeUrl"`
+	IpfsURL   string     `json:"ipfsUrl"`
+	Contracts []Contract `json:"contracts"`
+	Network   string     `json:"network"`
+	Protocol  string     `json:"protocol"`
+	Tag       string     `json:"tag"`
+}

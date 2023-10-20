@@ -287,7 +287,6 @@ func DeployStorefront(c *gin.Context) {
 		Contracts: reqContracts,
 		Network:   chain.SubgraphNetworkName,
 		Protocol:  "ethereum",
-		Tag:       req.Tag,
 	}
 
 	graphReqBytes, err := json.Marshal(graphReqBody)
@@ -333,10 +332,9 @@ func DeployStorefront(c *gin.Context) {
 	subgraphId := subgraphIdArr[2]
 	subgraph = models.Subgraph{
 		SubgraphId:    subgraphId,
-		Name:          req.Name,
+		Name:          graphName,
 		Network:       chain.SubgraphNetworkName,
 		Protocol:      "ethereum",
-		Tag:           req.Tag,
 		SubgraphUrl:   subgraphUrl,
 		WalletAddress: walletAddress,
 		StorefrontId:  req.Id.String(),
