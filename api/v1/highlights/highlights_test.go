@@ -31,7 +31,7 @@ func Test_GetHighlightsItemIds(t *testing.T) {
 
 		c.Request = req
 		c.Set("walletAddress", testWallet.WalletAddress)
-		getHighlightsItemIds(c)
+		getHighlightItems(c)
 		assert.Equal(t, http.StatusOK, rr.Result().StatusCode)
 	})
 
@@ -78,9 +78,9 @@ func Test_PostHighlightsItemId(t *testing.T) {
 		testTokenId := "11111"
 		url := "/api/v1.0/highlights"
 		requestBody := models.Highlights{
-			Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-			TokenId:          testTokenId,
-			Metadata:         "hjhjgh",
+			StorefrontId: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			//ItemId:          (testTokenId) ,
+			ContractAddress: "hjhjgh",
 		}
 		jsonData, err := json.Marshal(requestBody)
 		if err != nil {
