@@ -17,9 +17,9 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/likes")
 	{
 		g.Use(paseto.PASETO)
-		g.GET("/:itemId", getAllUsersLikesCount)
-		g.POST("/:itemId", postUserLike)
-		g.DELETE("/:itemId", deleteUserLike)
+		g.GET("", getAllUsersLikesCount)
+		g.POST("", postUserLike)
+		g.DELETE("", deleteUserLike)
 
 	}
 }
@@ -86,7 +86,7 @@ func postUserLike(c *gin.Context) {
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Item Liked successfully", nil)
+	httphelper.SuccessResponse(c, "Item Liked successfTokenIdully", nil)
 }
 
 func checkIfAlreadyLiked(c *gin.Context) bool {
