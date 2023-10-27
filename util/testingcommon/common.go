@@ -53,9 +53,9 @@ func CreateTestUser(t *testing.T, walletAddress string) {
 func CreateTestHighlights(t *testing.T) string {
 	db := dbconfig.GetDb()
 	highlights := models.Highlights{
-		Contract_Address: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		TokenId:          "1234",
-		Metadata:         "hjhjgh",
+		ContractAddress: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		ItemId:          1,
+		StorefrontId:    "hjhjgh",
 	}
 	err := db.Model(&models.Highlights{}).Create(&highlights).Error
 	if err != nil {
@@ -63,7 +63,7 @@ func CreateTestHighlights(t *testing.T) string {
 	}
 
 	var itemId int
-	err = db.Model(&models.Highlights{}).Select("item_id").Where("nft_contract_address = ? AND token_id = ? AND meta_data_uri = ? ", highlights.Contract_Address, highlights.TokenId, highlights.Metadata).First(&itemId).Error
+	err = db.Model(&models.Highlights{}).Select("item_id").Where("nft_contract_address = ? AND token_id = ? AND meta_data_uri = ? ", highlights.ContractAddress, highlights.ItemId, highlights.StorefrontId).First(&itemId).Error
 	if err != nil {
 		t.Fatal(err)
 	}
