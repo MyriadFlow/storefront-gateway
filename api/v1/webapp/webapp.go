@@ -66,5 +66,4 @@ func GetContractAddresses(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, contracts)
-
 }
