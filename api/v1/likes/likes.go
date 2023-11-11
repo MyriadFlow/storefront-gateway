@@ -80,16 +80,21 @@ func postUserLike(c *gin.Context) {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	//check if item already liked
-	isLiked := checkIfAlreadyLiked(c)
+	isLiked, err := checkIfAlreadyLiked(c)
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Error checking already liked item")
+		return
+	}
 	if isLiked {
 		httphelper.ErrResponse(c, http.StatusForbidden, "Item Liked Already")
 		return
 	}
 
 	addUserLike := models.Likes{
-		ItemId:            itemId,
-		ContractAddress:   contractAddress,
-		UserWalletAddress: walletAddress,
+		ItemId:          itemId,
+		ContractAddress: contractAddress,
+		WalletAddress:   walletAddress,
 	}
 	err = db.Model(&models.Likes{}).Create(&addUserLike).Error
 	if err != nil {
@@ -98,10 +103,10 @@ func postUserLike(c *gin.Context) {
 		return
 	}
 
-	httphelper.SuccessResponse(c, "Item Liked successfTokenIdully", nil)
+	httphelper.SuccessResponse(c, "Item Liked successfully", nil)
 }
 
-func checkIfAlreadyLiked(c *gin.Context) bool {
+func checkIfAlreadyLiked(c *gin.Context) (bool, error) {
 	var req LikeReqeust
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -109,12 +114,11 @@ func checkIfAlreadyLiked(c *gin.Context) bool {
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
 	var count int64
-	err := db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ? AND contract_address = ?", req.ItemId, walletAddress, req.ContractAddress).Count(&count).Error
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND wallet_address = ? AND contract_address = ?", req.ItemId, walletAddress, req.ContractAddress).Count(&count).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-
+		return false, err
 	}
-
-	return count == 1
+	return count == 1, nil
 }
