@@ -19,6 +19,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	{
 		g.Use(paseto.PASETO)
 		g.GET("/:contractAddress/:itemId", getAllUsersLikesCount)
+		g.GET("/isliked/:contractAddress/:itemId", itemIsLiked)
 		g.POST("/:contractAddress/:itemId", postUserLike)
 		g.DELETE("/:contractAddress/:itemId", deleteUserLike)
 	}
@@ -57,7 +58,7 @@ func deleteUserLike(c *gin.Context) {
 
 	db := dbconfig.GetDb()
 	walletAddress := c.GetString("walletAddress")
-	err = db.Model(&models.Likes{}).Where("item_id = ? AND user_wallet_address = ? AND contract_address = ?", itemId, walletAddress, contractAddress).Delete(&models.Likes{}).Error
+	err = db.Model(&models.Likes{}).Where("item_id = ? AND wallet_address = ? AND contract_address = ?", itemId, walletAddress, contractAddress).Delete(&models.Likes{}).Error
 	if err != nil {
 		logrus.Error(err)
 		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
@@ -121,4 +122,29 @@ func checkIfAlreadyLiked(c *gin.Context) (bool, error) {
 		return false, err
 	}
 	return count == 1, nil
+}
+
+func itemIsLiked(c *gin.Context) {
+	var req LikeReqeust
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+	}
+	db := dbconfig.GetDb()
+	walletAddress := c.GetString("walletAddress")
+	var count int64
+	err := db.Model(&models.Likes{}).Where("item_id = ? AND wallet_address = ? AND contract_address = ?", req.ItemId, walletAddress, req.ContractAddress).Count(&count).Error
+	if err != nil {
+		logrus.Error(err)
+		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+		return
+	}
+	if count == 1 {
+		httphelper.SuccessResponse(c, "Item already liked", gin.H{
+			"liked": true,
+		})
+	} else {
+		httphelper.SuccessResponse(c, "Item not liked", gin.H{
+			"liked": false,
+		})
+	}
 }
