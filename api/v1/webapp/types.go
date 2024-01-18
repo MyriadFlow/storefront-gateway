@@ -21,4 +21,6 @@ type Contract struct {
 	ContractName    string `json:"contractName"`
 	ContractAddress string `json:"contractAddress"`
 	CollectionName  string `json:"collectionName"`
+	Thumbnail       string `json:"thumbnail"`
+	CoverImage      string `json:"coverImage"`
 }
