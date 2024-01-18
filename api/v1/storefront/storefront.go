@@ -341,64 +341,82 @@ func DeployStorefront(c *gin.Context) {
 	}
 
 	db.Create(&subgraph)
-	domain := strings.ReplaceAll(req.Name, " ", "")
-	nodectlReqBody := NodectlRequest{
-		StorefrontName: domain,
-		StorefrontId:   req.Id.String(),
-	}
 
-	nodectlReqBytes, err := json.Marshal(nodectlReqBody)
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}
+	if req.DeployMarketplace {
+		domain := strings.ReplaceAll(req.Name, " ", "")
+		nodectlReqBody := NodectlRequest{
+			StorefrontName: domain,
+			StorefrontId:   req.Id.String(),
+		}
 
-	nodectlReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.NODECTL_SERVER_URL+":"+envconfig.EnvVars.NODECTL_SERVER_PORT+"/marketplace", bytes.NewReader(nodectlReqBytes))
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}
+		nodectlReqBytes, err := json.Marshal(nodectlReqBody)
+		if err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
 
-	nodectlResp, err := http.DefaultClient.Do(nodectlReq)
-	if err != nil {
-		logrus.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-	if nodectlResp.StatusCode != 200 {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
-		return
-	}
-	defer nodectlResp.Body.Close()
+		nodectlReq, err := http.NewRequest(http.MethodPost, envconfig.EnvVars.NODECTL_SERVER_URL+":"+envconfig.EnvVars.NODECTL_SERVER_PORT+"/marketplace", bytes.NewReader(nodectlReqBytes))
+		if err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
 
-	nodectlBody, err := io.ReadAll(nodectlResp.Body)
-	if err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}
-	var nodectlRespBody NodectlResponse
-	if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
-		logrus.Error(err)
-		httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
-		return
-	}
-	storefront.WebappUrl = nodectlRespBody.StorefrontUrl
-	storefront.SubgraphUrl = subgraphUrl
-	storefront.Deployed = true
+		nodectlResp, err := http.DefaultClient.Do(nodectlReq)
+		if err != nil {
+			logrus.Error(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		if nodectlResp.StatusCode != 200 {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Status})
+			return
+		}
+		defer nodectlResp.Body.Close()
 
-	result = db.Save(&storefront)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
-		return
-	}
+		nodectlBody, err := io.ReadAll(nodectlResp.Body)
+		if err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
+		var nodectlRespBody NodectlResponse
+		if err := json.Unmarshal(nodectlBody, &nodectlRespBody); err != nil {
+			logrus.Error(err)
+			httphelper.ErrResponse(c, http.StatusInternalServerError, "Unexpected error occured")
+			return
+		}
+		storefront.WebappUrl = nodectlRespBody.StorefrontUrl
+		storefront.Deployed = true
 
-	httphelper.SuccessResponse(c, "succesfully deployed storefront", gin.H{
-		"graphUrl":      subgraph.SubgraphUrl,
-		"storefrontUrl": storefront.WebappUrl,
-	})
+		storefront.SubgraphUrl = subgraphUrl
+
+		result = db.Save(&storefront)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			return
+		}
+
+		httphelper.SuccessResponse(c, "succesfully deployed storefront", gin.H{
+			"graphUrl":      subgraph.SubgraphUrl,
+			"storefrontUrl": storefront.WebappUrl,
+		})
+
+	} else {
+		storefront.SubgraphUrl = subgraphUrl
+
+		result = db.Save(&storefront)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error})
+			return
+		}
+
+		httphelper.SuccessResponse(c, "succesfully deployed storefront", gin.H{
+			"graphUrl": subgraph.SubgraphUrl,
+		})
+
+	}
 }
 
 func GetStorefrontById(c *gin.Context) {

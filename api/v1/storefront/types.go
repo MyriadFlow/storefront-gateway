@@ -52,6 +52,7 @@ type DeployStorefrontRequest struct {
 	Type                string    `json:"type"`
 	Category            string    `json:"category"`
 	Tags                string    `json:"tags"`
+	DeployMarketplace   bool      `json:"deployMarketplace"`
 }
 
 type GraphRequest struct {
