@@ -126,7 +126,7 @@ func Deploy(c *gin.Context, link string) {
 			BlockNumber: contract.BlockNumber,
 		},
 	}
-	graphName := storefront.StorefrontName + "/" + response.ContractAddress
+	graphName := storefront.Name + "/" + response.ContractAddress
 	graphReqBody := GraphRequest{
 		Name:      graphName,
 		Folder:    response.ContractAddress,
