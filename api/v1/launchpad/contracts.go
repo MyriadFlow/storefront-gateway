@@ -164,7 +164,7 @@ func Deploy(c *gin.Context, link string) {
 	}
 	defer resp.Body.Close()
 
-	subgraphUrl := chain.GraphHttpsUrl + "/subgraphs/name/" + req.ContractName + "/" + graphName + "/graphql"
+	subgraphUrl := chain.GraphHttpsUrl + "/subgraphs/name/" + graphName + "/graphql"
 
 	contract.GraphUrl = subgraphUrl
 	result := db.Create(&contract)
