@@ -8,6 +8,7 @@ type reqBody struct {
 	CollectionName    string         `json:"collectionName"`
 	Thumbnail         string         `json:"thumbnail"`
 	CoverImage        string         `json:"coverImage"`
+	Drops             bool           `json:"drops"`
 }
 type resBody struct {
 	ChainId         int    `json:"chainId"`

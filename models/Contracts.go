@@ -13,4 +13,5 @@ type Contract struct {
 	Thumbnail       string `json:"thumbnail"`
 	CoverImage      string `json:"coverImage"`
 	GraphUrl        string `json:"graphUrl"`
+	Drops           bool   `json:"drops"`
 }

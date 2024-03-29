@@ -116,6 +116,7 @@ func Deploy(c *gin.Context, link string) {
 		CollectionName:  req.CollectionName,
 		Thumbnail:       req.Thumbnail,
 		CoverImage:      req.CoverImage,
+		Drops:           req.Drops,
 	}
 
 	//update subgraph if deployed
