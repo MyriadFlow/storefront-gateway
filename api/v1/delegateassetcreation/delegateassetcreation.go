@@ -63,13 +63,13 @@ func storeAsset(c *gin.Context) {
 		return
 	}
 	db := dbconfig.GetDb()
-	asset := models.DeletegateAsset{
+	asset := models.DelegateAsset{
 		MetaDataHash:             request.MetaDataHash,
 		RoyaltyPercentBasisPoint: request.RoyaltyPercentBasisPoint,
 		StorefrontId:             request.StorefrontId,
 		ContractAddress:          request.ContractAddress,
 	}
-	err = db.Model(&models.DeletegateAsset{}).Create(&asset).Error
+	err = db.Model(&models.DelegateAsset{}).Create(&asset).Error
 	if err != nil {
 		httphelper.NewInternalServerError(c, "failed to create asset in db", "failed to create asset in db: ", err.Error())
 		return
@@ -78,7 +78,7 @@ func storeAsset(c *gin.Context) {
 
 }
 func getAssets(c *gin.Context) {
-	var assets []models.DeletegateAsset
+	var assets []models.DelegateAsset
 	contractAddress := c.Query("contractAddress")
 	storefrontId := c.Query("storefrontId")
 	if storefrontId == "" || contractAddress == "" {
@@ -89,7 +89,7 @@ func getAssets(c *gin.Context) {
 	}
 	db := dbconfig.GetDb()
 
-	err := db.Model(&models.DeletegateAsset{}).Where("storefront_id = ? AND contract_address = ?", storefrontId, contractAddress).Find(&assets).Error
+	err := db.Model(&models.DelegateAsset{}).Where("storefront_id = ? AND contract_address = ?", storefrontId, contractAddress).Find(&assets).Error
 	if err != nil {
 		httphelper.NewInternalServerError(c, "failed to create asset in db", "failed to create asset in db: ", err.Error())
 		return

@@ -1,6 +1,6 @@
 package models
 
-type DeletegateAsset struct {
+type DelegateAsset struct {
 	Id                       uint   `json:"id" gorm:"primaryKey;autoIncrement"`
 	MetaDataHash             string `json:"metaDataHash"`
 	RoyaltyPercentBasisPoint int    `json:"royaltyPercentBasisPoint"`
