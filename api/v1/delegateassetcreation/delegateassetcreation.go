@@ -19,7 +19,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/delegateAssetCreation")
 	{
-		g.GET("/", getAssets)
+		g.GET("", getAssets)
 		g.Use(paseto.PASETO)
 		g.POST("", deletegateAssetCreation)
 		g.POST("/store", storeAsset)
