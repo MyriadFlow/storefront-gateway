@@ -15,7 +15,6 @@ type DelegateAssetCreationPayload struct {
 }
 
 type AssetStoreRequest struct {
-	Id                       uint   `json:"id" gorm:"primaryKey;autoIncrement"`
 	MetaDataHash             string `json:"metaDataHash" binding:"required"`
 	RoyaltyPercentBasisPoint int    `json:"royaltyPercentBasisPoint" binding:"required"`
 	StorefrontId             string `json:"storefrontId" binding:"required"`
