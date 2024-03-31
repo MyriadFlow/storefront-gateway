@@ -8,7 +8,6 @@ import (
 	"github.com/MyriadFlow/storefront-gateway/config/smartcontract/rawtransaction"
 	"github.com/MyriadFlow/storefront-gateway/generated/smartcontract/signatureSeries"
 	"github.com/MyriadFlow/storefront-gateway/models"
-	"github.com/MyriadFlow/storefront-gateway/util/pkg/canaccess"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/httphelper"
 	"github.com/MyriadFlow/storefront-gateway/util/pkg/logwrapper"
 	"github.com/ethereum/go-ethereum/common"
@@ -20,24 +19,23 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/delegateAssetCreation")
 	{
 		g.GET("", getAssets)
-		g.Use(paseto.PASETO)
 		g.POST("", deletegateAssetCreation)
+		g.Use(paseto.PASETO)
 		g.POST("/store", storeAsset)
 	}
 }
 
 func deletegateAssetCreation(c *gin.Context) {
 	var request DelegateAssetCreationRequest
-	walletAddressGin := c.GetString("walletAddress")
 	err := c.BindJSON(&request)
 	if err != nil {
 		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
 		return
 	}
-	if !canaccess.CanAccess(walletAddressGin) {
-		httphelper.ErrResponse(c, http.StatusForbidden, "this api not open to current wallet")
-		return
-	}
+	// if !canaccess.CanAccess(request.CreatorAddress) {
+	// 	httphelper.ErrResponse(c, http.StatusForbidden, "this api not open to current wallet")
+	// 	return
+	// }
 	creatorAddr := common.HexToAddress(request.CreatorAddress)
 	abiS := signatureSeries.SignatureSeriesABI
 
