@@ -2,6 +2,7 @@ package rawtransaction
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"math/big"
 	"strings"
 
@@ -108,14 +109,19 @@ func SendRawTransactionDelegateSignature(abiS string, method string, address str
 	if err != nil {
 		return nil, err
 	}
-	mnemonic := envconfig.EnvVars.MNEMONIC
-	privateKey, publicKey, _, err := ethwallet.HdWallet(mnemonic) // Verify: https://iancoleman.io/bip39/
+	privateKey, err := crypto.HexToECDSA(envconfig.EnvVars.WALLET_PRIVATE_KEY)
 	if err != nil {
-		logwrapper.Errorf("failed to get private and public key from mnemonic, error %v", err.Error())
+		logwrapper.Errorf("failed to parse Private Key, error %v", err)
 		return nil, err
 	}
 
-	nonce, err := client.PendingNonceAt(context.Background(), crypto.PubkeyToAddress(*publicKey))
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		logwrapper.Errorf("cannot assert type: publicKey is not of type *ecdsa.PublicKey, error %v", err)
+		return nil, err
+	}
+	nonce, err := client.PendingNonceAt(context.Background(), crypto.PubkeyToAddress(*publicKeyECDSA))
 	if err != nil {
 		logwrapper.Warnf("failed to get nonce")
 		return nil, err

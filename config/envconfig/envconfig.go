@@ -67,6 +67,7 @@ type config struct {
 	BASE_TESTNET_NODE_PORT        string   `env:"BASE_TESTNET_NODE_PORT,required"`
 	BASE_TESTNET_IPFS_PORT        string   `env:"BASE_TESTNET_IPFS_PORT,required"`
 	BASE_TESTNET_GRAPH_HTTPS      string   `env:"BASE_TESTNET_GRAPH_HTTPS,required"`
+	WALLET_PRIVATE_KEY            string   `env:"WALLET_PRIVATE_KEY,required"`
 }
 
 var EnvVars config = config{}
