@@ -8,6 +8,7 @@ type DelegateAssetCreationRequest struct {
 	CreatorAddress           string   `json:"creatorAddress" binding:"required,hexadecimal"`
 	MetaDataHash             string   `json:"metaDataHash" binding:"required"`
 	RoyaltyPercentBasisPoint *big.Int `json:"royaltyPercentBasisPoint" binding:"required"`
+	ContractAddress          string   `json:"contractAddress" binding:"required"`
 }
 
 type DelegateAssetCreationPayload struct {
