@@ -140,8 +140,8 @@ func SendRawTransactionDelegateSignature(abiS string, method string, address str
 	}
 
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(0)     // in wei
-	auth.GasLimit = uint64(300000) // in units
+	auth.Value = big.NewInt(0)      // in wei
+	auth.GasLimit = uint64(3000000) // in units
 	auth.GasPrice = gasPrice
 
 	addressVar := common.HexToAddress(address)
@@ -151,6 +151,122 @@ func SendRawTransactionDelegateSignature(abiS string, method string, address str
 		return nil, err
 	}
 	tx, err := instance.DelegateAssetCreation(auth, creator, metdata, royalty)
+	if err != nil {
+		logwrapper.Warnf("failed to execute transaction")
+		return nil, err
+	}
+	logrus.Info("transaction send", tx.Hash().String())
+	return tx, nil
+}
+
+func SendRawTransactionCreateAssetSignature(abiS string, address string, metdata string, royalty *big.Int) (*types.Transaction, error) {
+
+	client, err := smartcontract.GetClient()
+	if err != nil {
+		return nil, err
+	}
+	privateKey, err := crypto.HexToECDSA(envconfig.EnvVars.WALLET_PRIVATE_KEY)
+	if err != nil {
+		logwrapper.Errorf("failed to parse Private Key, error %v", err)
+		return nil, err
+	}
+
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		logwrapper.Errorf("cannot assert type: publicKey is not of type *ecdsa.PublicKey, error %v", err)
+		return nil, err
+	}
+	nonce, err := client.PendingNonceAt(context.Background(), crypto.PubkeyToAddress(*publicKeyECDSA))
+	if err != nil {
+		logwrapper.Warnf("failed to get nonce")
+		return nil, err
+	}
+
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	if err != nil {
+		if err != nil {
+			logwrapper.Warnf("failed to get gas price")
+			return nil, err
+		}
+	}
+
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(80001))
+	if err != nil {
+		logwrapper.Warnf("failed to get transactops")
+		return nil, err
+	}
+
+	auth.Nonce = big.NewInt(int64(nonce))
+	auth.Value = big.NewInt(0)      // in wei
+	auth.GasLimit = uint64(3000000) // in units
+	auth.GasPrice = gasPrice
+
+	addressVar := common.HexToAddress(address)
+	instance, err := signatureSeries.NewSignatureSeries(addressVar, client)
+	if err != nil {
+		logwrapper.Warnf("failed to create instance")
+		return nil, err
+	}
+	tx, err := instance.CreateAsset(auth, metdata, royalty)
+	if err != nil {
+		logwrapper.Warnf("failed to execute transaction")
+		return nil, err
+	}
+	logrus.Info("transaction send", tx.Hash().String())
+	return tx, nil
+}
+
+func SendRawTransactionTransferAssetSignature(abiS string, address string, from common.Address, to common.Address, tokenId *big.Int) (*types.Transaction, error) {
+
+	client, err := smartcontract.GetClient()
+	if err != nil {
+		return nil, err
+	}
+	privateKey, err := crypto.HexToECDSA(envconfig.EnvVars.WALLET_PRIVATE_KEY)
+	if err != nil {
+		logwrapper.Errorf("failed to parse Private Key, error %v", err)
+		return nil, err
+	}
+
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		logwrapper.Errorf("cannot assert type: publicKey is not of type *ecdsa.PublicKey, error %v", err)
+		return nil, err
+	}
+	nonce, err := client.PendingNonceAt(context.Background(), crypto.PubkeyToAddress(*publicKeyECDSA))
+	if err != nil {
+		logwrapper.Warnf("failed to get nonce")
+		return nil, err
+	}
+
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	if err != nil {
+		if err != nil {
+			logwrapper.Warnf("failed to get gas price")
+			return nil, err
+		}
+	}
+
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(80001))
+	if err != nil {
+		logwrapper.Warnf("failed to get transactops")
+		return nil, err
+	}
+
+	auth.Nonce = big.NewInt(int64(nonce))
+	auth.Value = big.NewInt(0)      // in wei
+	auth.GasLimit = uint64(3000000) // in units
+	auth.GasPrice = gasPrice
+
+	addressVar := common.HexToAddress(address)
+	instance, err := signatureSeries.NewSignatureSeries(addressVar, client)
+	if err != nil {
+		logwrapper.Warnf("failed to create instance")
+		return nil, err
+	}
+	tx, err := instance.SafeTransferFrom(auth, from, to, tokenId)
 	if err != nil {
 		logwrapper.Warnf("failed to execute transaction")
 		return nil, err

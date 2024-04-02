@@ -18,10 +18,12 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/delegateAssetCreation")
 	{
-		g.GET("", getAssets)
-		g.POST("", deletegateAssetCreation)
+		//g.GET("", getAssets)
+		//g.POST("", deletegateAssetCreation)
+		g.POST("/transfer", assetTransfer)
 		g.Use(paseto.PASETO)
 		g.POST("/store", storeAsset)
+		g.POST("/create", createAsset)
 	}
 }
 
@@ -93,4 +95,54 @@ func getAssets(c *gin.Context) {
 		return
 	}
 	httphelper.SuccessResponse(c, "assets fetched", assets)
+}
+
+func createAsset(c *gin.Context) {
+	var request AssetCreateRequest
+	err := c.BindJSON(&request)
+	if err != nil {
+		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
+		return
+	}
+
+	abiS := signatureSeries.SignatureSeriesABI
+
+	tx, err := rawtransaction.SendRawTransactionCreateAssetSignature(abiS, request.ContractAddress, request.MetaDataHash, request.RoyaltyPercentBasisPoint)
+
+	if err != nil {
+		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateAssetCreation", "StoreFront", err.Error())
+		return
+	}
+	transactionHash := tx.Hash().String()
+	payload := DelegateAssetCreationPayload{
+		TransactionHash: transactionHash,
+	}
+	logwrapper.Infof("trasaction hash is %v", transactionHash)
+	httphelper.SuccessResponse(c, "request successfully send, asset will be delegated soon", payload)
+
+}
+
+func assetTransfer(c *gin.Context) {
+	var request AssetTransferRequest
+	err := c.BindJSON(&request)
+	if err != nil {
+		httphelper.ErrResponse(c, http.StatusForbidden, "payload is invalid")
+		return
+	}
+
+	abiS := signatureSeries.SignatureSeriesABI
+
+	tx, err := rawtransaction.SendRawTransactionTransferAssetSignature(abiS, request.ContractAddress, common.HexToAddress(request.FromAddress), common.HexToAddress(request.ToAddress), request.TokenId)
+
+	if err != nil {
+		httphelper.NewInternalServerError(c, "", "failed to call %v of %v, error: %v", "delegateAssetCreation", "StoreFront", err.Error())
+		return
+	}
+	transactionHash := tx.Hash().String()
+	payload := DelegateAssetCreationPayload{
+		TransactionHash: transactionHash,
+	}
+	logwrapper.Infof("trasaction hash is %v", transactionHash)
+	httphelper.SuccessResponse(c, "request successfully send, asset will be delegated soon", payload)
+
 }
