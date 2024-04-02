@@ -127,7 +127,8 @@ func Deploy(c *gin.Context, link string) {
 			BlockNumber: contract.BlockNumber,
 		},
 	}
-	graphName := storefront.Name + "/" + response.ContractAddress
+	storefrontNamePlain := strings.Replace(storefront.Name, " ", "", -1)
+	graphName := storefrontNamePlain + "/" + response.ContractAddress
 	graphReqBody := GraphRequest{
 		Name:      graphName,
 		Folder:    response.ContractAddress,
