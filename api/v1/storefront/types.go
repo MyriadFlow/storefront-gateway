@@ -6,6 +6,7 @@ import (
 
 type StorefrontRequest struct {
 	Name        string `json:"name"`
+	DisplayName string `json:"displayName"`
 	Blockchain  string `json:"blockchain"`
 	Headline    string `json:"headline"`
 	Description string `json:"description"`

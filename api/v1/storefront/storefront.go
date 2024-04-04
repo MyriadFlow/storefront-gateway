@@ -77,6 +77,7 @@ func NewStorefront(c *gin.Context) {
 	storefront := models.Storefront{
 		Id:            id,
 		Name:          StorefrontRequest.Name,
+		DisplayName:   StorefrontRequest.DisplayName,
 		WalletAddress: walletAddress,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
