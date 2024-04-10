@@ -47,6 +47,11 @@ type config struct {
 	POLYGON_TESTNET_NODE_PORT     string   `env:"POLYGON_TESTNET_NODE_PORT,required"`
 	POLYGON_TESTNET_IPFS_PORT     string   `env:"POLYGON_TESTNET_IPFS_PORT,required"`
 	POLYGON_TESTNET_GRAPH_HTTPS   string   `env:"POLYGON_TESTNET_GRAPH_HTTPS,required"`
+	POLYGON_MAINNET_HTTP          string   `env:"POLYGON_MAINNET_HTTP,required"`
+	POLYGON_MAINNET_WSS           string   `env:"POLYGON_MAINNET_WSS,required"`
+	POLYGON_MAINNET_NODE_PORT     string   `env:"POLYGON_MAINNET_NODE_PORT,required"`
+	POLYGON_MAINNET_IPFS_PORT     string   `env:"POLYGON_MAINNET_IPFS_PORT,required"`
+	POLYGON_MAINNET_GRAPH_HTTPS   string   `env:"POLYGON_MAINNET_GRAPH_HTTPS,required"`
 	ETHEREUM_TESTNET_HTTP         string   `env:"ETHEREUM_TESTNET_HTTP,required"`
 	ETHEREUM_TESTNET_WSS          string   `env:"ETHEREUM_TESTNET_WSS,required"`
 	ETHEREUM_TESTNET_NODE_PORT    string   `env:"ETHEREUM_TESTNET_NODE_PORT,required"`

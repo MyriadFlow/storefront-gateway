@@ -20,6 +20,19 @@ var Mainnets map[string]Blockchain
 var Testnets map[string]Blockchain
 
 func InitChains() {
+	Mainnets = map[string]Blockchain{
+		"polygon": {
+			Name:                "polygon",
+			Type:                "mainnet",
+			ChainId:             137,
+			RpcHttp:             envconfig.EnvVars.POLYGON_MAINNET_HTTP,
+			RpcWss:              envconfig.EnvVars.POLYGON_MAINNET_WSS,
+			GraphPort:           envconfig.EnvVars.POLYGON_MAINNET_NODE_PORT,
+			IpfsPort:            envconfig.EnvVars.POLYGON_MAINNET_IPFS_PORT,
+			GraphHttpsUrl:       envconfig.EnvVars.POLYGON_MAINNET_GRAPH_HTTPS,
+			DeploymentName:      "polygon",
+			SubgraphNetworkName: "polygon"},
+	}
 	Testnets = map[string]Blockchain{
 		"polygon": {
 			Name:                "polygon",
