@@ -1,4 +1,4 @@
-name: "[MAIN] Docker Image Build and Publish"
+name: "Docker Image Build and Publish and Deploy"
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,7 +7,9 @@ name: "[MAIN] Docker Image Build and Publish"
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+      - prod
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -55,14 +57,16 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           export CURRENT_BRANCH=${GITHUB_REF#refs/heads/}
-          export TAG=$([[ $CURRENT_BRANCH == "main" ]] && echo $CURRENT_BRANCH || echo "latest")
-          export GITHUB_REF_IMAGE=ghcr.io/myriadflow/gateway:$GITHUB_SHA
-          export GITHUB_BRANCH_IMAGE=ghcr.io/myriadflow/gateway:$TAG
-          docker build -t $GITHUB_REF_IMAGE -t $GITHUB_BRANCH_IMAGE .
+          export TAG=$([[ $CURRENT_BRANCH == $(basename ${{ github.ref }}) ]] && echo $CURRENT_BRANCH || echo "latest")
+          echo $TAG
+          export GITHUB_REF_IMAGE=ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA
+          export GITHUB_BRANCH_IMAGE=ghcr.io/$GITHUB_REPOSITORY:$TAG
+          export GITHUB_REF_IMAGE=$(echo $GITHUB_REF_IMAGE | tr '[:upper:]' '[:lower:]')
+          export GITHUB_BRANCH_IMAGE=$(echo $GITHUB_BRANCH_IMAGE | tr '[:upper:]' '[:lower:]')
+          docker build --build-arg version=$GITHUB_SHA -t $GITHUB_REF_IMAGE -t $GITHUB_BRANCH_IMAGE .
           echo "Pushing Image to GitHub Container Registry"
           docker push $GITHUB_REF_IMAGE
           docker push $GITHUB_BRANCH_IMAGE
-
       - name: Deploy on Dev Server
         if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v0.1.7
@@ -78,3 +82,18 @@ jobs:
             echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
             sudo podman pull ghcr.io/myriadflow/gateway:main
             sudo podman run --name="gateway" --env-file=.env -p 9080:9080 --net=gateway -d ghcr.io/myriadflow/gateway:main
+      - name: Deploy on Prod Server
+        if: github.ref == 'refs/heads/prod'
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_REMOTE_SERVER_ADDRESS }}
+          username: ${{ secrets.DEV_SERVER_USERNAME }}
+          key: ${{ secrets.DEV_REMOTE_SERVER_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          script: |
+            pwd
+            cd gateway
+            sudo podman stop gateway && sudo podman rm gateway && sudo podman image rm gateway
+            echo ${{ secrets.GHCR_TOKEN }} | podman login ghcr.io -u secrets.GHCR_USERNAME --password-stdin
+            sudo podman pull ghcr.io/myriadflow/gateway:prod
+            sudo podman run --name="gateway" --env-file=.env -p 9080:9080 --net=gateway -d ghcr.io/myriadflow/gateway:prod
