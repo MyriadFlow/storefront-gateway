@@ -2,7 +2,6 @@ package apiv1
 
 import (
 	authenticate "github.com/MyriadFlow/storefront-gateway/api/v1/authenticate"
-	creatorrole "github.com/MyriadFlow/storefront-gateway/api/v1/creatorrole"
 	delegateassetcreation "github.com/MyriadFlow/storefront-gateway/api/v1/delegateassetcreation"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/launchpad"
 	"github.com/MyriadFlow/storefront-gateway/api/v1/storefront"
@@ -27,7 +26,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		authenticate.ApplyRoutes(v1)
 		profile.ApplyRoutes(v1)
 
-		creatorrole.ApplyRoutes(v1)
 		delegateassetcreation.ApplyRoutes(v1)
 		nftstorage.ApplyRoutes(v1)
 
