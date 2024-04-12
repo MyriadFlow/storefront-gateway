@@ -68,7 +68,7 @@ func SendRawTransaction(abiS string, method string, args ...interface{}) (*types
 		return nil, err
 	}
 	config := &params.ChainConfig{
-		ChainID: big.NewInt(80001),
+		ChainID: big.NewInt(137),
 	}
 	bn, _ := client.BlockNumber(context.Background())
 
@@ -133,7 +133,7 @@ func SendRawTransactionDelegateSignature(abiS string, method string, address str
 		}
 	}
 
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(80001))
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(137))
 	if err != nil {
 		logwrapper.Warnf("failed to get transactops")
 		return nil, err
@@ -191,7 +191,7 @@ func SendRawTransactionCreateAssetSignature(abiS string, address string, metdata
 		}
 	}
 
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(80001))
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(137))
 	if err != nil {
 		logwrapper.Warnf("failed to get transactops")
 		return nil, err
@@ -249,7 +249,7 @@ func SendRawTransactionTransferAssetSignature(abiS string, address string, from 
 		}
 	}
 
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(80001))
+	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(137))
 	if err != nil {
 		logwrapper.Warnf("failed to get transactops")
 		return nil, err
